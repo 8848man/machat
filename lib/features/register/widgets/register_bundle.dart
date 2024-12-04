@@ -1,7 +1,7 @@
 part of '../lib.dart';
 
-class LoginBundle extends StatelessWidget {
-  const LoginBundle({super.key});
+class RegisterBundle extends StatelessWidget {
+  const RegisterBundle({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,9 +11,9 @@ class LoginBundle extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          LoginBundleHeader(),
-          LoginBundleBody(),
-          LoginBundleFooter(),
+          RegisterBundleHeader(),
+          RegisterBundleBody(),
+          RegisterBundleFooter(),
         ],
       ),
     );

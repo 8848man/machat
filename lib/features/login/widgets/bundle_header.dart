@@ -5,6 +5,6 @@ class LoginBundleHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Text('환영합니다');
   }
 }

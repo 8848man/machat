@@ -2,7 +2,7 @@ part of '../lib.dart';
 
 const double _dsSpace = 16;
 
-class DSSpace {
+class MCSpace {
   // 가로 여백 박스
   Widget horizontalSpace() {
     return const SizedBox(

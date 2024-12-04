@@ -1,12 +1,12 @@
 part of '../lib.dart';
 
-class LoginBundleFooter extends ConsumerWidget {
-  const LoginBundleFooter({super.key});
+class RegisterBundleFooter extends ConsumerWidget {
+  const RegisterBundleFooter({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final LoginPageViewModel notifier =
-        ref.read(loginPageViewModelProvider.notifier);
+    final RegisterViewModel notifier =
+        ref.read(registerViewModelProvider.notifier);
     return Column(
       children: [
         loginButton(notifier: notifier),
@@ -16,7 +16,7 @@ class LoginBundleFooter extends ConsumerWidget {
     );
   }
 
-  Widget loginButton({required LoginPageViewModel notifier}) {
+  Widget loginButton({required RegisterViewModel notifier}) {
     return GestureDetector(
       child: Container(
         height: 40,
@@ -25,13 +25,13 @@ class LoginBundleFooter extends ConsumerWidget {
           borderRadius: BorderRadius.circular(8),
           color: MCColors.$color_blue_40,
         ),
-        child: const Center(child: Text('로그인')),
+        child: const Center(child: Text('회원가입')),
       ),
-      onTap: () => notifier.login(),
+      onTap: () => notifier.registUser(),
     );
   }
 
-  Widget goRegisterButton({required LoginPageViewModel notifier}) {
+  Widget goRegisterButton({required RegisterViewModel notifier}) {
     return GestureDetector(
       child: Container(
         height: 40,
@@ -40,9 +40,9 @@ class LoginBundleFooter extends ConsumerWidget {
           borderRadius: BorderRadius.circular(8),
           color: MCColors.$color_grey_40,
         ),
-        child: const Center(child: Text('회원가입')),
+        child: const Center(child: Text('뒤로가기')),
       ),
-      onTap: () => notifier.goRegister(),
+      onTap: () => notifier.goLogin(),
     );
   }
 }

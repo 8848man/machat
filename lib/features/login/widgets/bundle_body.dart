@@ -5,6 +5,14 @@ class LoginBundleBody extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container();
+    final LoginPageViewModel notifier =
+        ref.read(loginPageViewModelProvider.notifier);
+    return Column(
+      children: [],
+    );
+  }
+
+  Widget idInput(LoginPageViewModel notifier) {
+    return TextField();
   }
 }
