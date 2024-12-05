@@ -7,10 +7,10 @@ part 'user_data.g.dart';
 class UserData with _$UserData {
   const factory UserData({
     required String id,
-    String? nationId,
     required String email,
     required String name,
     String? profileUrl,
+    String? nationId,
   }) = _UserData;
 
   factory UserData.fromJson(Map<String, dynamic> json) =>

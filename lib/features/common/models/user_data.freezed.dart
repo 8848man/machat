@@ -21,10 +21,10 @@ UserData _$UserDataFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$UserData {
   String get id => throw _privateConstructorUsedError;
-  String? get nationId => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String? get profileUrl => throw _privateConstructorUsedError;
+  String? get nationId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -39,10 +39,10 @@ abstract class $UserDataCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      String? nationId,
       String email,
       String name,
-      String? profileUrl});
+      String? profileUrl,
+      String? nationId});
 }
 
 /// @nodoc
@@ -59,20 +59,16 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
   @override
   $Res call({
     Object? id = null,
-    Object? nationId = freezed,
     Object? email = null,
     Object? name = null,
     Object? profileUrl = freezed,
+    Object? nationId = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      nationId: freezed == nationId
-          ? _value.nationId
-          : nationId // ignore: cast_nullable_to_non_nullable
-              as String?,
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -84,6 +80,10 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
       profileUrl: freezed == profileUrl
           ? _value.profileUrl
           : profileUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      nationId: freezed == nationId
+          ? _value.nationId
+          : nationId // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -99,10 +99,10 @@ abstract class _$$UserDataImplCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
-      String? nationId,
       String email,
       String name,
-      String? profileUrl});
+      String? profileUrl,
+      String? nationId});
 }
 
 /// @nodoc
@@ -117,20 +117,16 @@ class __$$UserDataImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? nationId = freezed,
     Object? email = null,
     Object? name = null,
     Object? profileUrl = freezed,
+    Object? nationId = freezed,
   }) {
     return _then(_$UserDataImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      nationId: freezed == nationId
-          ? _value.nationId
-          : nationId // ignore: cast_nullable_to_non_nullable
-              as String?,
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -143,6 +139,10 @@ class __$$UserDataImplCopyWithImpl<$Res>
           ? _value.profileUrl
           : profileUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      nationId: freezed == nationId
+          ? _value.nationId
+          : nationId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -152,10 +152,10 @@ class __$$UserDataImplCopyWithImpl<$Res>
 class _$UserDataImpl implements _UserData {
   const _$UserDataImpl(
       {required this.id,
-      this.nationId,
       required this.email,
       required this.name,
-      this.profileUrl});
+      this.profileUrl,
+      this.nationId});
 
   factory _$UserDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserDataImplFromJson(json);
@@ -163,17 +163,17 @@ class _$UserDataImpl implements _UserData {
   @override
   final String id;
   @override
-  final String? nationId;
-  @override
   final String email;
   @override
   final String name;
   @override
   final String? profileUrl;
+  @override
+  final String? nationId;
 
   @override
   String toString() {
-    return 'UserData(id: $id, nationId: $nationId, email: $email, name: $name, profileUrl: $profileUrl)';
+    return 'UserData(id: $id, email: $email, name: $name, profileUrl: $profileUrl, nationId: $nationId)';
   }
 
   @override
@@ -182,18 +182,18 @@ class _$UserDataImpl implements _UserData {
         (other.runtimeType == runtimeType &&
             other is _$UserDataImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.nationId, nationId) ||
-                other.nationId == nationId) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.profileUrl, profileUrl) ||
-                other.profileUrl == profileUrl));
+                other.profileUrl == profileUrl) &&
+            (identical(other.nationId, nationId) ||
+                other.nationId == nationId));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, nationId, email, name, profileUrl);
+      Object.hash(runtimeType, id, email, name, profileUrl, nationId);
 
   @JsonKey(ignore: true)
   @override
@@ -212,10 +212,10 @@ class _$UserDataImpl implements _UserData {
 abstract class _UserData implements UserData {
   const factory _UserData(
       {required final String id,
-      final String? nationId,
       required final String email,
       required final String name,
-      final String? profileUrl}) = _$UserDataImpl;
+      final String? profileUrl,
+      final String? nationId}) = _$UserDataImpl;
 
   factory _UserData.fromJson(Map<String, dynamic> json) =
       _$UserDataImpl.fromJson;
@@ -223,13 +223,13 @@ abstract class _UserData implements UserData {
   @override
   String get id;
   @override
-  String? get nationId;
-  @override
   String get email;
   @override
   String get name;
   @override
   String? get profileUrl;
+  @override
+  String? get nationId;
   @override
   @JsonKey(ignore: true)
   _$$UserDataImplCopyWith<_$UserDataImpl> get copyWith =>

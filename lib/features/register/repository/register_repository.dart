@@ -3,11 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:machat/repository_service/repository_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final dataRepositoryProvider = Provider<RepositoryService>((ref) {
-  return FirebaseUserRepository();
+final registerRepositoryProvider = Provider<RepositoryService>((ref) {
+  return RegisterRepository();
 });
 
-class FirebaseUserRepository implements RepositoryService {
+class RegisterRepository implements RepositoryService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -33,51 +33,25 @@ class FirebaseUserRepository implements RepositoryService {
 
       return {'success': true};
     } catch (e) {
+      // 나중에 다이얼로그 띄우도록 변경
       print(e);
       return {'success': false};
     }
   }
 
-  // 로그인 회원 불러오기
   @override
-  Future<Map<String, dynamic>> read(String id) async {
-    try {
-      final doc = await _firestore.collection('users').doc(id).get();
-      if (!doc.exists) throw Exception('User not found');
-      return doc.data()!;
-    } catch (e) {
-      throw Exception('Failed to read user: $e');
-    }
-  }
+  Future<Map<String, dynamic>> read(String id) async =>
+      throw UnimplementedError();
 
   @override
-  Future<List<Map<String, dynamic>>> readAll() async {
-    try {
-      final querySnapshot = await _firestore.collection('users').get();
-      return querySnapshot.docs.map((doc) => doc.data()).toList();
-    } catch (e) {
-      throw Exception('Failed to read all users: $e');
-    }
-  }
+  Future<List<Map<String, dynamic>>> readAll() async =>
+      throw UnimplementedError();
 
   @override
   Future<Map<String, dynamic>> update(
-      String id, Map<String, dynamic> data) async {
-    try {
-      await _firestore.collection('users').doc(id).update(data);
-      return {'success': true};
-    } catch (e) {
-      throw Exception('Failed to update user: $e');
-    }
-  }
+          String id, Map<String, dynamic> data) async =>
+      throw UnimplementedError();
 
   @override
-  Future<void> delete(String id) async {
-    try {
-      await _firestore.collection('users').doc(id).delete();
-      await _auth.currentUser!.delete();
-    } catch (e) {
-      throw Exception('Failed to delete user: $e');
-    }
-  }
+  Future<void> delete(String id) async => throw UnimplementedError();
 }

@@ -5,8 +5,7 @@ class LoginBundleFooter extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final LoginPageViewModel notifier =
-        ref.read(loginPageViewModelProvider.notifier);
+    final LoginViewModel notifier = ref.read(loginViewModelProvider.notifier);
     return Column(
       children: [
         loginButton(notifier: notifier),
@@ -16,7 +15,7 @@ class LoginBundleFooter extends ConsumerWidget {
     );
   }
 
-  Widget loginButton({required LoginPageViewModel notifier}) {
+  Widget loginButton({required LoginViewModel notifier}) {
     return GestureDetector(
       child: Container(
         height: 40,
@@ -31,7 +30,7 @@ class LoginBundleFooter extends ConsumerWidget {
     );
   }
 
-  Widget goRegisterButton({required LoginPageViewModel notifier}) {
+  Widget goRegisterButton({required LoginViewModel notifier}) {
     return GestureDetector(
       child: Container(
         height: 40,

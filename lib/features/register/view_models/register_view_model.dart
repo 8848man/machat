@@ -99,7 +99,7 @@ class RegisterViewModel extends _$RegisterViewModel {
 
   /// network
   Future<bool> signUp(String email, String password, String name) async {
-    final repository = ref.read(dataRepositoryProvider);
+    final repository = ref.read(registerRepositoryProvider);
     final Map<String, dynamic> response = await repository.create({
       'email': email,
       'password': password,

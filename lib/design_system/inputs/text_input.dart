@@ -3,6 +3,7 @@ part of '../lib.dart';
 class MCTextInput extends StatelessWidget {
   final String? labelText;
   final String? errorText;
+  final Widget? error;
   final void Function(String)? onChanged;
   final FocusNode? focusNode;
   final TextEditingController controller;
@@ -11,6 +12,7 @@ class MCTextInput extends StatelessWidget {
     super.key,
     this.labelText,
     this.errorText,
+    this.error,
     this.onChanged,
     this.focusNode,
     required this.controller,
@@ -27,6 +29,7 @@ class MCTextInput extends StatelessWidget {
           ),
         ),
         errorText: errorText,
+        error: error,
       ),
       controller: controller,
       focusNode: focusNode,

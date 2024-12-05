@@ -5,14 +5,37 @@ class LoginBundleBody extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final LoginPageViewModel notifier =
-        ref.read(loginPageViewModelProvider.notifier);
+    final LoginViewModel notifier = ref.read(loginViewModelProvider.notifier);
+    final LoginModel state = ref.watch(loginViewModelProvider);
     return Column(
-      children: [idInput(notifier)],
+      children: [
+        inputEmailField(state, notifier),
+        MCSpace().verticalHalfSpace(),
+        inputPwdField(state, notifier),
+      ],
     );
   }
 
-  Widget idInput(LoginPageViewModel notifier) {
-    return const TextField();
+  Widget inputEmailField(
+    LoginModel state,
+    LoginViewModel notifier,
+  ) {
+    return MCTextInput(
+      controller: notifier.emailController,
+      labelText: '이메일',
+      error: state.emailErrorText != null ? Container() : null,
+      // onChanged: (val) => notifier.emailChangeValidate(),
+    );
+  }
+
+  Widget inputPwdField(
+    LoginModel state,
+    LoginViewModel notifier,
+  ) {
+    return MCTextInput(
+      controller: notifier.pwdController,
+      labelText: '비밀번호',
+      errorText: state.pwdErrorText,
+    );
   }
 }
