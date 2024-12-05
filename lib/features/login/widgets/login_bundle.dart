@@ -5,8 +5,19 @@ class LoginBundle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [],
+    return SizedBox(
+      width: 400,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const LoginBundleHeader(),
+          MCSpace().verticalSpace(),
+          const LoginBundleBody(),
+          MCSpace().verticalSpace(),
+          const LoginBundleFooter(),
+        ],
+      ),
     );
   }
 }

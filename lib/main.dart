@@ -1,7 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:machat/config/firebase_config.dart';
 import 'package:machat/design_system/lib.dart';
 import 'package:machat/router/lib.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -19,6 +22,13 @@ void main() async {
 /// 앱 실행전 초기화
 void init() async {
   WidgetsFlutterBinding.ensureInitialized();
+  if (kIsWeb) {
+    // 웹 플랫폼일 경우 FirebaseOptions 사용
+    await Firebase.initializeApp(options: firebaseOptions);
+  } else {
+    // 모바일 플랫폼일 경우 기본 Firebase 설정
+    await Firebase.initializeApp();
+  }
 
   ErrorWidget.builder = (FlutterErrorDetails details) {
     return Center(
@@ -30,10 +40,10 @@ void init() async {
   };
 
   //가로화면 고정
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.landscapeRight,
-    DeviceOrientation.landscapeLeft,
-  ]);
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.landscapeRight,
+  //   DeviceOrientation.landscapeLeft,
+  // ]);
 
   // firebase 연동 코드 (필요시)
   // await HTTPConnector.init();

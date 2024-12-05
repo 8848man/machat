@@ -5,6 +5,10 @@ class LoginPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container();
+    return const DefaultLayout(
+      child: Center(
+        child: LoginBundle(),
+      ),
+    );
   }
 }

@@ -1,4 +1,4 @@
-package com.example.machat
+package com.rwkim.machat
 
 import io.flutter.embedding.android.FlutterActivity
 

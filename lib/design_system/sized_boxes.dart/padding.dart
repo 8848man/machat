@@ -2,7 +2,7 @@ part of '../lib.dart';
 
 const double _dsPadding = 16;
 
-class DSPadding {
+class MCPadding {
   // All directions
   EdgeInsets all() {
     return const EdgeInsets.all(_dsPadding);
