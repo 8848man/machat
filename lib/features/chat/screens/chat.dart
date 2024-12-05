@@ -5,11 +5,11 @@ class Chat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const DefaultLayout(
+    return DefaultLayout(
       child: Column(
         children: [
-          ChatContents(),
-          ChatInput(),
+          const ChatContents().expand(),
+          const ChatInput(),
         ],
       ),
     );

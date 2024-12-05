@@ -17,9 +17,7 @@ class ChatInput extends ConsumerWidget {
             height: boxDouble,
             color: Colors.red,
           ),
-          Expanded(
-            child: Container(),
-          ),
+          Container().expand(),
           Container(
             width: boxDouble,
             height: boxDouble,

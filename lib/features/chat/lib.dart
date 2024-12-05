@@ -2,6 +2,7 @@ library mc_chat;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:machat/extensions.dart';
 import 'package:machat/features/common/layouts/lib.dart';
 
 part 'screens/chat.dart';
