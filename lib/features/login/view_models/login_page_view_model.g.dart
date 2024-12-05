@@ -7,7 +7,7 @@ part of 'login_page_view_model.dart';
 // **************************************************************************
 
 String _$loginPageViewModelHash() =>
-    r'a4574938d5e61cf323a2cd1cc49a02dab6ac4617';
+    r'aab0d730498966a592730edcf6e68ff04153dd1b';
 
 /// See also [LoginPageViewModel].
 @ProviderFor(LoginPageViewModel)

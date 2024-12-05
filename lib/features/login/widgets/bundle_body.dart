@@ -8,11 +8,11 @@ class LoginBundleBody extends ConsumerWidget {
     final LoginPageViewModel notifier =
         ref.read(loginPageViewModelProvider.notifier);
     return Column(
-      children: [],
+      children: [idInput(notifier)],
     );
   }
 
   Widget idInput(LoginPageViewModel notifier) {
-    return TextField();
+    return const TextField();
   }
 }

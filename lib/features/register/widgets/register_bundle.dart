@@ -5,15 +5,17 @@ class RegisterBundle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return SizedBox(
       width: 400,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          RegisterBundleHeader(),
-          RegisterBundleBody(),
-          RegisterBundleFooter(),
+          const RegisterBundleHeader(),
+          MCSpace().verticalSpace(),
+          const RegisterBundleBody(),
+          MCSpace().verticalSpace(),
+          const RegisterBundleFooter(),
         ],
       ),
     );

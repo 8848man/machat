@@ -16,6 +16,7 @@ class LoginPageViewModel extends _$LoginPageViewModel {
   }
 
   void login() {
+    print('test001');
     final router = ref.read(goRouterProvider);
     router.goNamed(RouterPath.home.name);
   }

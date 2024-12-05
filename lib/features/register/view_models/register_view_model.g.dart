@@ -6,12 +6,12 @@ part of 'register_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$registerViewModelHash() => r'9c3257d1d4215361d2328da380f59aa8c3245b0e';
+String _$registerViewModelHash() => r'70a72b5bdc8d981c0b463c42b87d5ef258767de5';
 
 /// See also [RegisterViewModel].
 @ProviderFor(RegisterViewModel)
 final registerViewModelProvider =
-    AutoDisposeAsyncNotifierProvider<RegisterViewModel, void>.internal(
+    AutoDisposeNotifierProvider<RegisterViewModel, RegisterModel>.internal(
   RegisterViewModel.new,
   name: r'registerViewModelProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -21,6 +21,6 @@ final registerViewModelProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$RegisterViewModel = AutoDisposeAsyncNotifier<void>;
+typedef _$RegisterViewModel = AutoDisposeNotifier<RegisterModel>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
