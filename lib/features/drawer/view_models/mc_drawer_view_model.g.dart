@@ -6,12 +6,12 @@ part of 'mc_drawer_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mCDrawerViewModelHash() => r'd8ba1beb7eef667b1e3b2e0f0eddd3de710d4076';
+String _$mCDrawerViewModelHash() => r'574bd92731e20e9bfb274c458bc2b2360a1f20a6';
 
 /// See also [MCDrawerViewModel].
 @ProviderFor(MCDrawerViewModel)
 final mCDrawerViewModelProvider =
-    AutoDisposeAsyncNotifierProvider<MCDrawerViewModel, void>.internal(
+    AutoDisposeAsyncNotifierProvider<MCDrawerViewModel, DrawerModel>.internal(
   MCDrawerViewModel.new,
   name: r'mCDrawerViewModelProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -21,6 +21,6 @@ final mCDrawerViewModelProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$MCDrawerViewModel = AutoDisposeAsyncNotifier<void>;
+typedef _$MCDrawerViewModel = AutoDisposeAsyncNotifier<DrawerModel>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

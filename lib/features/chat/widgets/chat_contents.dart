@@ -5,6 +5,6 @@ class ChatContents extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Expanded(child: Container());
+    return Container();
   }
 }

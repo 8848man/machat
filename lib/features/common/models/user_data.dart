@@ -6,9 +6,9 @@ part 'user_data.g.dart';
 @freezed
 class UserData with _$UserData {
   const factory UserData({
-    required String id,
-    required String email,
     required String name,
+    String? id,
+    String? email,
     String? profileUrl,
     String? nationId,
   }) = _UserData;
