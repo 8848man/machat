@@ -1,46 +1,94 @@
-// import 'package:flutter/material.dart';
+part of '../lib.dart';
 
-// class McFloationgButton extends StatefulWidget {
-//   const McFloationgButton({super.key});
+class AnimatedFAB extends ConsumerStatefulWidget {
+  const AnimatedFAB({super.key});
 
-//   @override
-//   State<McFloationgButton> createState() => _McFloationgButtonState();
-// }
+  @override
+  _AnimatedFABState createState() => _AnimatedFABState();
+}
 
-// class _McFloationgButtonState extends State<McFloationgButton> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return FloatingActionButton.extended(
-//       onPressed: () {
-//         if (extended) {
-//           Navigator.push(context, MaterialPageRoute(
-//             builder: (context) {
-//               return const FloatingActionButtonSecondScreen();
-//             },
-//           ));
-//         }
-//         setState(() {
-//           extended = !extended;
-//         });
-//       },
-//       label: const Text("Click"),
-//       isExtended: extended,
-//       heroTag: "actionButton",
-//       icon: const Icon(
-//         Icons.add,
-//         size: 30,
-//       ),
-//       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+class _AnimatedFABState extends ConsumerState<AnimatedFAB> {
+  bool _isExpanded = false;
 
-//       /// 텍스트 컬러
-//       foregroundColor: Colors.white,
-//       backgroundColor: Colors.red,
-//       splashColor: Colors.blue,
-//       hoverColor: Colors.green,
-//       extendedPadding: const EdgeInsets.all(10),
-//       elevation: 10,
-//       highlightElevation: 20,
-//       extendedIconLabelSpacing: 10,
-//     );
-//   }
-// }
+  void _toggleButtons() {
+    setState(() {
+      _isExpanded = !_isExpanded;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.bottomRight,
+      children: [
+        // Small Buttons
+        if (_isExpanded)
+          Positioned(
+            bottom: 80.0, // Main FAB 기준 위치 조정
+            right: 16.0,
+            child: _buildSmallButtons(),
+          ),
+        // Main FAB
+        Positioned(
+          bottom: 16.0,
+          right: 16.0,
+          child: FloatingActionButton(
+            onPressed: _toggleButtons,
+            child: Icon(_isExpanded ? Icons.close : Icons.add),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSmallButtons() {
+    if (kIsWeb) {
+      // Web: Row로 좌측으로 버튼 생성
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: List.generate(1, (index) {
+          return Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: SmallButton(
+              index: index,
+              isWeb: false,
+            ),
+          );
+        }),
+      );
+    } else {
+      // Mobile: Column으로 위로 버튼 생성
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: List.generate(1, (index) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: SmallButton(
+              index: index,
+              isWeb: false,
+            ),
+          );
+        }),
+      );
+    }
+  }
+}
+
+class SmallButton extends ConsumerWidget {
+  final int index;
+  final bool isWeb;
+
+  const SmallButton({required this.index, required this.isWeb, super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final notifier = ref.read(floatingButtonViewModelProvider.notifier);
+    return FloatingActionButton(
+      mini: true,
+      onPressed: () => notifier.functionBrancher(index),
+      backgroundColor:
+          Colors.primaries[Random().nextInt(Colors.primaries.length)],
+      child: Icon(Icons.star),
+    );
+  }
+}
