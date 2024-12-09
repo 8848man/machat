@@ -15,10 +15,7 @@ class MCDrawer extends ConsumerWidget {
         padding: EdgeInsets.zero,
         children: [
           const DrawerProfile(),
-          ListTile(
-            title: const Text('홈'),
-            onTap: () => notifier.goHome(),
-          ),
+          ListTile(title: const Text('홈'), onTap: () => notifier.goHome()),
           const Divider(),
           const DrawerChatList(),
         ],
