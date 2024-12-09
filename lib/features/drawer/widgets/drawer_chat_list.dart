@@ -15,7 +15,7 @@ class DrawerChatList extends ConsumerWidget {
         ],
       ),
       error: (error, stackTrace) => Container(),
-      loading: () => Container(),
+      loading: () => const Center(child: CircularProgressIndicator()),
     );
   }
 
