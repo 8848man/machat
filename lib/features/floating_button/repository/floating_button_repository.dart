@@ -16,7 +16,7 @@ class FloatingButtonRepository implements RepositoryService {
         'roomId': chatRoomRef.id,
         'createdBy': data['userId'],
         'createdAt': FieldValue.serverTimestamp(),
-        'members': data['userId'], // 초기 멤버로 로그인한 사용자 포함
+        'members': [data['userId']], // 초기 멤버로 로그인한 사용자 포함
       });
 
       return {'success': true};
@@ -39,7 +39,7 @@ class FloatingButtonRepository implements RepositoryService {
   }
 
   @override
-  Future<List<Map<String, dynamic>>> readAll() {
+  Future<List<Map<String, dynamic>>> readAll({String? searchId}) {
     // TODO: implement readAll
     throw UnimplementedError();
   }

@@ -6,7 +6,7 @@ part of 'mc_drawer_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mCDrawerViewModelHash() => r'b3cd882950fc38fdf6deb71b9501247afe6edacd';
+String _$mCDrawerViewModelHash() => r'184e92b815d9746cbc1291395933abe4a2977d55';
 
 /// See also [MCDrawerViewModel].
 @ProviderFor(MCDrawerViewModel)

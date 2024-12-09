@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$DrawerModel {
   UserData get user => throw _privateConstructorUsedError;
-  List<String> get roomList => throw _privateConstructorUsedError;
+  List<ChatRoomData> get roomList => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $DrawerModelCopyWith<DrawerModel> get copyWith =>
@@ -30,7 +30,7 @@ abstract class $DrawerModelCopyWith<$Res> {
           DrawerModel value, $Res Function(DrawerModel) then) =
       _$DrawerModelCopyWithImpl<$Res, DrawerModel>;
   @useResult
-  $Res call({UserData user, List<String> roomList});
+  $Res call({UserData user, List<ChatRoomData> roomList});
 
   $UserDataCopyWith<$Res> get user;
 }
@@ -59,7 +59,7 @@ class _$DrawerModelCopyWithImpl<$Res, $Val extends DrawerModel>
       roomList: null == roomList
           ? _value.roomList
           : roomList // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<ChatRoomData>,
     ) as $Val);
   }
 
@@ -80,7 +80,7 @@ abstract class _$$DrawerModelImplCopyWith<$Res>
       __$$DrawerModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({UserData user, List<String> roomList});
+  $Res call({UserData user, List<ChatRoomData> roomList});
 
   @override
   $UserDataCopyWith<$Res> get user;
@@ -108,7 +108,7 @@ class __$$DrawerModelImplCopyWithImpl<$Res>
       roomList: null == roomList
           ? _value._roomList
           : roomList // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<ChatRoomData>,
     ));
   }
 }
@@ -118,16 +118,16 @@ class __$$DrawerModelImplCopyWithImpl<$Res>
 class _$DrawerModelImpl implements _DrawerModel {
   const _$DrawerModelImpl(
       {this.user = const UserData(name: 'guest'),
-      final List<String> roomList = const []})
+      final List<ChatRoomData> roomList = const []})
       : _roomList = roomList;
 
   @override
   @JsonKey()
   final UserData user;
-  final List<String> _roomList;
+  final List<ChatRoomData> _roomList;
   @override
   @JsonKey()
-  List<String> get roomList {
+  List<ChatRoomData> get roomList {
     if (_roomList is EqualUnmodifiableListView) return _roomList;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_roomList);
@@ -160,12 +160,13 @@ class _$DrawerModelImpl implements _DrawerModel {
 
 abstract class _DrawerModel implements DrawerModel {
   const factory _DrawerModel(
-      {final UserData user, final List<String> roomList}) = _$DrawerModelImpl;
+      {final UserData user,
+      final List<ChatRoomData> roomList}) = _$DrawerModelImpl;
 
   @override
   UserData get user;
   @override
-  List<String> get roomList;
+  List<ChatRoomData> get roomList;
   @override
   @JsonKey(ignore: true)
   _$$DrawerModelImplCopyWith<_$DrawerModelImpl> get copyWith =>
