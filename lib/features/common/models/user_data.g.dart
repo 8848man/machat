@@ -8,18 +8,18 @@ part of 'user_data.dart';
 
 _$UserDataImpl _$$UserDataImplFromJson(Map<String, dynamic> json) =>
     _$UserDataImpl(
-      id: json['id'] as String,
-      email: json['email'] as String,
       name: json['name'] as String,
+      id: json['id'] as String?,
+      email: json['email'] as String?,
       profileUrl: json['profileUrl'] as String?,
       nationId: json['nationId'] as String?,
     );
 
 Map<String, dynamic> _$$UserDataImplToJson(_$UserDataImpl instance) =>
     <String, dynamic>{
+      'name': instance.name,
       'id': instance.id,
       'email': instance.email,
-      'name': instance.name,
       'profileUrl': instance.profileUrl,
       'nationId': instance.nationId,
     };

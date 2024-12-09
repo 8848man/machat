@@ -20,9 +20,9 @@ UserData _$UserDataFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UserData {
-  String get id => throw _privateConstructorUsedError;
-  String get email => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
+  String? get email => throw _privateConstructorUsedError;
   String? get profileUrl => throw _privateConstructorUsedError;
   String? get nationId => throw _privateConstructorUsedError;
 
@@ -38,9 +38,9 @@ abstract class $UserDataCopyWith<$Res> {
       _$UserDataCopyWithImpl<$Res, UserData>;
   @useResult
   $Res call(
-      {String id,
-      String email,
-      String name,
+      {String name,
+      String? id,
+      String? email,
       String? profileUrl,
       String? nationId});
 }
@@ -58,25 +58,25 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? email = null,
     Object? name = null,
+    Object? id = freezed,
+    Object? email = freezed,
     Object? profileUrl = freezed,
     Object? nationId = freezed,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
       profileUrl: freezed == profileUrl
           ? _value.profileUrl
           : profileUrl // ignore: cast_nullable_to_non_nullable
@@ -98,9 +98,9 @@ abstract class _$$UserDataImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String id,
-      String email,
-      String name,
+      {String name,
+      String? id,
+      String? email,
       String? profileUrl,
       String? nationId});
 }
@@ -116,25 +116,25 @@ class __$$UserDataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? email = null,
     Object? name = null,
+    Object? id = freezed,
+    Object? email = freezed,
     Object? profileUrl = freezed,
     Object? nationId = freezed,
   }) {
     return _then(_$UserDataImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
       profileUrl: freezed == profileUrl
           ? _value.profileUrl
           : profileUrl // ignore: cast_nullable_to_non_nullable
@@ -151,9 +151,9 @@ class __$$UserDataImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$UserDataImpl implements _UserData {
   const _$UserDataImpl(
-      {required this.id,
-      required this.email,
-      required this.name,
+      {required this.name,
+      this.id,
+      this.email,
       this.profileUrl,
       this.nationId});
 
@@ -161,11 +161,11 @@ class _$UserDataImpl implements _UserData {
       _$$UserDataImplFromJson(json);
 
   @override
-  final String id;
-  @override
-  final String email;
-  @override
   final String name;
+  @override
+  final String? id;
+  @override
+  final String? email;
   @override
   final String? profileUrl;
   @override
@@ -173,7 +173,7 @@ class _$UserDataImpl implements _UserData {
 
   @override
   String toString() {
-    return 'UserData(id: $id, email: $email, name: $name, profileUrl: $profileUrl, nationId: $nationId)';
+    return 'UserData(name: $name, id: $id, email: $email, profileUrl: $profileUrl, nationId: $nationId)';
   }
 
   @override
@@ -181,9 +181,9 @@ class _$UserDataImpl implements _UserData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UserDataImpl &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.email, email) || other.email == email) &&
-            (identical(other.name, name) || other.name == name) &&
             (identical(other.profileUrl, profileUrl) ||
                 other.profileUrl == profileUrl) &&
             (identical(other.nationId, nationId) ||
@@ -193,7 +193,7 @@ class _$UserDataImpl implements _UserData {
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, email, name, profileUrl, nationId);
+      Object.hash(runtimeType, name, id, email, profileUrl, nationId);
 
   @JsonKey(ignore: true)
   @override
@@ -211,9 +211,9 @@ class _$UserDataImpl implements _UserData {
 
 abstract class _UserData implements UserData {
   const factory _UserData(
-      {required final String id,
-      required final String email,
-      required final String name,
+      {required final String name,
+      final String? id,
+      final String? email,
       final String? profileUrl,
       final String? nationId}) = _$UserDataImpl;
 
@@ -221,11 +221,11 @@ abstract class _UserData implements UserData {
       _$UserDataImpl.fromJson;
 
   @override
-  String get id;
-  @override
-  String get email;
-  @override
   String get name;
+  @override
+  String? get id;
+  @override
+  String? get email;
   @override
   String? get profileUrl;
   @override

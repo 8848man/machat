@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:machat/features/login/models/login_model.dart';
 import 'package:machat/features/login/repository/login_repository.dart';
@@ -30,17 +29,18 @@ class LoginViewModel extends _$LoginViewModel {
     // 로그인 성공 로직
     if (isLogined) {
       // FirebaseAuth에서 현재 사용자 가져오기
-      final user = FirebaseAuth.instance.currentUser;
+      // 추후 캐싱 모듈 완성시 유저 캐싱 구현
+      // final user = FirebaseAuth.instance.currentUser;
 
-      if (user == null) {
-        throw Exception("User is not authenticated.");
-      }
+      // if (user == null) {
+      //   throw Exception("User is not authenticated.");
+      // }
 
-      // 유저 프로필 가져오기
-      final userProfile = await repository.getUserProfile(user.uid);
+      // // 유저 프로필 가져오기
+      // final userProfile = await repository.getUserProfile(user.uid);
 
-      // 필요한 로직 처리 (예: 상태 업데이트, UI 반영 등)
-      print('User Profile: $userProfile');
+      // // 필요한 로직 처리 (예: 상태 업데이트, UI 반영 등)
+      // print('User Profile: $userProfile');
 
       // 페이지 이동
       final router = ref.read(goRouterProvider);

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:machat/repository_service/repository_service.dart';
+import 'package:machat/features/common/interfaces/repository_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 final registerRepositoryProvider = Provider<RepositoryService>((ref) {
@@ -44,7 +44,7 @@ class RegisterRepository implements RepositoryService {
       throw UnimplementedError();
 
   @override
-  Future<List<Map<String, dynamic>>> readAll() async =>
+  Future<List<Map<String, dynamic>>> readAll({String? searchId}) async =>
       throw UnimplementedError();
 
   @override

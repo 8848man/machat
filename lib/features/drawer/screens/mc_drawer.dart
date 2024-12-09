@@ -14,24 +14,10 @@ class MCDrawer extends ConsumerWidget {
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: [
-          GestureDetector(
-            child: const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text('Drawer Header'),
-            ),
-            onTap: () => notifier.goLogin(),
-          ),
-          ListTile(
-            title: const Text('홈'),
-            onTap: () => notifier.goHome(),
-          ),
+          const DrawerProfile(),
+          ListTile(title: const Text('홈'), onTap: () => notifier.goHome()),
           const Divider(),
-          ListTile(
-            title: const Text('chatRoomName'),
-            onTap: () => notifier.goChat(),
-          ),
+          const DrawerChatList(),
         ],
       ),
     );
