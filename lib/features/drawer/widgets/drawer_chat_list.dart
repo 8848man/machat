@@ -9,11 +9,7 @@ class DrawerChatList extends ConsumerWidget {
         ref.read(mCDrawerViewModelProvider.notifier);
     final AsyncValue<DrawerModel> state = ref.watch(mCDrawerViewModelProvider);
     return state.when(
-      data: (DrawerModel data) => Column(
-        children: [
-          buildChatRoom(data, notifier),
-        ],
-      ),
+      data: (DrawerModel data) => buildChatRoom(data, notifier),
       error: (error, stackTrace) => Container(),
       loading: () => const Center(child: CircularProgressIndicator()),
     );
@@ -43,7 +39,7 @@ class DrawerChatList extends ConsumerWidget {
           ),
         ],
       ),
-      onTap: () => notifier.goChat(),
+      onTap: () => notifier.goChat(data.roomId),
     );
   }
 }
