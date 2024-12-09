@@ -1,26 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'mc_drawer_view_model.dart';
+part of 'floating_button_view_model.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mCDrawerViewModelHash() => r'184e92b815d9746cbc1291395933abe4a2977d55';
+String _$floatingButtonViewModelHash() =>
+    r'61e4521ee3d4e5f62748f20a6e4452b6636fedd4';
 
-/// See also [MCDrawerViewModel].
-@ProviderFor(MCDrawerViewModel)
-final mCDrawerViewModelProvider =
-    AutoDisposeAsyncNotifierProvider<MCDrawerViewModel, DrawerModel>.internal(
-  MCDrawerViewModel.new,
-  name: r'mCDrawerViewModelProvider',
+/// See also [FloatingButtonViewModel].
+@ProviderFor(FloatingButtonViewModel)
+final floatingButtonViewModelProvider =
+    AutoDisposeNotifierProvider<FloatingButtonViewModel, void>.internal(
+  FloatingButtonViewModel.new,
+  name: r'floatingButtonViewModelProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$mCDrawerViewModelHash,
+      : _$floatingButtonViewModelHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$MCDrawerViewModel = AutoDisposeAsyncNotifier<DrawerModel>;
+typedef _$FloatingButtonViewModel = AutoDisposeNotifier<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

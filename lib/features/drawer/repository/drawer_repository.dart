@@ -7,6 +7,7 @@ final drawerRepositoryProvider = Provider<RepositoryService>((ref) {
 });
 
 class DrawerRepository implements RepositoryService {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   @override
   Future<Map<String, dynamic>> create(Map<String, dynamic> data) {
     // TODO: implement create
@@ -23,8 +24,7 @@ class DrawerRepository implements RepositoryService {
   Future<Map<String, dynamic>> read(String id) async {
     try {
       // Firestore 컬렉션에서 유저 문서를 가져오기
-      final doc =
-          await FirebaseFirestore.instance.collection('users').doc(id).get();
+      final doc = await _firestore.collection('users').doc(id).get();
 
       // 문서가 존재하지 않는 경우 처리
       if (!doc.exists) {
@@ -39,9 +39,18 @@ class DrawerRepository implements RepositoryService {
   }
 
   @override
-  Future<List<Map<String, dynamic>>> readAll() {
-    // TODO: implement readAll
-    throw UnimplementedError();
+  Future<List<Map<String, dynamic>>> readAll({String? searchId}) async {
+    try {
+      final querySnapshot = await _firestore
+          .collection('chat_rooms')
+          .where('members', arrayContains: searchId)
+          .get();
+
+      // Firestore의 raw 데이터를 반환
+      return querySnapshot.docs.map((doc) => doc.data()).toList();
+    } catch (e) {
+      throw Exception('Failed to fetch chat rooms: $e');
+    }
   }
 
   @override

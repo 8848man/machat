@@ -44,7 +44,7 @@ class RegisterRepository implements RepositoryService {
       throw UnimplementedError();
 
   @override
-  Future<List<Map<String, dynamic>>> readAll() async =>
+  Future<List<Map<String, dynamic>>> readAll({String? searchId}) async =>
       throw UnimplementedError();
 
   @override

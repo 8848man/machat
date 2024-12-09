@@ -20,10 +20,7 @@ class MCDrawer extends ConsumerWidget {
             onTap: () => notifier.goHome(),
           ),
           const Divider(),
-          ListTile(
-            title: const Text('chatRoomName'),
-            onTap: () => notifier.goChat(),
-          ),
+          const DrawerChatList(),
         ],
       ),
     );
