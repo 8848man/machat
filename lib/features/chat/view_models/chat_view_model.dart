@@ -1,18 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:machat/features/chat/repository/chat_repository.dart';
 import 'package:machat/features/common/providers/chat_room_id.dart';
+import 'package:machat/features/common/utils/throttle.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'chat_view_model.g.dart';
 
 @riverpod
 class ChatViewModel extends _$ChatViewModel {
+  final ThrottleManager throttleManager = ThrottleManager();
   TextEditingController messageController = TextEditingController();
 
   @override
-  Future<void> build() async {
+  void build() {
     ref.watch(chatRoomIdProvider);
+    // return stream;
   }
 
   // 채팅방 id, 현재 유저 id, viewModel messageController.text

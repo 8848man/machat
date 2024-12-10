@@ -6,6 +6,7 @@ part 'floating_button_view_model.g.dart';
 
 @riverpod
 class FloatingButtonViewModel extends _$FloatingButtonViewModel {
+  final List<String> iconUrl = ['icons/chat-plus.svg'];
   @override
   void build() async {}
 

@@ -17,7 +17,7 @@ class ChatRepository implements RepositoryService {
 
     await chatRef.set({
       'message': data['message'],
-      'senderId': data['userId'],
+      'createdBy': data['userId'],
       'createdAt': FieldValue.serverTimestamp(),
     });
     return {};

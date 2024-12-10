@@ -51,7 +51,6 @@ class _AnimatedFABState extends ConsumerState<AnimatedFAB> {
             padding: const EdgeInsets.only(right: 8.0),
             child: SmallButton(
               index: index,
-              isWeb: false,
             ),
           );
         }),
@@ -65,7 +64,6 @@ class _AnimatedFABState extends ConsumerState<AnimatedFAB> {
             padding: const EdgeInsets.only(bottom: 8.0),
             child: SmallButton(
               index: index,
-              isWeb: false,
             ),
           );
         }),
@@ -76,9 +74,7 @@ class _AnimatedFABState extends ConsumerState<AnimatedFAB> {
 
 class SmallButton extends ConsumerWidget {
   final int index;
-  final bool isWeb;
-
-  const SmallButton({required this.index, required this.isWeb, super.key});
+  const SmallButton({required this.index, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -86,9 +82,9 @@ class SmallButton extends ConsumerWidget {
     return FloatingActionButton(
       mini: true,
       onPressed: () => notifier.functionBrancher(index),
-      backgroundColor:
-          Colors.primaries[Random().nextInt(Colors.primaries.length)],
-      child: Icon(Icons.star),
+      backgroundColor: MCColors.$color_blue_40,
+      // child: Icon(Icons.star),
+      child: SvgPicture.asset(notifier.iconUrl[index]),
     );
   }
 }

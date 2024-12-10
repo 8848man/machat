@@ -87,7 +87,7 @@ final goRouterProvider = Provider<GoRouter>(
           name: RouterPath.chat.name,
           pageBuilder: (context, state) => CustomTransitionPage<void>(
             key: state.pageKey,
-            child: const Chat(),
+            child: const ChatScreen(),
             transitionsBuilder: fadeTransition,
           ),
         ),
