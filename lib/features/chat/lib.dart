@@ -1,9 +1,12 @@
 library mc_chat;
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/design_system/lib.dart';
 import 'package:machat/extensions.dart';
+import 'package:machat/features/chat/models/chat.dart';
+import 'package:machat/features/chat/providers/chat_message_provider.dart';
 import 'package:machat/features/chat/view_models/chat_view_model.dart';
 import 'package:machat/features/common/layouts/lib.dart';
 
