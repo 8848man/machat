@@ -15,6 +15,7 @@ class DrawerChatList extends ConsumerWidget {
     );
   }
 
+  // 데이터 갯수만큼 채팅방 리스트타일 생성
   Widget buildChatRoom(
       BuildContext context, DrawerModel data, MCDrawerViewModel notifier) {
     return Column(
@@ -26,6 +27,7 @@ class DrawerChatList extends ConsumerWidget {
     );
   }
 
+  // 채팅방 리스트타일 위젯
   Widget buildChatRoomListTile(
       BuildContext context, ChatRoomData data, MCDrawerViewModel notifier) {
     return ListTile(

@@ -1,26 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'chat_view_model.dart';
+part of 'chat_create_view_model.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$chatViewModelHash() => r'ddd28870b5d3953f0151763720ac913ac1e35757';
+String _$chatCreateViewModelHash() =>
+    r'b652fbad3c19c3e1b6ad3bd29cee14c6c19c8eef';
 
-/// See also [ChatViewModel].
-@ProviderFor(ChatViewModel)
-final chatViewModelProvider =
-    AutoDisposeNotifierProvider<ChatViewModel, void>.internal(
-  ChatViewModel.new,
-  name: r'chatViewModelProvider',
+/// See also [ChatCreateViewModel].
+@ProviderFor(ChatCreateViewModel)
+final chatCreateViewModelProvider =
+    AutoDisposeNotifierProvider<ChatCreateViewModel, ChatCreateModel>.internal(
+  ChatCreateViewModel.new,
+  name: r'chatCreateViewModelProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$chatViewModelHash,
+      : _$chatCreateViewModelHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$ChatViewModel = AutoDisposeNotifier<void>;
+typedef _$ChatCreateViewModel = AutoDisposeNotifier<ChatCreateModel>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

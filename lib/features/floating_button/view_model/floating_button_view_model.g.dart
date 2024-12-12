@@ -7,7 +7,7 @@ part of 'floating_button_view_model.dart';
 // **************************************************************************
 
 String _$floatingButtonViewModelHash() =>
-    r'bd62dc2d16e10663e1af84c6a1b94ae335bdc5e6';
+    r'e1fe4908295708d3539c9c6df131bf40e1723220';
 
 /// See also [FloatingButtonViewModel].
 @ProviderFor(FloatingButtonViewModel)
