@@ -12,7 +12,6 @@ part 'mc_drawer_view_model.g.dart';
 
 @riverpod
 class MCDrawerViewModel extends _$MCDrawerViewModel {
-  List<ChatRoomData> chatRooms = [];
   @override
   Future<DrawerModel> build() async {
     final DrawerModel data = await initData();

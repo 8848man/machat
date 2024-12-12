@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'mc_drawer_view_model.dart';
+part of 'chat_list_view_model.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mCDrawerViewModelHash() => r'48d42137fa82fbda15718dc5f2744d6e42abb60e';
+String _$chatListViewModelHash() => r'a041e79c5d32b6c6b5eba1731185acefed38e7d9';
 
-/// See also [MCDrawerViewModel].
-@ProviderFor(MCDrawerViewModel)
-final mCDrawerViewModelProvider =
-    AutoDisposeAsyncNotifierProvider<MCDrawerViewModel, DrawerModel>.internal(
-  MCDrawerViewModel.new,
-  name: r'mCDrawerViewModelProvider',
+/// See also [ChatListViewModel].
+@ProviderFor(ChatListViewModel)
+final chatListViewModelProvider =
+    AutoDisposeAsyncNotifierProvider<ChatListViewModel, ChatListModel>.internal(
+  ChatListViewModel.new,
+  name: r'chatListViewModelProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$mCDrawerViewModelHash,
+      : _$chatListViewModelHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$MCDrawerViewModel = AutoDisposeAsyncNotifier<DrawerModel>;
+typedef _$ChatListViewModel = AutoDisposeAsyncNotifier<ChatListModel>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
