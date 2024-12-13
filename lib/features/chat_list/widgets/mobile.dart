@@ -9,25 +9,12 @@ class ChatListMobile extends ConsumerWidget {
         ref.read(chatListViewModelProvider.notifier);
     final AsyncValue<ChatListModel> state =
         ref.watch(chatListViewModelProvider);
+    // 상위 위젯 UserChecker에서 nullCheck를 하기 때문에 null이 될 수 없음
     final User? user = FirebaseAuth.instance.currentUser;
-
-    // user 객체가 없을 경우 에러 처리
-    // 2번 나오는 현상 -> stless 위젯 UserChecker() 만들어서 처리하기
-    if (user == null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        toastification.show(
-          context: context, // optional if you use ToastificationWrapper
-          title: const Text('로그인을 하고 이용해주세요!'),
-          autoCloseDuration: const Duration(seconds: 2),
-        );
-      });
-      ref.read(goRouterProvider).goNamed(RouterPath.login.name);
-      return Container();
-    }
 
     return state.when(
       data: (ChatListModel data) =>
-          buildChatRoom(context, data, notifier, user),
+          buildChatRoom(context, data, notifier, user!),
       error: (error, stackTrace) => Container(),
       loading: () => const Center(child: CircularProgressIndicator()),
     );
@@ -59,13 +46,14 @@ class ChatListMobile extends ConsumerWidget {
           const Icon(IconData(0xe153, fontFamily: 'MaterialIcons')),
           MCSpace().horizontalHalfSpace(),
           Text(data.name != '' ? data.name : '제목 없음'),
+          // 방 소유자일 경우 왕관 출력
           if (isOwner) MCSpace().horizontalHalfSpace(),
           if (isOwner) Image.asset('icons/crown.png', scale: 16),
           const Spacer(),
           Text('인원 수 : ${data.members.length}'),
         ],
       ),
-      onTap: () => notifier.enterChat(data.roomId),
+      onTap: () => notifier.enterChat(data),
     );
   }
 }
