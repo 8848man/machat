@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:machat/features/chat_list/models/chat_list_model.dart';
 import 'package:machat/features/chat_list/repository/chat_list_repository.dart';
 import 'package:machat/features/common/models/chat_room_data.dart';
+import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:machat/router/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -59,7 +60,23 @@ class ChatListViewModel extends _$ChatListViewModel {
     }
   }
 
-  Future<void> enterChat(String roomId) async {
+  Future<void> enterChat(ChatRoomData data) async {
+    // 로그인 되어있는지 확인하는 함수
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      SnackBarCaller().callSnackBar(ref, '로그인 후 이용해주세요!');
+      return;
+    }
+    // firebase update할 데이터 셋
+    final roomId = data.roomId;
+    final members = [...data.members, user.uid];
+    final Map<String, dynamic> sendData = {
+      'members': members,
+    };
+
+    // firebase update
+    ref.read(chatListRepositoryProvider).update(roomId, sendData);
+
     final router = ref.read(goRouterProvider);
     router.goNamed(RouterPath.home.name);
   }

@@ -6,6 +6,7 @@ class ChatList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
+      needLogin: true,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
