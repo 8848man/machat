@@ -7,7 +7,7 @@ part of 'chat_create_view_model.dart';
 // **************************************************************************
 
 String _$chatCreateViewModelHash() =>
-    r'b652fbad3c19c3e1b6ad3bd29cee14c6c19c8eef';
+    r'caecc0173564e54238b6d751c13ab517f883cb12';
 
 /// See also [ChatCreateViewModel].
 @ProviderFor(ChatCreateViewModel)

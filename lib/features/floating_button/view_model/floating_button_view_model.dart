@@ -27,5 +27,9 @@ class FloatingButtonViewModel extends _$FloatingButtonViewModel {
     route.goNamed(RouterPath.chatCreate.name);
   }
 
-  Future<void> goChatRoomListPage() async {}
+  Future<void> goChatRoomListPage() async {
+    final route = ref.read(goRouterProvider);
+
+    route.goNamed(RouterPath.chatList.name);
+  }
 }
