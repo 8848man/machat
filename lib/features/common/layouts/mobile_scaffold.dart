@@ -1,7 +1,7 @@
 part of './lib.dart';
 
 // 모바일 적용 스캐폴드
-class MobileScaffold extends StatelessWidget {
+class MobileScaffold extends ConsumerWidget {
   final Widget child;
   final Widget? floatingActionButton;
 
@@ -9,7 +9,8 @@ class MobileScaffold extends StatelessWidget {
       {super.key, required this.child, this.floatingActionButton});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final User? user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       appBar: AppBar(
         leading: Builder(
@@ -22,7 +23,8 @@ class MobileScaffold extends StatelessWidget {
             );
           },
         ),
-        title: const Text('MaChat'),
+        title: const Text('MaChat Mobile'),
+        actions: getActions(user, ref),
       ),
       drawer: const MCDrawer(),
       body: child,
