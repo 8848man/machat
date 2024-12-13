@@ -14,12 +14,11 @@ class ChatViewModel extends _$ChatViewModel {
   @override
   void build() {
     ref.watch(chatRoomIdProvider);
-    // return stream;
   }
 
   // 채팅방 id, 현재 유저 id, viewModel messageController.text
   // 를 기준으로 해당 채팅방에 메세지를 기록하는 코드
-  Future<void> sendMessageProcess() async {
+  void sendMessageProcess() {
     final String roomId = ref.read(chatRoomIdProvider);
     final User? currentUser = FirebaseAuth.instance.currentUser;
     // 현재 유저 null 체크

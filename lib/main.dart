@@ -10,7 +10,7 @@ import 'package:machat/router/lib.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
-  init();
+  await init();
 
   runApp(
     const ProviderScope(
@@ -20,7 +20,7 @@ void main() async {
 }
 
 /// 앱 실행전 초기화
-void init() async {
+Future<void> init() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
     // 웹 플랫폼일 경우 FirebaseOptions 사용
