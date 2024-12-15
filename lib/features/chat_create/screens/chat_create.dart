@@ -6,6 +6,7 @@ class ChatCreate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
+      needLogin: true,
       child: Center(
         child: SizedBox(
           width: 400,

@@ -9,6 +9,7 @@ class MCTextInput extends StatelessWidget {
   final FocusNode? focusNode;
   final TextEditingController controller;
   final Color? backgroundColor;
+  final bool? isObscure;
 
   const MCTextInput({
     super.key,
@@ -20,6 +21,7 @@ class MCTextInput extends StatelessWidget {
     required this.controller,
     this.backgroundColor,
     this.onSubmitted,
+    this.isObscure,
   });
 
   @override
@@ -47,6 +49,7 @@ class MCTextInput extends StatelessWidget {
         focusNode: focusNode,
         onChanged: onChanged,
         onSubmitted: onSubmitted,
+        obscureText: isObscure ?? false,
       ),
     );
   }

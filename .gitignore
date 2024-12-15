@@ -52,3 +52,6 @@ google-services.json
 .firebase/
 .firebaserc
 firebase.json
+
+# hosting related
+apphosting.yaml

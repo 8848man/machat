@@ -13,3 +13,5 @@ import 'package:machat/features/common/layouts/lib.dart';
 part 'screens/chat.dart';
 part './widgets/chat_contents.dart';
 part './widgets/chat_input.dart';
+part './widgets/chat_profile.dart';
+part './widgets/chat_bubble.dart';
