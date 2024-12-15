@@ -5,6 +5,7 @@ class MCTextInput extends StatelessWidget {
   final String? errorText;
   final Widget? error;
   final void Function(String)? onChanged;
+  final void Function(String)? onSubmitted;
   final FocusNode? focusNode;
   final TextEditingController controller;
   final Color? backgroundColor;
@@ -18,6 +19,7 @@ class MCTextInput extends StatelessWidget {
     this.focusNode,
     required this.controller,
     this.backgroundColor,
+    this.onSubmitted,
   });
 
   @override
@@ -44,6 +46,7 @@ class MCTextInput extends StatelessWidget {
         controller: controller,
         focusNode: focusNode,
         onChanged: onChanged,
+        onSubmitted: onSubmitted,
       ),
     );
   }

@@ -61,14 +61,22 @@ class ChatListViewModel extends _$ChatListViewModel {
   }
 
   Future<void> enterChat(ChatRoomData data) async {
-    // 로그인 되어있는지 확인하는 함수
+    // 로그인 되어있는지 확인
     final User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       SnackBarCaller().callSnackBar(ref, '로그인 후 이용해주세요!');
       return;
     }
+    // 이미 채팅방에 있을 경우의 처리
+    if (data.members.contains(user.uid)) {
+      SnackBarCaller().callSnackBar(ref, '이미 해당 채팅방에 소속되어있습니다.');
+      return;
+    }
+
     // firebase update할 데이터 셋
     final roomId = data.roomId;
+
+    // 멤버에 이미 등록되어있다면
     final members = [...data.members, user.uid];
     final Map<String, dynamic> sendData = {
       'members': members,

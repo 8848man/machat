@@ -6,8 +6,6 @@ import 'package:machat/features/common/utils/user_checker.dart';
 import 'package:machat/features/drawer/lib.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:machat/design_system/lib.dart';
-import 'package:machat/features/drawer/lib.dart';
 import 'package:machat/router/lib.dart';
 
 part './default_layout.dart';

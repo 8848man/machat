@@ -6,7 +6,10 @@ List<Widget> getActions(User? user, WidgetRef ref) {
     // login 페이지 버튼
     if (user == null)
       IconButton(
-        icon: Image.asset('icons/login.png'),
+        icon: Image.asset(
+          'icons/login.png',
+          scale: 20,
+        ),
         onPressed: () => router.goNamed(RouterPath.login.name),
       ),
     // 로그아웃 버튼
