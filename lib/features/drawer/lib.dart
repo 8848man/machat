@@ -12,3 +12,4 @@ import 'package:machat/features/drawer/view_models/mc_drawer_view_model.dart';
 part './screens/mc_drawer.dart';
 part './widgets/drawer_profile.dart';
 part './widgets/drawer_chat_list.dart';
+part './widgets/drawer_router.dart';

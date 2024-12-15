@@ -23,7 +23,7 @@ mixin _$ChatRoomData {
   String get roomId => throw _privateConstructorUsedError;
   String get createdBy => throw _privateConstructorUsedError;
   String? get createdAt => throw _privateConstructorUsedError;
-  List<dynamic> get members => throw _privateConstructorUsedError;
+  List<String> get members => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   bool get isMine => throw _privateConstructorUsedError;
 
@@ -43,7 +43,7 @@ abstract class $ChatRoomDataCopyWith<$Res> {
       {String roomId,
       String createdBy,
       String? createdAt,
-      List<dynamic> members,
+      List<String> members,
       String name,
       bool isMine});
 }
@@ -84,7 +84,7 @@ class _$ChatRoomDataCopyWithImpl<$Res, $Val extends ChatRoomData>
       members: null == members
           ? _value.members
           : members // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as List<String>,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -109,7 +109,7 @@ abstract class _$$ChatRoomDataImplCopyWith<$Res>
       {String roomId,
       String createdBy,
       String? createdAt,
-      List<dynamic> members,
+      List<String> members,
       String name,
       bool isMine});
 }
@@ -148,7 +148,7 @@ class __$$ChatRoomDataImplCopyWithImpl<$Res>
       members: null == members
           ? _value._members
           : members // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as List<String>,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -168,7 +168,7 @@ class _$ChatRoomDataImpl implements _ChatRoomData {
       {this.roomId = '',
       this.createdBy = '',
       this.createdAt,
-      final List<dynamic> members = const [],
+      final List<String> members = const [],
       this.name = '',
       this.isMine = false})
       : _members = members;
@@ -184,10 +184,10 @@ class _$ChatRoomDataImpl implements _ChatRoomData {
   final String createdBy;
   @override
   final String? createdAt;
-  final List<dynamic> _members;
+  final List<String> _members;
   @override
   @JsonKey()
-  List<dynamic> get members {
+  List<String> get members {
     if (_members is EqualUnmodifiableListView) return _members;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_members);
@@ -244,7 +244,7 @@ abstract class _ChatRoomData implements ChatRoomData {
       {final String roomId,
       final String createdBy,
       final String? createdAt,
-      final List<dynamic> members,
+      final List<String> members,
       final String name,
       final bool isMine}) = _$ChatRoomDataImpl;
 
@@ -258,7 +258,7 @@ abstract class _ChatRoomData implements ChatRoomData {
   @override
   String? get createdAt;
   @override
-  List<dynamic> get members;
+  List<String> get members;
   @override
   String get name;
   @override

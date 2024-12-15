@@ -17,15 +17,10 @@ class SplashPage extends ConsumerWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Center(
-        // child: SvgPicture.asset(
-        //   'lib/assets/images/img_splash_page.svg',
-        //   height: FigmaPixel().getHeightPixel(height: 800),
-        //   width: ScreenUtil().screenWidth * 1,
-        // ),
-        child: Container(
-          width: 100,
-          height: 100,
-          color: MCColors.$color_blue_60,
+        child: Image.asset(
+          'lib/assets/images/ma_chat.png',
+          height: 500,
+          width: 500,
         ),
       ),
     );

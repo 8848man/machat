@@ -9,7 +9,7 @@ class ChatRoomData with _$ChatRoomData {
     @Default('') String roomId,
     @Default('') String createdBy,
     String? createdAt,
-    @Default([]) List members,
+    @Default([]) List<String> members,
     @Default('') String name,
     @Default(false) bool isMine,
   }) = _ChatRoomData;

@@ -45,6 +45,7 @@ class ChatInput extends ConsumerWidget {
       controller: notifier.messageController,
       labelText: '메세지를 입력해주세요',
       backgroundColor: MCColors.$color_grey_00,
+      onSubmitted: (value) => notifier.sendMessageProcess(),
     );
   }
 
@@ -67,7 +68,7 @@ class ChatInput extends ConsumerWidget {
           ),
         ),
       ),
-      onTap: () async => await notifier.sendMessageProcess(),
+      onTap: () => notifier.sendMessageProcess(),
     );
   }
 }

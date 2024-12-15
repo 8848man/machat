@@ -9,23 +9,27 @@ class DrawerChatList extends ConsumerWidget {
         ref.read(mCDrawerViewModelProvider.notifier);
     final AsyncValue<DrawerModel> state = ref.watch(mCDrawerViewModelProvider);
     return state.when(
-      data: (DrawerModel data) => buildChatRoom(data, notifier),
+      data: (DrawerModel data) => buildChatRoom(context, data, notifier),
       error: (error, stackTrace) => Container(),
       loading: () => const Center(child: CircularProgressIndicator()),
     );
   }
 
-  Widget buildChatRoom(DrawerModel data, MCDrawerViewModel notifier) {
+  // 데이터 갯수만큼 채팅방 리스트타일 생성
+  Widget buildChatRoom(
+      BuildContext context, DrawerModel data, MCDrawerViewModel notifier) {
     return Column(
       children: [
         ...List<Widget>.generate(data.roomList.length, (i) {
-          return buildChatRoomListTile(data.roomList[i], notifier);
+          return buildChatRoomListTile(context, data.roomList[i], notifier);
         }),
       ],
     );
   }
 
-  Widget buildChatRoomListTile(ChatRoomData data, MCDrawerViewModel notifier) {
+  // 채팅방 리스트타일 위젯
+  Widget buildChatRoomListTile(
+      BuildContext context, ChatRoomData data, MCDrawerViewModel notifier) {
     return ListTile(
       title: Row(
         children: [
@@ -39,7 +43,10 @@ class DrawerChatList extends ConsumerWidget {
           ),
         ],
       ),
-      onTap: () => notifier.goChat(data.roomId),
+      onTap: () {
+        Scaffold.of(context).closeDrawer();
+        notifier.goChat(data.roomId);
+      },
     );
   }
 }

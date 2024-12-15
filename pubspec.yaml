@@ -48,7 +48,8 @@ dependencies:
   dio: ^5.7.0
   logger: ^2.0.2+1
   shared_preferences: 2.3.3
-
+  flutter_svg: ^2.0.9
+  
   ## UI
   flutter_screenutil: ^5.9.0
 
@@ -63,6 +64,7 @@ dependencies:
   firebase_core: ^3.8.0
   cloud_firestore: ^5.5.0
   firebase_auth: ^5.3.3
+  toastification: ^2.3.0
 
 dev_dependencies:
   flutter_test:
@@ -87,9 +89,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - lib/assets/icons/
+    - lib/assets/lotties/
+    - lib/assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

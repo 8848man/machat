@@ -46,12 +46,11 @@ class _AnimatedFABState extends ConsumerState<AnimatedFAB> {
       // Web: Row로 좌측으로 버튼 생성
       return Row(
         mainAxisSize: MainAxisSize.min,
-        children: List.generate(1, (index) {
+        children: List.generate(2, (index) {
           return Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: SmallButton(
               index: index,
-              isWeb: false,
             ),
           );
         }),
@@ -60,12 +59,11 @@ class _AnimatedFABState extends ConsumerState<AnimatedFAB> {
       // Mobile: Column으로 위로 버튼 생성
       return Column(
         mainAxisSize: MainAxisSize.min,
-        children: List.generate(1, (index) {
+        children: List.generate(2, (index) {
           return Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: SmallButton(
               index: index,
-              isWeb: false,
             ),
           );
         }),
@@ -76,9 +74,7 @@ class _AnimatedFABState extends ConsumerState<AnimatedFAB> {
 
 class SmallButton extends ConsumerWidget {
   final int index;
-  final bool isWeb;
-
-  const SmallButton({required this.index, required this.isWeb, super.key});
+  const SmallButton({required this.index, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -86,9 +82,8 @@ class SmallButton extends ConsumerWidget {
     return FloatingActionButton(
       mini: true,
       onPressed: () => notifier.functionBrancher(index),
-      backgroundColor:
-          Colors.primaries[Random().nextInt(Colors.primaries.length)],
-      child: Icon(Icons.star),
+      backgroundColor: MCColors.$color_blue_40,
+      child: SvgPicture.asset(notifier.iconUrl[index]),
     );
   }
 }

@@ -53,8 +53,12 @@ class DrawerProfile extends ConsumerWidget {
         borderRadius: BorderRadius.circular(500),
       ),
       child: const CircleAvatar(
-        radius: 250,
-        // backgroundImage: AssetImage("assets/images/person-winter.png"),
+        radius: 30,
+        child: Icon(
+          Icons.person,
+          color: Color(0xffCCCCCC),
+          size: 70,
+        ),
       ),
     );
   }
@@ -65,7 +69,7 @@ class DrawerProfile extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(user.name),
+        Text('이름 : ${user.name}'),
         if (user.nationId != null) const Text('한국'),
       ],
     );
