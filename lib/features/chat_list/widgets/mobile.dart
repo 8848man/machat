@@ -48,7 +48,7 @@ class ChatListMobile extends ConsumerWidget {
           Text(data.name != '' ? data.name : '제목 없음'),
           // 방 소유자일 경우 왕관 출력
           if (isOwner) MCSpace().horizontalHalfSpace(),
-          if (isOwner) Image.asset('icons/crown.png', scale: 16),
+          if (isOwner) Image.asset('lib/assets/icons/crown.png', scale: 16),
           const Spacer(),
           Text('인원 수 : ${data.members.length}'),
         ],

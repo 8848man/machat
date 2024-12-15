@@ -36,6 +36,7 @@ class LoginBundleBody extends ConsumerWidget {
       controller: notifier.pwdController,
       labelText: '비밀번호',
       errorText: state.pwdErrorText,
+      isObscure: true,
     );
   }
 }

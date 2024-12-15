@@ -7,6 +7,7 @@ class HomeBundle extends StatelessWidget {
   Widget build(BuildContext context) {
     return const SizedBox(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text('당신이 원하는 모든 채팅'),
           Text('마챗에 오신걸 환영합니다!'),

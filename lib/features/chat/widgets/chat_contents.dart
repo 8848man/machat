@@ -8,13 +8,14 @@ class ChatContents extends ConsumerWidget {
     final streamProvider = ref.watch(chatStreamProvider);
 
     return switch (streamProvider) {
-      AsyncData(:final value) => testWidget(value),
+      AsyncData(:final value) => buildMessage(value),
       AsyncError(:final error) => Text(error.toString()),
       _ => const Center(child: CircularProgressIndicator()),
     };
   }
 
-  Widget testWidget(List<dynamic> value) {
+  // 메세지 위젯 빌드
+  Widget buildMessage(List<dynamic> value) {
     return ListView.builder(
       // Show messages from bottom to top
       reverse: true,
@@ -71,11 +72,7 @@ class ChatContents extends ConsumerWidget {
             child: Row(
               children: [
                 const Spacer(),
-                SizedBox(
-                  height: textHeight,
-                  width: textWidth,
-                  child: buildSpeechBubble(true, text),
-                ),
+                ChatBubble(isMine: true, message: text, size: textWidth),
                 MCSpace().horizontalHalfSpace(),
               ],
             ),
@@ -111,33 +108,9 @@ class ChatContents extends ConsumerWidget {
             child: Row(
               children: [
                 MCSpace().horizontalHalfSpace(),
-                Container(
-                  height: textHeight,
-                  width: textHeight,
-                  padding: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: Alignment.bottomRight,
-                      end: Alignment.topLeft,
-                      colors: [
-                        Color(0xff4dabf7),
-                        Color(0xffda77f2),
-                        Color(0xfff783ac),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(500),
-                  ),
-                  child: const CircleAvatar(
-                    radius: 250,
-                    // backgroundImage: AssetImage("assets/images/person-winter.png"),
-                  ),
-                ),
+                ChatProfile(size: textHeight),
                 MCSpace().horizontalHalfSpace(),
-                SizedBox(
-                  height: textHeight,
-                  width: textWidth,
-                  child: buildSpeechBubble(false, text),
-                ),
+                ChatBubble(isMine: false, message: text, size: textWidth),
               ],
             ),
           ),
@@ -147,25 +120,33 @@ class ChatContents extends ConsumerWidget {
     });
   }
 
-  Widget buildSpeechBubble(bool isMine, String message) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: const Radius.circular(8),
-          topRight: const Radius.circular(8),
-          bottomLeft: isMine == true ? const Radius.circular(8) : Radius.zero,
-          bottomRight: isMine == true
-              ? Radius.zero
-              : const Radius.circular(8), // 우측 하단은 제외
-        ),
-        color: Colors.amber,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Center(
-          child: Text(message),
-        ),
-      ),
-    );
-  }
+  // Widget buildSpeechBubble(
+  //   bool isMine,
+  //   String message,
+  //   double size,
+  // ) {
+  //   return SizedBox(
+  //     height: size,
+  //     width: size,
+  //     child: Container(
+  //       decoration: BoxDecoration(
+  //         borderRadius: BorderRadius.only(
+  //           topLeft: const Radius.circular(8),
+  //           topRight: const Radius.circular(8),
+  //           bottomLeft: isMine == true ? const Radius.circular(8) : Radius.zero,
+  //           bottomRight: isMine == true
+  //               ? Radius.zero
+  //               : const Radius.circular(8), // 우측 하단은 제외
+  //         ),
+  //         color: Colors.amber,
+  //       ),
+  //       child: Padding(
+  //         padding: const EdgeInsets.all(8.0),
+  //         child: Center(
+  //           child: Text(message),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }

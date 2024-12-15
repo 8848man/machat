@@ -7,7 +7,7 @@ List<Widget> getActions(User? user, WidgetRef ref) {
     if (user == null)
       IconButton(
         icon: Image.asset(
-          'icons/login.png',
+          'lib/assets/icons/login.png',
           scale: 20,
         ),
         onPressed: () => router.goNamed(RouterPath.login.name),
@@ -17,7 +17,7 @@ List<Widget> getActions(User? user, WidgetRef ref) {
       IconButton(
         icon: Center(
           child: Image.asset(
-            'icons/logout.png',
+            'lib/assets/icons/logout.png',
             scale: 20,
           ),
         ),
