@@ -3,10 +3,11 @@ part of '../lib.dart';
 class MCButtons {
   static ColorTheme theme = ColorTheme.light;
 
-  Widget getPositiveButton(String? title, void Function()? onTap) {
+  Widget getPositiveButton({String? title, void Function()? onTap}) {
     switch (theme) {
       case ColorTheme.light:
         return GestureDetector(
+          onTap: onTap,
           child: Container(
             height: 48,
             width: 400,
@@ -16,15 +17,15 @@ class MCButtons {
             ),
             child: Center(child: Text(title ?? '')),
           ),
-          onTap: () => onTap,
         );
     }
   }
 
-  Widget getNegativeButton(String? title, void Function()? onTap) {
+  Widget getNegativeButton({String? title, void Function()? onTap}) {
     switch (theme) {
       case ColorTheme.light:
         return GestureDetector(
+          onTap: onTap,
           child: Container(
             height: 48,
             width: 400,
@@ -34,7 +35,6 @@ class MCButtons {
             ),
             child: Center(child: Text(title ?? '')),
           ),
-          onTap: () => onTap,
         );
     }
   }

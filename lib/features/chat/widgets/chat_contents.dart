@@ -32,21 +32,21 @@ class ChatContents extends ConsumerWidget {
 
         // 로그인되어있지 않을 경우
         if (user == null) {
-          return buildOtherMessageContents(chat.message);
+          return buildOtherMessageContents(chat.message, chat.createdAt);
         }
 
         // 채팅 만든 아이디와 로그인된 아이디가 일치할 경우
         if (user.uid == chat.createdBy) {
-          return buildMyMessageContents(chat.message);
+          return buildMyMessageContents(chat.message, chat.createdAt);
         }
 
         // 기본값
-        return buildOtherMessageContents(chat.message);
+        return buildOtherMessageContents(chat.message, chat.createdAt);
       },
     );
   }
 
-  Widget buildMyMessageContents(String message) {
+  Widget buildMyMessageContents(String message, String createdAt) {
     return LayoutBuilder(builder: (context, constraints) {
       final maxWidth =
           constraints.maxWidth > 300 ? 300.0 : constraints.maxWidth;
@@ -72,6 +72,8 @@ class ChatContents extends ConsumerWidget {
             child: Row(
               children: [
                 const Spacer(),
+                chatInfo(true, createdAt),
+                MCSpace().horizontalHalfSpace(),
                 ChatBubble(isMine: true, message: text, size: textWidth),
                 MCSpace().horizontalHalfSpace(),
               ],
@@ -83,7 +85,7 @@ class ChatContents extends ConsumerWidget {
     });
   }
 
-  Widget buildOtherMessageContents(String message) {
+  Widget buildOtherMessageContents(String message, String createdAt) {
     return LayoutBuilder(builder: (context, constraints) {
       final maxWidth =
           constraints.maxWidth > 300 ? 300.0 : constraints.maxWidth;
@@ -111,6 +113,8 @@ class ChatContents extends ConsumerWidget {
                 ChatProfile(size: textHeight),
                 MCSpace().horizontalHalfSpace(),
                 ChatBubble(isMine: false, message: text, size: textWidth),
+                MCSpace().horizontalHalfSpace(),
+                chatInfo(false, createdAt),
               ],
             ),
           ),
@@ -120,33 +124,18 @@ class ChatContents extends ConsumerWidget {
     });
   }
 
-  // Widget buildSpeechBubble(
-  //   bool isMine,
-  //   String message,
-  //   double size,
-  // ) {
-  //   return SizedBox(
-  //     height: size,
-  //     width: size,
-  //     child: Container(
-  //       decoration: BoxDecoration(
-  //         borderRadius: BorderRadius.only(
-  //           topLeft: const Radius.circular(8),
-  //           topRight: const Radius.circular(8),
-  //           bottomLeft: isMine == true ? const Radius.circular(8) : Radius.zero,
-  //           bottomRight: isMine == true
-  //               ? Radius.zero
-  //               : const Radius.circular(8), // 우측 하단은 제외
-  //         ),
-  //         color: Colors.amber,
-  //       ),
-  //       child: Padding(
-  //         padding: const EdgeInsets.all(8.0),
-  //         child: Center(
-  //           child: Text(message),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+  Widget chatInfo(bool isMine, String? time) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment:
+          isMine == true ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      children: [
+        // 아직 읽지 않은 사람들들
+        // const Text('1', style: TextStyle(fontSize: 12)),
+        // MCSpace().verticalHalfSpace(),
+        Text(chatFormatTimestamp(time ?? ''),
+            style: const TextStyle(fontSize: 12)),
+      ],
+    );
+  }
 }

@@ -9,40 +9,16 @@ class RegisterBundleFooter extends ConsumerWidget {
         ref.read(registerViewModelProvider.notifier);
     return Column(
       children: [
-        loginButton(notifier: notifier),
+        MCButtons().getPositiveButton(
+          title: '회원가입',
+          onTap: () => notifier.registUser(),
+        ),
         MCSpace().verticalSpace(),
-        goRegisterButton(notifier: notifier),
+        MCButtons().getNegativeButton(
+          title: '뒤로가기',
+          onTap: () => notifier.goLogin(),
+        ),
       ],
-    );
-  }
-
-  Widget loginButton({required RegisterViewModel notifier}) {
-    return GestureDetector(
-      child: Container(
-        height: 40,
-        width: 400,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: MCColors.$color_blue_40,
-        ),
-        child: const Center(child: Text('회원가입')),
-      ),
-      onTap: () => notifier.registUser(),
-    );
-  }
-
-  Widget goRegisterButton({required RegisterViewModel notifier}) {
-    return GestureDetector(
-      child: Container(
-        height: 40,
-        width: 400,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: MCColors.$color_grey_40,
-        ),
-        child: const Center(child: Text('뒤로가기')),
-      ),
-      onTap: () => notifier.goLogin(),
     );
   }
 }

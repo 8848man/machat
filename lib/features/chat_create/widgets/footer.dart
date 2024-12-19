@@ -9,40 +9,16 @@ class ChatCreateFooter extends ConsumerWidget {
         ref.read(chatCreateViewModelProvider.notifier);
     return Column(
       children: [
-        createButton(notifier: notifier),
+        MCButtons().getPositiveButton(
+          title: '만들기',
+          onTap: () => notifier.createChatRoomProcess(),
+        ),
         MCSpace().verticalSpace(),
-        goRegisterButton(notifier: notifier),
+        MCButtons().getNegativeButton(
+          title: '돌아가기',
+          onTap: () => notifier.goHome(),
+        ),
       ],
-    );
-  }
-
-  Widget createButton({required ChatCreateViewModel notifier}) {
-    return GestureDetector(
-      child: Container(
-        height: 48,
-        width: 400,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: MCColors.$color_blue_40,
-        ),
-        child: const Center(child: Text('만들기')),
-      ),
-      onTap: () => notifier.createChatRoomProcess(),
-    );
-  }
-
-  Widget goRegisterButton({required ChatCreateViewModel notifier}) {
-    return GestureDetector(
-      child: Container(
-        height: 48,
-        width: 400,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: MCColors.$color_grey_40,
-        ),
-        child: const Center(child: Text('돌아가기')),
-      ),
-      onTap: () => notifier.goHome(),
     );
   }
 }
