@@ -24,7 +24,7 @@ class LoginBundleBody extends ConsumerWidget {
       controller: notifier.emailController,
       labelText: '이메일',
       error: state.emailErrorText != null ? Container() : null,
-      // onChanged: (val) => notifier.emailChangeValidate(),
+      onSubmitted: (value) => notifier.login(),
     );
   }
 
@@ -37,6 +37,7 @@ class LoginBundleBody extends ConsumerWidget {
       labelText: '비밀번호',
       errorText: state.pwdErrorText,
       isObscure: true,
+      onSubmitted: (value) => notifier.login(),
     );
   }
 }

@@ -8,6 +8,7 @@ final chatStreamProvider = StreamProvider.autoDispose<List<dynamic>>((ref) {
   if (roomId == '') {
     return const Stream.empty();
   }
+
   return FirebaseFirestore.instance
       .collection('chat_rooms')
       .doc(roomId)
@@ -28,7 +29,8 @@ List<dynamic> getChatData(snapshot) {
         'createdBy': data['createdBy'] ?? '',
         // sendMessage할 때 찰나의 순간에 createdAt이 비어있기때문에
         // 대신 값 주입
-        'createdAt': timestamp?.toDate().toString() ?? '9999-99-99',
+        'createdAt':
+            timestamp?.toDate().toString() ?? DateTime.now().toString(),
         'message': data['message'],
         'isMine': data['createdBy'] == 'currentUserId', // 유저 ID 비교},
       };

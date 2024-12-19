@@ -21,6 +21,7 @@ class UserChecker extends ConsumerWidget {
     // 로그인 상태가 필요한 경우에만 체크
     if (needLogin == true && user == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
+        ref.read(goRouterProvider).goNamed(RouterPath.login.name);
         toastification.show(
           context: context, // optional if you use ToastificationWrapper
           title: const Text('로그인을 하고 이용해주세요!'),
@@ -28,8 +29,7 @@ class UserChecker extends ConsumerWidget {
         );
       });
 
-      ref.read(goRouterProvider).goNamed(RouterPath.login.name);
-      return const SizedBox.shrink(); // 빈 위젯 반환
+      return const SizedBox(); // 빈 위젯 반환
     }
 
     return child; // 하위 위젯 렌더링

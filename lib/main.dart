@@ -22,12 +22,20 @@ void main() async {
 /// 앱 실행전 초기화
 Future<void> init() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (kIsWeb) {
-    // 웹 플랫폼일 경우 FirebaseOptions 사용
-    await Firebase.initializeApp(options: firebaseOptions);
-  } else {
-    // 모바일 플랫폼일 경우 기본 Firebase 설정
-    await Firebase.initializeApp();
+  try {
+    if (kIsWeb) {
+      print('test001, web init');
+      // 웹 플랫폼일 경우 FirebaseOptions 사용
+      await Firebase.initializeApp(options: firebaseOptions);
+    } else {
+      print('test001, mobile init');
+      // 모바일 플랫폼일 경우 기본 Firebase 설정
+      await Firebase.initializeApp();
+    }
+    print("Firebase 초기화 성공!");
+  } catch (e, stack) {
+    print("Firebase 초기화 실패: $e");
+    print(stack);
   }
 
   ErrorWidget.builder = (FlutterErrorDetails details) {
