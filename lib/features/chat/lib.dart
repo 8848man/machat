@@ -9,6 +9,7 @@ import 'package:machat/features/chat/models/chat.dart';
 import 'package:machat/features/chat/providers/chat_message_provider.dart';
 import 'package:machat/features/chat/view_models/chat_view_model.dart';
 import 'package:machat/features/common/layouts/lib.dart';
+import 'package:machat/features/common/utils/extractor.dart';
 
 part 'screens/chat.dart';
 part './widgets/chat_contents.dart';
