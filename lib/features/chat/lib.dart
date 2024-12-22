@@ -16,3 +16,4 @@ part './widgets/chat_contents.dart';
 part './widgets/chat_input.dart';
 part './widgets/chat_profile.dart';
 part './widgets/chat_bubble.dart';
+part './utils/chat_utils.dart';
