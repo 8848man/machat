@@ -10,6 +10,7 @@ enum RouterPath {
   chat('/chat', 'chat'),
   chatCreate('/chat_create', 'chat_create'),
   chatList('/chat_list', 'chat_list'),
+  profile('/profile', 'profile'),
   // newHome('/newHome', 'newHome'),
   // example('/example', 'example'),
   // registerTemp('/registerTemp', 'registerTemp'),

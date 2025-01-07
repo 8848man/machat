@@ -13,3 +13,6 @@ key.properties
 **/*.jks
 google-services.json
 firebase_config.dart
+
+*.g.dart
+*.freezed.dart

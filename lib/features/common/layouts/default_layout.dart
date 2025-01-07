@@ -7,12 +7,14 @@ class DefaultLayout extends StatelessWidget {
   final Widget? floatingActionButton;
   // 로그인이 필요한 작업인지
   final bool? needLogin;
+  final String? title;
 
   const DefaultLayout({
     super.key,
     required this.child,
     this.floatingActionButton,
     this.needLogin,
+    this.title,
   });
 
   @override
@@ -23,10 +25,12 @@ class DefaultLayout extends StatelessWidget {
     Widget layout = screenWidth <= 760
         ? MobileScaffold(
             floatingActionButton: floatingActionButton,
+            title: title,
             child: child,
           )
         : WebScaffold(
             floatingActionButton: floatingActionButton,
+            title: title,
             child: child,
           );
 

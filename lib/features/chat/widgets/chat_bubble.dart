@@ -19,9 +19,9 @@ class ChatBubble extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(8),
+            topLeft: isMine == true ? const Radius.circular(8) : Radius.zero,
             topRight: const Radius.circular(8),
-            bottomLeft: isMine == true ? const Radius.circular(8) : Radius.zero,
+            bottomLeft: const Radius.circular(8),
             bottomRight: isMine == true
                 ? Radius.zero
                 : const Radius.circular(8), // 우측 하단은 제외

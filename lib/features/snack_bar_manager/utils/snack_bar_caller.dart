@@ -37,3 +37,10 @@ class SnackBarCaller {
     );
   }
 }
+
+void showSnackBar(
+  dynamic ref,
+  String text,
+) {
+  SnackBarCaller().callSnackBar(ref, text);
+}

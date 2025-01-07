@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
+import 'package:machat/features/cache/utils/temp_user_cache.dart';
 import 'package:machat/features/chat_create/lib.dart';
 import 'package:machat/features/chat_create/models/chat_create_model.dart';
+import 'package:machat/features/common/models/user_data.dart';
 import 'package:machat/router/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -27,7 +29,6 @@ class ChatCreateViewModel extends _$ChatCreateViewModel {
   /// 라우팅/
 
   Future<void> createChatRoomProcess() async {
-    print('test001');
     final router = ref.read(goRouterProvider);
     await createChatRoom();
 
@@ -43,9 +44,12 @@ class ChatCreateViewModel extends _$ChatCreateViewModel {
       }
       final userId = currentUser.uid;
 
+      final UserData userData = await getUser(ref);
+
       final Map<String, dynamic> qData = {
         'userId': userId,
         'name': roomNameController.text,
+        'userName': userData.name,
       };
 
       // Repository 호출

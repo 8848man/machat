@@ -27,7 +27,7 @@ class ChatRepository implements RepositoryService {
   }
 
   @override
-  Future<void> delete(String id) {
+  Future<void> delete(String id, {String? userId}) {
     // TODO: implement delete
     throw UnimplementedError();
   }
