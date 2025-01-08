@@ -76,23 +76,30 @@ class ChatListViewModel extends _$ChatListViewModel {
       return;
     }
 
+    // TODO - 캐시된 유저 가져오기 기능 추가
     final UserData userData = await getUser(ref);
-
-    print('test001, displayname : ${userData.name}, data is $data');
 
     // firebase update할 데이터 셋
     final roomId = data.roomId;
 
+    // 이전 멤버 히스토리 데이터를 할당할 리스트 생성
+    List<dynamic> beforeHistory = [];
+
+    // 이전 멤버 히스토리 데이터를 Json 형태로 할당
+    for (UserData i in data.membersHistory) {
+      beforeHistory.add(i.toJson());
+    }
+
     // 멤버에 추가
     final members = [...data.members, user.uid];
-    final membersHistory = [...data.membersHistory, userData.name];
+    final membersHistory = [...beforeHistory, userData.toJson()];
     final Map<String, dynamic> sendData = {
       'members': members,
       'membersHistory': membersHistory,
     };
 
     // firebase update
-    ref.read(chatListRepositoryProvider).update(roomId, sendData);
+    await ref.read(chatListRepositoryProvider).update(roomId, sendData);
 
     final router = ref.read(goRouterProvider);
     router.goNamed(RouterPath.home.name);

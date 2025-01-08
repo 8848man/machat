@@ -13,13 +13,11 @@ class SnackBarManager extends ConsumerWidget {
     final SnackBarManagerData snackBarState =
         ref.watch(snackBarManagerProvider);
 
+    if (!snackBarState.dialogCall) return Container();
+
     // 스낵바를 호출하는 함수
-    void handleSnackBarCall() {
-      print(
-          'snackBarState.dialogCall: ${snackBarState.dialogCall}, snackBarState.text: ${snackBarState.text}');
+    void handleSnackBarCall() async {
       if (snackBarState.dialogCall) {
-        print(
-            'test001, dialogCall is ${snackBarState.dialogCall} , snackBarState.text: ${snackBarState.text}');
         final snackBarNotifier = ref.read(snackBarManagerProvider.notifier);
 
         // 실제 스낵바를 띄우는 함수 호출

@@ -5,24 +5,35 @@ class ChatContents extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final AsyncValue<ChatRoomData> chatState = ref.watch(chatViewModelProvider);
+
     // 채팅 스트림 프로바이더 가져오기
-    final streamProvider = ref.watch(chatStreamProvider);
+    final AsyncValue<List<dynamic>> streamProvider =
+        ref.watch(chatStreamProvider);
 
-    final completer = ref.watch(cancelCompleterProvider);
+    final Completer completer = ref.watch(cancelCompleterProvider);
 
-    // 스트림 상태에 따른 위젯 변환
-    return switch (streamProvider) {
-      AsyncData(:final value) =>
-        buildMessage(value: value, completer: completer),
-      AsyncError(:final error) => Text(error.toString()),
-      _ => loadingOvertime(ref),
-    };
+    return chatState.when(
+      data: (ChatRoomData data) {
+        return switch (streamProvider) {
+          AsyncData(:final value) =>
+            buildMessage(value: value, data: data, completer: completer),
+          AsyncError(:final error) => Text(error.toString()),
+          _ => loadingOvertime(ref),
+        };
+      },
+      error: (error, stackTrace) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+      loading: () => loadingOvertime(ref),
+    );
   }
 
   // 메세지 위젯 빌드
   Widget buildMessage({
     required List<dynamic> value,
     required Completer completer,
+    required ChatRoomData data,
   }) {
     if (!completer.isCompleted) {
       completer.complete(); // Future.delayed 무효화
@@ -51,12 +62,24 @@ class ChatContents extends ConsumerWidget {
 
         final message = chat.message;
 
+        // 메세지를 보낸 사람
+        String sender = '';
+
+        // 채팅방 정보와 보낸 사람 id를 비교해 이름을 가져옴
+        for (var element in data.membersHistory) {
+          if (element.id == chat.createdBy) {
+            sender = element.name;
+          } else {
+            sender = 'Unknown';
+          }
+        }
+
         // 로그인되어있지 않을 경우
         if (user == null) {
           return buildOtherMessageContents(
             message: message,
             createdAt: chat.createdAt,
-            createdBy: chat.createdBy,
+            createdBy: sender,
             isContinue: isContinue,
             isHideProfile: isHideProfile,
           );
@@ -71,7 +94,7 @@ class ChatContents extends ConsumerWidget {
         return buildOtherMessageContents(
           message: message,
           createdAt: chat.createdAt,
-          createdBy: chat.createdBy,
+          createdBy: sender,
           isContinue: isContinue,
           isHideProfile: isHideProfile,
         );

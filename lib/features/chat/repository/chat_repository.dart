@@ -8,11 +8,12 @@ final chatRepositoryProvider = Provider<RepositoryService>((ref) {
 
 class ChatRepository implements RepositoryService {
   final Ref ref;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   ChatRepository(this.ref);
   @override
   Future<Map<String, dynamic>> create(Map<String, dynamic> data) async {
-    final chatRef = FirebaseFirestore.instance
+    final chatRef = _firestore
         .collection('chat_rooms')
         .doc(data['roomId'])
         .collection('chat')
@@ -33,9 +34,18 @@ class ChatRepository implements RepositoryService {
   }
 
   @override
-  Future<Map<String, dynamic>> read(String id) {
-    // TODO: implement read
-    throw UnimplementedError();
+  Future<Map<String, dynamic>> read(String id) async {
+    try {
+      final doc = await _firestore.collection('chat_rooms').doc(id).get();
+
+      if (!doc.exists) {
+        throw Exception('Chat room not found');
+      }
+
+      return doc.data()!;
+    } catch (e) {
+      throw Exception('Chat room not found');
+    }
   }
 
   @override
