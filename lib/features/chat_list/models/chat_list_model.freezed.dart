@@ -18,7 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ChatListModel {
   List<ChatRoomData> get roomList => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ChatListModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ChatListModelCopyWith<ChatListModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -42,6 +44,8 @@ class _$ChatListModelCopyWithImpl<$Res, $Val extends ChatListModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ChatListModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -75,6 +79,8 @@ class __$$ChatListModelImplCopyWithImpl<$Res>
       _$ChatListModelImpl _value, $Res Function(_$ChatListModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ChatListModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -121,7 +127,9 @@ class _$ChatListModelImpl implements _ChatListModel {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_roomList));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ChatListModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ChatListModelImplCopyWith<_$ChatListModelImpl> get copyWith =>
@@ -134,8 +142,11 @@ abstract class _ChatListModel implements ChatListModel {
 
   @override
   List<ChatRoomData> get roomList;
+
+  /// Create a copy of ChatListModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ChatListModelImplCopyWith<_$ChatListModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

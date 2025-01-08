@@ -53,5 +53,6 @@ class RegisterRepository implements RepositoryService {
       throw UnimplementedError();
 
   @override
-  Future<void> delete(String id) async => throw UnimplementedError();
+  Future<void> delete(String id, {String? userId}) async =>
+      throw UnimplementedError();
 }

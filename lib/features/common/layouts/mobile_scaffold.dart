@@ -4,9 +4,10 @@ part of './lib.dart';
 class MobileScaffold extends ConsumerWidget {
   final Widget child;
   final Widget? floatingActionButton;
+  final String? title;
 
   const MobileScaffold(
-      {super.key, required this.child, this.floatingActionButton});
+      {super.key, required this.child, this.floatingActionButton, this.title});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,7 +24,7 @@ class MobileScaffold extends ConsumerWidget {
             );
           },
         ),
-        title: const Text('MaChat Mobile'),
+        title: Text(title ?? 'MaChat Mobile'),
         actions: getActions(user, ref),
       ),
       drawer: const MCDrawer(),

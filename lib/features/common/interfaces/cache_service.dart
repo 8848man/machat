@@ -4,4 +4,5 @@ abstract class CacheService {
   Future<String?> read(String key);
   Future<void> delete(String key);
   Future<void> clear();
+  Future<void> deleteAll();
 }

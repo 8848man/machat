@@ -73,7 +73,31 @@ class MCDrawerViewModel extends _$MCDrawerViewModel {
     }
   }
 
-  Future<void> deleteChatRoom() async {}
+  Future<void> deleteChatRoom(ChatRoomData roomData) async {
+    final repository = ref.read(drawerRepositoryProvider);
+    try {
+      // 현재 사용자 ID 가져오기
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser == null) {
+        throw Exception('User is not logged in');
+      }
+      final userId = currentUser.uid;
+
+      // 방 멤버에서 현재 사용자 제거
+      final List<String> newMembers = roomData.members
+          .where((element) => element != userId)
+          .toList(); // 현재 사용자를 제외한 멤버 리스트
+
+      final data = roomData.copyWith(members: newMembers).toJson();
+
+      // Repository 호출
+      await repository.update(roomData.roomId, data);
+    } catch (e) {
+      // 에러 처리
+      print('Error fetching chat rooms: $e');
+      return;
+    }
+  }
 
   /// routing
   void goHome() {
@@ -91,6 +115,9 @@ class MCDrawerViewModel extends _$MCDrawerViewModel {
     final router = ref.read(goRouterProvider);
     router.goNamed(RouterPath.chat.name);
   }
+
+  void goProfile() =>
+      ref.read(goRouterProvider).goNamed(RouterPath.profile.name);
 
   /// routing/
 }

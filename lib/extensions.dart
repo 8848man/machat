@@ -52,8 +52,8 @@ extension WidgetExtensions on Widget {
       );
 
   Widget expand({int flex = 1}) => Expanded(
-        child: this,
         flex: flex,
+        child: this,
       );
 
   Widget scroll({

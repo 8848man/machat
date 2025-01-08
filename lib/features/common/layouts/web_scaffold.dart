@@ -4,9 +4,10 @@ part of './lib.dart';
 class WebScaffold extends ConsumerWidget {
   final Widget child;
   final Widget? floatingActionButton;
+  final String? title;
 
   const WebScaffold(
-      {super.key, required this.child, this.floatingActionButton});
+      {super.key, required this.child, this.floatingActionButton, this.title});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,7 +24,7 @@ class WebScaffold extends ConsumerWidget {
             );
           },
         ),
-        title: const Text('MaChat Web'),
+        title: Text(title ?? 'MaChat Web'),
         actions: getActions(user, ref),
       ),
       drawer: const MCDrawer(),

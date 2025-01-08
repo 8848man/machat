@@ -114,6 +114,15 @@ final goRouterProvider = Provider<GoRouter>(
           ),
         ),
 
+        GoRoute(
+          path: RouterPath.profile.path,
+          name: RouterPath.profile.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: const Profile(),
+            transitionsBuilder: fadeTransition,
+          ),
+        ),
         // GoRoute(
         //     path: RouterPath.app.path,
         //     name: RouterPath.app.name,

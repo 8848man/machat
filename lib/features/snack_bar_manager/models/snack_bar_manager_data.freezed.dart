@@ -19,7 +19,9 @@ mixin _$SnackBarManagerData {
   String get text => throw _privateConstructorUsedError;
   bool get dialogCall => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SnackBarManagerData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SnackBarManagerDataCopyWith<SnackBarManagerData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -43,6 +45,8 @@ class _$SnackBarManagerDataCopyWithImpl<$Res, $Val extends SnackBarManagerData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of SnackBarManagerData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -81,6 +85,8 @@ class __$$SnackBarManagerDataImplCopyWithImpl<$Res>
       $Res Function(_$SnackBarManagerDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SnackBarManagerData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -131,7 +137,9 @@ class _$SnackBarManagerDataImpl implements _SnackBarManagerData {
   @override
   int get hashCode => Object.hash(runtimeType, text, dialogCall);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SnackBarManagerData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SnackBarManagerDataImplCopyWith<_$SnackBarManagerDataImpl> get copyWith =>
@@ -147,8 +155,11 @@ abstract class _SnackBarManagerData implements SnackBarManagerData {
   String get text;
   @override
   bool get dialogCall;
+
+  /// Create a copy of SnackBarManagerData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SnackBarManagerDataImplCopyWith<_$SnackBarManagerDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -15,7 +15,7 @@ class DrawerRepository implements RepositoryService {
   }
 
   @override
-  Future<void> delete(String id) {
+  Future<void> delete(String roomId, {String? userId}) {
     // TODO: implement delete
     throw UnimplementedError();
   }
@@ -53,9 +53,23 @@ class DrawerRepository implements RepositoryService {
     }
   }
 
+  // 채팅방 업데이트
   @override
-  Future<Map<String, dynamic>> update(String id, Map<String, dynamic> data) {
-    // TODO: implement update
-    throw UnimplementedError();
+  Future<Map<String, dynamic>> update(
+      String id, Map<String, dynamic> data) async {
+    try {
+      // Firestore에 "chat_rooms" 컬렉션에 새로운 채팅방 추가
+      final chatRoomRef =
+          _firestore.collection('chat_rooms').doc(data['roomId']);
+
+      await chatRoomRef.update({
+        'members': data['members'], // 멤버 변경
+      });
+
+      return {'success': true};
+    } catch (e) {
+      print('error Occured! $e');
+      return {'success': false};
+    }
   }
 }

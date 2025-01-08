@@ -15,7 +15,7 @@ class ChatListRepository implements RepositoryService {
   }
 
   @override
-  Future<void> delete(String id) {
+  Future<void> delete(String id, {String? userId}) {
     // TODO: implement delete
     throw UnimplementedError();
   }
@@ -44,6 +44,7 @@ class ChatListRepository implements RepositoryService {
     try {
       await FirebaseFirestore.instance.collection('chat_rooms').doc(id).update({
         'members': data['members'],
+        'membersHistory': data['membersHistory'],
       });
       return {'success': true};
     } catch (e) {
