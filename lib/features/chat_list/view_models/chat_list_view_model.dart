@@ -5,6 +5,8 @@ import 'package:machat/features/chat_list/models/chat_list_model.dart';
 import 'package:machat/features/chat_list/repository/chat_list_repository.dart';
 import 'package:machat/features/common/models/chat_room_data.dart';
 import 'package:machat/features/common/models/user_data.dart';
+import 'package:machat/features/common/providers/chat_room_id.dart';
+import 'package:machat/features/common/utils/router_utils.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:machat/router/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -101,7 +103,11 @@ class ChatListViewModel extends _$ChatListViewModel {
     // firebase update
     await ref.read(chatListRepositoryProvider).update(roomId, sendData);
 
-    final router = ref.read(goRouterProvider);
-    router.goNamed(RouterPath.home.name);
+    ref.read(chatRoomIdProvider.notifier).state = roomId;
+
+    Router().goNamed(ref, RouterPath.chat, null);
+
+    // final router = ref.read(goRouterProvider);
+    // router.goNamed(RouterPath.home.name);
   }
 }

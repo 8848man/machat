@@ -8,6 +8,7 @@ class DefaultLayout extends StatelessWidget {
   // 로그인이 필요한 작업인지
   final bool? needLogin;
   final String? title;
+  final List<Widget>? adaptors;
 
   const DefaultLayout({
     super.key,
@@ -15,6 +16,7 @@ class DefaultLayout extends StatelessWidget {
     this.floatingActionButton,
     this.needLogin,
     this.title,
+    this.adaptors = const [],
   });
 
   @override
@@ -22,7 +24,7 @@ class DefaultLayout extends StatelessWidget {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     // 모바일일 때 분기
-    Widget layout = screenWidth <= 760
+    Widget responseWidget = screenWidth <= 760
         ? MobileScaffold(
             floatingActionButton: floatingActionButton,
             title: title,
@@ -34,12 +36,15 @@ class DefaultLayout extends StatelessWidget {
             child: child,
           );
 
+    // 여러 레이아웃 어댑터를 child에 적용
+    Widget thisChild = Stack(children: [...adaptors ?? [], responseWidget]);
+
     // SnackBarManagerConnector로 감싸서 레이아웃 아래에서 스낵바 표현
     // UserChecker로 감싸서 로그인 확인 로직 추가
     return SnackBarManagerConnector(
       child: UserChecker(
         needLogin: needLogin,
-        child: layout,
+        child: thisChild,
       ),
     );
   }
