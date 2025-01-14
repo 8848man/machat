@@ -44,12 +44,13 @@ class ChatCreateViewModel extends _$ChatCreateViewModel {
       }
       final userId = currentUser.uid;
 
+      // TODO - 캐시된 유저 가져오기 기능 추가
       final UserData userData = await getUser(ref);
 
       final Map<String, dynamic> qData = {
         'userId': userId,
         'name': roomNameController.text,
-        'userName': userData.name,
+        'userName': userData.toJson(),
       };
 
       // Repository 호출

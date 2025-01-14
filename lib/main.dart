@@ -24,15 +24,12 @@ Future<void> init() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     if (kIsWeb) {
-      print('test001, web init');
       // 웹 플랫폼일 경우 FirebaseOptions 사용
       await Firebase.initializeApp(options: firebaseOptions);
     } else {
-      print('test001, mobile init');
       // 모바일 플랫폼일 경우 기본 Firebase 설정
       await Firebase.initializeApp();
     }
-    print("Firebase 초기화 성공!");
   } catch (e, stack) {
     print("Firebase 초기화 실패: $e");
     print(stack);
