@@ -13,7 +13,7 @@ class ChatInput extends ConsumerWidget {
       color: MCColors.$color_grey_30,
       child: Row(
         children: [
-          buildAttatchButton(boxDouble),
+          buildAttatchButton(boxDouble, ref),
           buildTextInput(notifier).expand(),
           buildSendMessage(boxDouble, notifier),
         ],
@@ -21,21 +21,30 @@ class ChatInput extends ConsumerWidget {
     );
   }
 
-  Widget buildAttatchButton(double boxDouble) {
+  Widget buildAttatchButton(double boxDouble, WidgetRef ref) {
     return SizedBox(
       width: boxDouble,
       height: boxDouble,
-      child: Padding(
-        padding: const EdgeInsets.all(6.0),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: MCColors.$color_blue_40,
-          ),
-          child: const Center(
-            child: Text('+'),
+      child: GestureDetector(
+        child: Padding(
+          padding: const EdgeInsets.all(6.0),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: MCColors.$color_blue_40,
+            ),
+            child: const Center(
+              child: Text('+'),
+            ),
           ),
         ),
+        onTap: () {
+          // 채팅 확장 버튼 클릭 시 expand 위젯 토글
+          ref.read(chatExpandTokenProvider.notifier).state =
+              !ref.read(chatExpandTokenProvider);
+          // 현재 키보드가 올라와 있으면 닫기
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
       ),
     );
   }
@@ -46,6 +55,7 @@ class ChatInput extends ConsumerWidget {
       labelText: '메세지를 입력해주세요',
       backgroundColor: MCColors.$color_grey_00,
       onSubmitted: (value) => notifier.sendMessageProcess(),
+      focusNode: notifier.focusNode,
     );
   }
 

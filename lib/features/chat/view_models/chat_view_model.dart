@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
+import 'package:machat/features/chat/providers/expand_token_provider.dart';
 import 'package:machat/features/chat/repository/chat_repository.dart';
 import 'package:machat/features/common/interfaces/repository_service.dart';
 import 'package:machat/features/common/models/chat_room_data.dart';
@@ -13,10 +14,24 @@ part 'chat_view_model.g.dart';
 @riverpod
 class ChatViewModel extends _$ChatViewModel {
   TextEditingController messageController = TextEditingController();
+  late FocusNode focusNode;
 
   @override
   Future<ChatRoomData> build() async {
     ref.watch(chatRoomIdProvider);
+
+    // 메세지 입력 필드에 포커스가 있을 때 chatExpandTokenProvider를 false로 변경
+    focusNode = FocusNode();
+    focusNode.addListener(() {
+      if (focusNode.hasFocus) {
+        //  입력 필드가 포커스를 받으면 chatExpandTokenProvider를 false로 변경
+        ref.read(chatExpandTokenProvider.notifier).state = false;
+      }
+    });
+
+    ref.onDispose(() {
+      focusNode.dispose();
+    });
 
     final ChatRoomData data = await initData();
     return data;

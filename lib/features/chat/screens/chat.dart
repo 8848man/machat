@@ -10,6 +10,7 @@ class ChatScreen extends StatelessWidget {
         children: [
           const ChatContents().expand(),
           const ChatInput(),
+          const ChatExpand(),
         ],
       ),
     );

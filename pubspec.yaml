@@ -49,6 +49,7 @@ dependencies:
   logger: ^2.0.2+1
   shared_preferences: 2.3.3
   flutter_svg: ^2.0.9
+  image_picker: ^0.8.7
   
   ## UI
   flutter_screenutil: ^5.9.0
