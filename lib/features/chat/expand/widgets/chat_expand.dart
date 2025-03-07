@@ -46,9 +46,9 @@ class _ChatExpandState extends ConsumerState<ChatExpand>
 
   @override
   Widget build(BuildContext context) {
-    final isExpand = ref.watch(chatExpandTokenProvider);
+    final ExpandWidgetState expandState = ref.watch(expandWidgetStateProvider);
 
-    if (isExpand) {
+    if (expandState != ExpandWidgetState.collapsed) {
       _controller.forward();
     } else {
       _controller.reverse();
@@ -58,20 +58,25 @@ class _ChatExpandState extends ConsumerState<ChatExpand>
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
       alignment: Alignment.topCenter,
-      child: isExpand
-          ? Align(
-              alignment: Alignment.topCenter,
-              child: SlideTransition(
-                position: _slideAnimation,
-                child: Container(
-                  height: 400,
-                  width: double.infinity,
-                  color: MCColors.$color_grey_00,
-                  child: const ChatExpandSelector(),
-                ),
-              ),
-            )
-          : const SizedBox.shrink(),
+      child: buildExpand(expandState),
     );
+  }
+
+  // expand 토큰에 따른 확장 위젯 표현
+  Widget buildExpand(ExpandWidgetState expandState) {
+    return expandState != ExpandWidgetState.collapsed
+        ? Align(
+            alignment: Alignment.topCenter,
+            child: SlideTransition(
+              position: _slideAnimation,
+              child: Container(
+                height: 400,
+                width: double.infinity,
+                color: MCColors.$color_grey_00,
+                child: const ChatExpandBrancher(),
+              ),
+            ),
+          )
+        : const SizedBox.shrink();
   }
 }
