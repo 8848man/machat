@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:machat/features/chat/expand/enums/expand_state.dart';
 import 'package:machat/features/chat/expand/providers/expand_widget_state_provider.dart';
 import 'package:machat/features/chat/interface/chat_view_model_interface.dart';
+import 'package:machat/features/chat/providers/chat_focus_node_provider.dart';
 import 'package:machat/features/chat/repository/chat_repository.dart';
 import 'package:machat/features/common/interfaces/repository_service.dart';
 import 'package:machat/features/common/models/chat_room_data.dart';
@@ -22,18 +23,13 @@ class ChatViewModel extends _$ChatViewModel implements ChatViewModelInterface {
   Future<ChatRoomData> build() async {
     ref.watch(chatRoomIdProvider);
 
-    // 메세지 입력 필드에 포커스가 있을 때 chatExpandTokenProvider를 false로 변경
-    focusNode = FocusNode();
+    focusNode = ref.read(chatFocusNodeProvider);
     focusNode.addListener(() {
       if (focusNode.hasFocus) {
-        //  입력 필드가 포커스를 받으면 chatExpandTokenProvider를 false로 변경
+        // 입력 필드가 포커스를 받으면 chatExpandTokenProvider를 false로 변경
         ref.read(expandWidgetStateProvider.notifier).state =
             ExpandWidgetState.collapsed;
       }
-    });
-
-    ref.onDispose(() {
-      focusNode.dispose();
     });
 
     final ChatRoomData data = await initData();

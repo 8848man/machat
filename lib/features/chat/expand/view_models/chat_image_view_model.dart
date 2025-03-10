@@ -116,6 +116,11 @@ class ChatImageViewModel extends _$ChatImageViewModel
         ExpandWidgetState.picture;
   }
 
+  void collapseWidgetState() {
+    ref.read(expandWidgetStateProvider.notifier).state =
+        ExpandWidgetState.collapsed;
+  }
+
   Future<void> sendImage() async {
     try {
       // 현재 접속된 유저 아이디 가져오기
@@ -126,7 +131,7 @@ class ChatImageViewModel extends _$ChatImageViewModel
       final String userId = currentUser.uid;
       final ChatImageRepository repository =
           ref.read(chatImageRepositoryProvider);
-      final String roomId = ref.watch(chatRoomIdProvider);
+      final String roomId = ref.read(chatRoomIdProvider);
 
       final List<XFile?> images = state.images; // ViewModel의 images 가져오기
 
@@ -139,6 +144,9 @@ class ChatImageViewModel extends _$ChatImageViewModel
 
       // 모든 업로드가 완료될 때까지 대기
       final List<String?> downloadURLs = await Future.wait(uploadTasks);
+
+      // 확장된 채팅 위젯 축소
+      collapseWidgetState();
     } catch (e) {
       rethrow;
     }

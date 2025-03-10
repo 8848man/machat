@@ -1,0 +1,4 @@
+enum ChatContentsType {
+  chat,
+  image,
+}
