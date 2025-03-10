@@ -6,6 +6,7 @@ class ChatContents extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<ChatRoomData> chatState = ref.watch(chatViewModelProvider);
+    final ChatViewModel notifier = ref.read(chatViewModelProvider.notifier);
 
     // 채팅 스트림 프로바이더 가져오기
     final AsyncValue<List<dynamic>> streamProvider =
@@ -16,8 +17,13 @@ class ChatContents extends ConsumerWidget {
     return chatState.when(
       data: (ChatRoomData data) {
         return switch (streamProvider) {
-          AsyncData(:final value) =>
-            buildMessage(value: value, data: data, completer: completer),
+          AsyncData(:final value) => buildMessage(
+              value: value,
+              data: data,
+              completer: completer,
+              notifier: notifier,
+              context: context,
+            ),
           AsyncError(:final error) => Text(error.toString()),
           _ => loadingOvertime(ref),
         };
@@ -34,48 +40,70 @@ class ChatContents extends ConsumerWidget {
     required List<dynamic> value,
     required Completer completer,
     required ChatRoomData data,
+    required ChatViewModel notifier,
+    required BuildContext context,
   }) {
     if (!completer.isCompleted) {
       completer.complete(); // Future.delayed 무효화
     }
-    return ListView.builder(
-      // Show messages from bottom to top
-      reverse: true,
-      itemCount: value.length,
-      itemBuilder: (context, index) {
-        final user = FirebaseAuth.instance.currentUser;
-        final reverseIndex = value.length - 1 - index;
-        bool isContinue = false;
-        bool isHideProfile = false;
-        final Chat chat = Chat(
-          createdAt: value[reverseIndex]['createdAt'],
-          createdBy: value[reverseIndex]['createdBy'],
-          message: value[reverseIndex]['message'],
-          isMine: value[reverseIndex]['isMine'],
-        );
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus(); // 키보드 닫기
+        notifier.closeExpand();
+      },
+      child: ListView.builder(
+        // Show messages from bottom to top
+        reverse: true,
+        itemCount: value.length,
+        itemBuilder: (context, index) {
+          final user = FirebaseAuth.instance.currentUser;
+          final reverseIndex = value.length - 1 - index;
+          bool isContinue = false;
+          bool isHideProfile = false;
+          final Chat chat = Chat(
+            createdAt: value[reverseIndex]['createdAt'],
+            createdBy: value[reverseIndex]['createdBy'],
+            message: value[reverseIndex]['message'],
+            isMine: value[reverseIndex]['isMine'],
+          );
 
-        // 시간 숨김 여부
-        isContinue = shouldHideTime(value, reverseIndex);
+          // 시간 숨김 여부
+          isContinue = shouldHideTime(value, reverseIndex);
 
-        // 프로필 숨김 여부
-        isHideProfile = shouldHideProfile(value, reverseIndex);
+          // 프로필 숨김 여부
+          isHideProfile = shouldHideProfile(value, reverseIndex);
 
-        final message = chat.message;
+          final message = chat.message;
 
-        // 메세지를 보낸 사람
-        String sender = '';
+          // 메세지를 보낸 사람
+          String sender = '';
 
-        // 채팅방 정보와 보낸 사람 id를 비교해 이름을 가져옴
-        for (var element in data.membersHistory) {
-          if (element.id == chat.createdBy) {
-            sender = element.name;
-          } else {
-            sender = 'Unknown';
+          // 채팅방 정보와 보낸 사람 id를 비교해 이름을 가져옴
+          for (var element in data.membersHistory) {
+            if (element.id == chat.createdBy) {
+              sender = element.name;
+            } else {
+              sender = 'Unknown';
+            }
           }
-        }
 
-        // 로그인되어있지 않을 경우
-        if (user == null) {
+          // 로그인되어있지 않을 경우
+          if (user == null) {
+            return buildOtherMessageContents(
+              message: message,
+              createdAt: chat.createdAt,
+              createdBy: sender,
+              isContinue: isContinue,
+              isHideProfile: isHideProfile,
+            );
+          }
+
+          // 채팅 만든 아이디와 로그인된 아이디가 일치할 경우
+          if (user.uid == chat.createdBy) {
+            return buildMyMessageContents(message, chat.createdAt, isContinue);
+          }
+
+          // 기본값
           return buildOtherMessageContents(
             message: message,
             createdAt: chat.createdAt,
@@ -83,22 +111,8 @@ class ChatContents extends ConsumerWidget {
             isContinue: isContinue,
             isHideProfile: isHideProfile,
           );
-        }
-
-        // 채팅 만든 아이디와 로그인된 아이디가 일치할 경우
-        if (user.uid == chat.createdBy) {
-          return buildMyMessageContents(message, chat.createdAt, isContinue);
-        }
-
-        // 기본값
-        return buildOtherMessageContents(
-          message: message,
-          createdAt: chat.createdAt,
-          createdBy: sender,
-          isContinue: isContinue,
-          isHideProfile: isHideProfile,
-        );
-      },
+        },
+      ),
     );
   }
 
