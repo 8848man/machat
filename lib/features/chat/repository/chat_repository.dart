@@ -20,6 +20,7 @@ class ChatRepository implements RepositoryService {
         .doc();
 
     await chatRef.set({
+      'id': chatRef.id,
       'type': 'chat',
       'message': data['message'],
       'createdBy': data['userId'],

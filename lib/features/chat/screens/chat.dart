@@ -10,8 +10,7 @@ class ChatScreen extends ConsumerWidget {
     return DefaultLayout(
       child: Column(
         children: [
-          // const ChatContents().expand(),
-          const ChatContentsCopy().expand(),
+          const ChatContents().expand(),
           const ChatInput(),
           const ChatExpand(),
         ],

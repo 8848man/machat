@@ -143,7 +143,7 @@ class ChatImageViewModel extends _$ChatImageViewModel
           .toList();
 
       // 모든 업로드가 완료될 때까지 대기
-      final List<String?> downloadURLs = await Future.wait(uploadTasks);
+      Future.wait(uploadTasks);
 
       // 확장된 채팅 위젯 축소
       collapseWidgetState();

@@ -31,6 +31,7 @@ final AutoDisposeStreamProvider<List<dynamic>> mergedChatStreamProvider =
       final data = doc.data();
       final timestamp = data['createdAt'] as Timestamp?;
       return {
+        'id': data['id'] ?? '',
         'createdBy': data['createdBy'] ?? '',
         'createdAt':
             timestamp?.toDate().toString() ?? DateTime.now().toString(),
@@ -52,6 +53,7 @@ final AutoDisposeStreamProvider<List<dynamic>> mergedChatStreamProvider =
       final data = doc.data();
       final timestamp = data['createdAt'] as Timestamp?;
       return {
+        'id': data['id'] ?? '',
         'createdBy': data['createdBy'] ?? '',
         'createdAt':
             timestamp?.toDate().toString() ?? DateTime.now().toString(),
@@ -62,22 +64,27 @@ final AutoDisposeStreamProvider<List<dynamic>> mergedChatStreamProvider =
     }).toList();
   });
 
-  // 스트림 병합
-  final mergedStream =
-      StreamGroup.merge([chatStream, imageStream]).map((event) {
-    return event;
-  }).distinct((previous, current) {
-    // previous와 current는 각각 List<Map<String, dynamic>> 형태
-    for (var prevItem in previous) {
-      for (var currItem in current) {
-        // prevItem과 currItem의 createdAt을 비교하여 중복되는지 확인
-        if (prevItem['createdAt'] == currItem['createdAt']) {
-          return true; // 중복된 항목이 있을 경우 true 반환 (중복되지 않은 항목 그대로 반환)
-        }
-      }
-    }
-    return false; // 중복되지 않으면 false 반환 (중복항목 제거)
-  });
+  // 스트림 병합합
+  // final mergedStream = StreamGroup.merge([chatStream, imageStream]);
+  // final mergedStream = StreamGroup.merge([chatStream, imageStream])
+  //     .distinct((previous, current) {
+  //   // 두 리스트 길이가 다르면 중복이 아님
+  //   if (previous.length != current.length) return false;
+
+  //   // createdAt을 기준으로 Set 변환 후 비교
+  //   final prevSet = previous
+  //       .map((e) =>
+  //           '${e['createdBy']}_${e['createdAt']}_${e['type']}_${e['data']}')
+  //       .toSet();
+  //   final currSet = current
+  //       .map((e) =>
+  //           '${e['createdBy']}_${e['createdAt']}_${e['type']}_${e['data']}')
+  //       .toSet();
+
+  //   // Set이 완전히 동일하면 중복으로 간주
+  //   return prevSet.length == currSet.length && prevSet.containsAll(currSet);
+  // });
+  final mergedStream = StreamGroup.merge([chatStream, imageStream]);
 
   // mergedStream 사용
   return mergedStream.map((event) {
@@ -92,11 +99,8 @@ final AutoDisposeStreamProvider<List<dynamic>> mergedChatStreamProvider =
     // 작성자, 작성 시간, 아이템 종류로
     // 중복된 데이터 필터링
     // 없을 경우 데이터가 2개씩 출력됨
-    final uniqueList = {
-      for (var item in combinedList)
-        '${item['createdBy']}_${item['createdAt'].substring(0, 18)}_${item['type']}':
-            item
-    }.values.toList();
+    final uniqueList =
+        {for (var item in combinedList) item['id']: item}.values.toList();
 
     // createdAt 기준으로 정렬
     uniqueList.sort((a, b) {

@@ -16,7 +16,6 @@ class ChatImage extends ConsumerWidget {
           return Center(child: CircularProgressIndicator()); // 로딩 인디케이터 표시
         },
         errorBuilder: (context, error, stackTrace) {
-          print('test001, error occured error is $error');
           return Icon(Icons.error); // 이미지 로딩 실패 시 기본 아이콘 표시
         },
       ),
