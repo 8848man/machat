@@ -12,10 +12,11 @@ class ChatInput extends ConsumerWidget {
     final isNormal = expandWidgetState == ExpandWidgetState.collapsed ||
         expandWidgetState == ExpandWidgetState.expanded;
 
-    return buildInputContainer(boxDouble, ref, isNormal);
+    return buildInputContainer(context, boxDouble, ref, isNormal);
   }
 
   Widget buildInputContainer(
+    BuildContext context,
     double boxDouble,
     WidgetRef ref,
     bool isNormal,
@@ -27,7 +28,7 @@ class ChatInput extends ConsumerWidget {
       child: Row(
         children: [
           buildAttatchButton(boxDouble, ref),
-          if (isNormal) buildTextInput(ref).expand(), // 조건부 추가
+          if (isNormal) buildTextInput(context, ref).expand(), // 조건부 추가
           if (!isNormal) const Spacer(),
           buildSendMessage(boxDouble, ref),
         ],
@@ -67,13 +68,17 @@ class ChatInput extends ConsumerWidget {
   }
 
   // 메세지 입력칸
-  Widget buildTextInput(WidgetRef ref) {
+  Widget buildTextInput(BuildContext context, WidgetRef ref) {
     final ChatViewModel notifier = ref.read(chatViewModelProvider.notifier);
     return MCTextInput(
       controller: notifier.messageController,
       labelText: '메세지를 입력해주세요',
       backgroundColor: MCColors.$color_grey_00,
-      onSubmitted: (value) => notifier.sendMessageProcess(),
+      onSubmitted: (value) {
+        notifier.sendMessageProcess();
+        // 메세지 보낸 후에도 focus 유지
+        FocusScope.of(context).requestFocus(notifier.focusNode);
+      },
       focusNode: notifier.focusNode,
     );
   }
