@@ -35,12 +35,16 @@ class ChatImageRepository implements RepositoryService {
       TaskSnapshot snapshot = await uploadTask;
       String downloadURL = await snapshot.ref.getDownloadURL();
 
-      // 가져온 URL을 기반으로 Firestore에 저장
-      await _firestore
+      // Firestore에 저장할 문서 ID 생성
+      final docRef = _firestore
           .collection('chat_rooms')
           .doc(roomId)
           .collection('images')
-          .add({
+          .doc(); // 여기서 고유한 ID 생성
+
+      // 가져온 URL을 기반으로 Firestore에 저장
+      await docRef.set({
+        'id': docRef.id,
         'imageUrl': downloadURL,
         'createdBy': senderId,
         'createdAt': FieldValue.serverTimestamp(),
