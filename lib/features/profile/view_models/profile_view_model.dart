@@ -14,7 +14,7 @@ class ProfileViewModel extends _$ProfileViewModel {
   }
 
   Future<UserData> initData() async {
-    final userData = await ref.read(userViewModelProvider.future);
+    final UserData userData = await ref.read(userViewModelProvider.future);
 
     return userData;
   }
