@@ -1,13 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:machat/features/cache/utils/temp_user_cache.dart';
-import 'package:machat/features/chat_list/models/chat_list_model.dart';
-import 'package:machat/features/chat_list/repository/chat_list_repository.dart';
 import 'package:machat/features/common/models/chat_room_data.dart';
-import 'package:machat/features/common/models/user_data.dart';
 import 'package:machat/features/common/providers/chat_room_id.dart';
-import 'package:machat/features/common/utils/router_utils.dart';
-import 'package:machat/features/snack_bar_manager/lib.dart';
+import 'package:machat/features/home/repositories/chat_room_repository.dart';
 import 'package:machat/router/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -15,22 +10,20 @@ part 'chat_list_view_model.g.dart';
 
 @riverpod
 class ChatListViewModel extends _$ChatListViewModel {
-  List<ChatRoomData> chatRooms = [];
   @override
-  Future<ChatListModel> build() async {
-    final ChatListModel data = await initData();
+  Future<ChatRoomListData> build() async {
+    final ChatRoomListData data = await initData();
 
     return data;
   }
 
-  Future<ChatListModel> initData() async {
+  Future<ChatRoomListData> initData() async {
     final List<ChatRoomData> chatRooms = await getChatRooms();
-    final ChatListModel data = ChatListModel(roomList: chatRooms);
-    return data;
+    return ChatRoomListData(roomList: chatRooms);
   }
 
   Future<List<ChatRoomData>> getChatRooms() async {
-    final repository = ref.read(chatListRepositoryProvider);
+    final repository = ref.read(chatRoomRepositoryProvider);
     try {
       // 현재 사용자 ID 가져오기
       final currentUser = FirebaseAuth.instance.currentUser;
@@ -40,7 +33,7 @@ class ChatListViewModel extends _$ChatListViewModel {
       final userId = currentUser.uid;
 
       // Repository 호출
-      final rawChatRooms = await repository.readAll();
+      final rawChatRooms = await repository.readAll(searchId: userId);
 
       // Firestore 데이터를 ChatRoomData로 변환
       List<ChatRoomData> chatRooms = rawChatRooms.map((data) {
@@ -49,10 +42,9 @@ class ChatListViewModel extends _$ChatListViewModel {
           'name': data['name'],
           'createdBy': data['createdBy'],
           'members': data['members'],
-          'membersHistory': data['membersHistory'],
           'createdAt': (data['createdAt'] as Timestamp)
               .toDate()
-              .toString(), // Timestamp를 String으로 변환
+              .toString(), // Timestamp를 DateTime으로 변환
           'isMine': data['createdBy'] == userId, // 내가 만든 방인지 추가
         });
       }).toList();
@@ -66,7 +58,7 @@ class ChatListViewModel extends _$ChatListViewModel {
   }
 
   Future<void> deleteChatRoom(ChatRoomData roomData) async {
-    final repository = ref.read(chatListRepositoryProvider);
+    final repository = ref.read(chatRoomRepositoryProvider);
     try {
       // 현재 사용자 ID 가져오기
       final currentUser = FirebaseAuth.instance.currentUser;
@@ -89,52 +81,6 @@ class ChatListViewModel extends _$ChatListViewModel {
       print('Error fetching chat rooms: $e');
       return;
     }
-  }
-
-  Future<void> enterChat(ChatRoomData data) async {
-    // 로그인 되어있는지 확인
-    final User? user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      SnackBarCaller().callSnackBar(ref, '로그인 후 이용해주세요!');
-      return;
-    }
-    // 이미 채팅방에 있을 경우의 처리
-    if (data.members.contains(user.uid)) {
-      SnackBarCaller().callSnackBar(ref, '이미 해당 채팅방에 소속되어있습니다.');
-      return;
-    }
-
-    // TODO - 캐시된 유저 가져오기 기능 추가
-    final UserData userData = await getUser(ref);
-
-    // firebase update할 데이터 셋
-    final roomId = data.roomId;
-
-    // 이전 멤버 히스토리 데이터를 할당할 리스트 생성
-    List<dynamic> beforeHistory = [];
-
-    // 이전 멤버 히스토리 데이터를 Json 형태로 할당
-    for (UserData i in data.membersHistory) {
-      beforeHistory.add(i.toJson());
-    }
-
-    // 멤버에 추가
-    final members = [...data.members, user.uid];
-    final membersHistory = [...beforeHistory, userData.toJson()];
-    final Map<String, dynamic> sendData = {
-      'members': members,
-      'membersHistory': membersHistory,
-    };
-
-    // firebase update
-    await ref.read(chatListRepositoryProvider).update(roomId, sendData);
-
-    ref.read(chatRoomIdProvider.notifier).state = roomId;
-
-    Router().goNamed(ref, RouterPath.chat, null);
-
-    // final router = ref.read(goRouterProvider);
-    // router.goNamed(RouterPath.home.name);
   }
 
   void goChat(String roomId) {
