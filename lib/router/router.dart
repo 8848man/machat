@@ -48,27 +48,6 @@ final goRouterProvider = Provider<GoRouter>(
           ),
         ),
 
-        /// login
-        GoRoute(
-            path: RouterPath.login.path,
-            name: RouterPath.login.name,
-            pageBuilder: (context, state) => CustomTransitionPage<void>(
-                  key: state.pageKey,
-                  child: const LoginPage(),
-                  transitionsBuilder: fadeTransition,
-                ),
-            routes: [
-              GoRoute(
-                path: RouterPath.register.path,
-                name: RouterPath.register.name,
-                pageBuilder: (context, state) => CustomTransitionPage<void>(
-                  key: state.pageKey,
-                  child: const RegisterPage(),
-                  transitionsBuilder: fadeTransition,
-                ),
-              ),
-            ]),
-
         /// home
         GoRoute(
           path: RouterPath.home.path,
@@ -78,73 +57,87 @@ final goRouterProvider = Provider<GoRouter>(
             child: const HomePage(),
             transitionsBuilder: fadeTransition,
           ),
-        ),
-
-        /// register
-        // GoRoute(
-        //   path: RouterPath.register.path,
-        //   name: RouterPath.register.name,
-        //   pageBuilder: (context, state) => CustomTransitionPage<void>(
-        //     key: state.pageKey,
-        //     child: const RegisterPage(),
-        //     transitionsBuilder: fadeTransition,
-        //   ),
-        // ),
-
-        /// chat
-        GoRoute(
-          path: RouterPath.chat.path,
-          name: RouterPath.chat.name,
-          pageBuilder: (context, state) => CustomTransitionPage<void>(
-            key: state.pageKey,
-            child: const ChatScreen(),
-            transitionsBuilder: fadeTransition,
-          ),
           routes: [
+            /// login
             GoRoute(
-              path: RouterPath.chatImage.path,
-              name: RouterPath.chatImage.name,
+              path: RouterPath.login.path,
+              name: RouterPath.login.name,
               pageBuilder: (context, state) => CustomTransitionPage<void>(
-                transitionDuration: const Duration(milliseconds: 500),
                 key: state.pageKey,
-                child: const ExpandImage(),
-                transitionsBuilder: slideTransition,
+                child: const LoginPage(),
+                transitionsBuilder: fadeTransition,
+              ),
+              routes: [
+                GoRoute(
+                  path: RouterPath.register.path,
+                  name: RouterPath.register.name,
+                  pageBuilder: (context, state) => CustomTransitionPage<void>(
+                    key: state.pageKey,
+                    child: const RegisterPage(),
+                    transitionsBuilder: fadeTransition,
+                  ),
+                ),
+              ],
+            ),
+
+            /// chat
+            GoRoute(
+              path: RouterPath.chat.path,
+              name: RouterPath.chat.name,
+              pageBuilder: (context, state) => CustomTransitionPage<void>(
+                key: state.pageKey,
+                child: const ChatScreen(),
+                transitionsBuilder: fadeTransition,
+              ),
+              routes: [
+                GoRoute(
+                  path: RouterPath.chatImage.path,
+                  name: RouterPath.chatImage.name,
+                  pageBuilder: (context, state) => CustomTransitionPage<void>(
+                    transitionDuration: const Duration(milliseconds: 500),
+                    key: state.pageKey,
+                    child: const ExpandImage(),
+                    transitionsBuilder: slideTransition,
+                  ),
+                ),
+              ],
+            ),
+
+            /// chat create/modify
+            GoRoute(
+              path: RouterPath.chatCreate.path,
+              name: RouterPath.chatCreate.name,
+              pageBuilder: (context, state) => CustomTransitionPage<void>(
+                key: state.pageKey,
+                child: const ChatCreate(),
+                transitionsBuilder: fadeTransition,
+              ),
+            ),
+
+            /// chat list
+            GoRoute(
+              path: RouterPath.chatList.path,
+              name: RouterPath.chatList.name,
+              pageBuilder: (context, state) => CustomTransitionPage<void>(
+                key: state.pageKey,
+                child: const ChatList(),
+                transitionsBuilder: fadeTransition,
+              ),
+            ),
+
+            /// profile
+            GoRoute(
+              path: RouterPath.profile.path,
+              name: RouterPath.profile.name,
+              pageBuilder: (context, state) => CustomTransitionPage<void>(
+                key: state.pageKey,
+                child: const Profile(),
+                transitionsBuilder: fadeTransition,
               ),
             ),
           ],
         ),
 
-        /// chat create/modify
-        GoRoute(
-          path: RouterPath.chatCreate.path,
-          name: RouterPath.chatCreate.name,
-          pageBuilder: (context, state) => CustomTransitionPage<void>(
-            key: state.pageKey,
-            child: const ChatCreate(),
-            transitionsBuilder: fadeTransition,
-          ),
-        ),
-
-        /// chat list
-        GoRoute(
-          path: RouterPath.chatList.path,
-          name: RouterPath.chatList.name,
-          pageBuilder: (context, state) => CustomTransitionPage<void>(
-            key: state.pageKey,
-            child: const ChatList(),
-            transitionsBuilder: fadeTransition,
-          ),
-        ),
-
-        GoRoute(
-          path: RouterPath.profile.path,
-          name: RouterPath.profile.name,
-          pageBuilder: (context, state) => CustomTransitionPage<void>(
-            key: state.pageKey,
-            child: const Profile(),
-            transitionsBuilder: fadeTransition,
-          ),
-        ),
         // GoRoute(
         //     path: RouterPath.app.path,
         //     name: RouterPath.app.name,
