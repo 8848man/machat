@@ -11,7 +11,7 @@ class WebScaffold extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final User? user = FirebaseAuth.instance.currentUser;
+    // final User? user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       appBar: AppBar(
         leading: Builder(
@@ -25,7 +25,7 @@ class WebScaffold extends ConsumerWidget {
           },
         ),
         title: Text(title ?? 'MaChat Web'),
-        actions: getActions(user, ref),
+        // actions: getActions(user, ref),
       ),
       drawer: const MCDrawer(),
       body: child,
