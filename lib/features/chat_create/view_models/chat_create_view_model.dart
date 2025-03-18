@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
-import 'package:machat/features/cache/utils/temp_user_cache.dart';
 import 'package:machat/features/chat_create/lib.dart';
 import 'package:machat/features/chat_create/models/chat_create_model.dart';
 import 'package:machat/features/common/models/user_data.dart';
+import 'package:machat/features/common/view_models/user_view_model.dart';
 import 'package:machat/router/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -37,15 +37,14 @@ class ChatCreateViewModel extends _$ChatCreateViewModel {
 
   Future<void> createChatRoom() async {
     try {
+      final UserData userData = await ref.read(userViewModelProvider.future);
+
       // FirebaseAuth를 이용하여 현재 로그인된 사용자 ID 가져오기
       final currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser == null) {
         throw Exception('User is not logged in');
       }
       final userId = currentUser.uid;
-
-      // TODO - 캐시된 유저 가져오기 기능 추가
-      final UserData userData = await getUser(ref);
 
       final Map<String, dynamic> qData = {
         'userId': userId,

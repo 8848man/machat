@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:machat/features/cache/utils/temp_user_cache.dart';
-import 'package:machat/features/chat_list/models/chat_list_model.dart';
+import 'package:machat/features/common/models/chat_list_model.dart';
 import 'package:machat/features/chat_list/repository/chat_list_repository.dart';
 import 'package:machat/features/common/models/chat_room_data.dart';
 import 'package:machat/features/common/models/user_data.dart';
 import 'package:machat/features/common/providers/chat_room_id.dart';
 import 'package:machat/features/common/utils/router_utils.dart';
+import 'package:machat/features/common/view_models/user_view_model.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:machat/router/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -92,6 +92,7 @@ class ChatListViewModel extends _$ChatListViewModel {
   }
 
   Future<void> enterChat(ChatRoomData data) async {
+    final UserData userData = await ref.read(userViewModelProvider.future);
     // 로그인 되어있는지 확인
     final User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
@@ -103,9 +104,6 @@ class ChatListViewModel extends _$ChatListViewModel {
       SnackBarCaller().callSnackBar(ref, '이미 해당 채팅방에 소속되어있습니다.');
       return;
     }
-
-    // TODO - 캐시된 유저 가져오기 기능 추가
-    final UserData userData = await getUser(ref);
 
     // firebase update할 데이터 셋
     final roomId = data.roomId;
