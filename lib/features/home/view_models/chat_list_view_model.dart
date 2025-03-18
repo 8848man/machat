@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:machat/features/common/models/chat_list_model.dart';
 import 'package:machat/features/common/models/chat_room_data.dart';
 import 'package:machat/features/common/providers/chat_room_id.dart';
 import 'package:machat/features/home/repositories/chat_room_repository.dart';
@@ -11,15 +12,15 @@ part 'chat_list_view_model.g.dart';
 @riverpod
 class ChatListViewModel extends _$ChatListViewModel {
   @override
-  Future<ChatRoomListData> build() async {
-    final ChatRoomListData data = await initData();
+  Future<ChatListModel> build() async {
+    final ChatListModel data = await initData();
 
     return data;
   }
 
-  Future<ChatRoomListData> initData() async {
+  Future<ChatListModel> initData() async {
     final List<ChatRoomData> chatRooms = await getChatRooms();
-    return ChatRoomListData(roomList: chatRooms);
+    return ChatListModel(roomList: chatRooms);
   }
 
   Future<List<ChatRoomData>> getChatRooms() async {

@@ -46,7 +46,7 @@ class _HomeBundleState extends ConsumerState<HomeBundle>
         TabBarView(
           controller: _tabController,
           children: const <Widget>[
-            Center(child: Text("It's cloudy here")),
+            Firends(),
             HomeChatList(),
             Center(child: Text("It's sunny here")),
           ],

@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:machat/features/common/interfaces/repository_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final profileCacheRepositoryProvider = Provider<RepositoryService>((ref) {
-  return ProfileRepository();
+final userRepository = Provider<RepositoryService>((ref) {
+  return UserRepository();
 });
 
-class ProfileRepository implements RepositoryService {
+class UserRepository implements RepositoryService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   @override
   Future<Map<String, dynamic>> create(Map<String, dynamic> data) {
