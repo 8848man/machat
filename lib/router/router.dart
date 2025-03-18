@@ -50,16 +50,26 @@ final goRouterProvider = Provider<GoRouter>(
 
         /// login
         GoRoute(
-          path: RouterPath.login.path,
-          name: RouterPath.login.name,
-          pageBuilder: (context, state) => CustomTransitionPage<void>(
-            key: state.pageKey,
-            child: const LoginPage(),
-            transitionsBuilder: fadeTransition,
-          ),
-        ),
+            path: RouterPath.login.path,
+            name: RouterPath.login.name,
+            pageBuilder: (context, state) => CustomTransitionPage<void>(
+                  key: state.pageKey,
+                  child: const LoginPage(),
+                  transitionsBuilder: fadeTransition,
+                ),
+            routes: [
+              GoRoute(
+                path: RouterPath.register.path,
+                name: RouterPath.register.name,
+                pageBuilder: (context, state) => CustomTransitionPage<void>(
+                  key: state.pageKey,
+                  child: const RegisterPage(),
+                  transitionsBuilder: fadeTransition,
+                ),
+              ),
+            ]),
 
-        /// search
+        /// home
         GoRoute(
           path: RouterPath.home.path,
           name: RouterPath.home.name,
@@ -71,15 +81,15 @@ final goRouterProvider = Provider<GoRouter>(
         ),
 
         /// register
-        GoRoute(
-          path: RouterPath.register.path,
-          name: RouterPath.register.name,
-          pageBuilder: (context, state) => CustomTransitionPage<void>(
-            key: state.pageKey,
-            child: const RegisterPage(),
-            transitionsBuilder: fadeTransition,
-          ),
-        ),
+        // GoRoute(
+        //   path: RouterPath.register.path,
+        //   name: RouterPath.register.name,
+        //   pageBuilder: (context, state) => CustomTransitionPage<void>(
+        //     key: state.pageKey,
+        //     child: const RegisterPage(),
+        //     transitionsBuilder: fadeTransition,
+        //   ),
+        // ),
 
         /// chat
         GoRoute(
@@ -90,6 +100,18 @@ final goRouterProvider = Provider<GoRouter>(
             child: const ChatScreen(),
             transitionsBuilder: fadeTransition,
           ),
+          routes: [
+            GoRoute(
+              path: RouterPath.chatImage.path,
+              name: RouterPath.chatImage.name,
+              pageBuilder: (context, state) => CustomTransitionPage<void>(
+                transitionDuration: const Duration(milliseconds: 500),
+                key: state.pageKey,
+                child: const ExpandImage(),
+                transitionsBuilder: slideTransition,
+              ),
+            ),
+          ],
         ),
 
         /// chat create/modify
