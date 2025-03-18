@@ -6,6 +6,13 @@ part 'chat_room_data.freezed.dart';
 part 'chat_room_data.g.dart';
 
 @freezed
+class ChatRoomListData with _$ChatRoomListData {
+  const factory ChatRoomListData({
+    required List<ChatRoomData> roomList,
+  }) = _ChatRoomListData;
+}
+
+@freezed
 class ChatRoomData with _$ChatRoomData {
   const factory ChatRoomData({
     @Default('') String roomId,
