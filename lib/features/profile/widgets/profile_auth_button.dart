@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:machat/features/common/view_models/user_view_model.dart';
 import 'package:machat/router/lib.dart';
 
 Widget buildConversation() {
@@ -21,11 +23,12 @@ Widget buildConversation() {
   );
 }
 
-Widget buildAuthButton(User? user, GoRouter router) {
-  return user == null ? buildLogin(router) : buildLogout(router);
+Widget buildAuthButton(User? user, WidgetRef ref) {
+  return user == null ? buildLogin(ref) : buildLogout(ref);
 }
 
-Widget buildLogin(GoRouter router) {
+Widget buildLogin(WidgetRef ref) {
+  final router = ref.read(goRouterProvider);
   return Column(
     children: [
       IconButton(
@@ -41,7 +44,8 @@ Widget buildLogin(GoRouter router) {
   );
 }
 
-Widget buildLogout(GoRouter router) {
+Widget buildLogout(WidgetRef ref) {
+  final notiifer = ref.read(userViewModelProvider.notifier);
   return Column(
     children: [
       IconButton(
@@ -52,11 +56,7 @@ Widget buildLogout(GoRouter router) {
           ),
         ),
         tooltip: '로그아웃',
-        onPressed: () async {
-          // 로그아웃 버튼
-          await FirebaseAuth.instance.signOut();
-          router.goNamed(RouterPath.login.name);
-        },
+        onPressed: () async => await notiifer.signOutProcess(),
       ),
       const Text('로그아웃'),
     ],

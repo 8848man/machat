@@ -106,7 +106,7 @@ class ChatListViewModel extends _$ChatListViewModel {
     }
 
     // firebase update할 데이터 셋
-    final roomId = data.roomId;
+    final String roomId = data.roomId;
 
     // 이전 멤버 히스토리 데이터를 할당할 리스트 생성
     List<dynamic> beforeHistory = [];
@@ -117,8 +117,8 @@ class ChatListViewModel extends _$ChatListViewModel {
     }
 
     // 멤버에 추가
-    final members = [...data.members, user.uid];
-    final membersHistory = [...beforeHistory, userData.toJson()];
+    final List<String> members = [...data.members, user.uid];
+    final List<dynamic> membersHistory = [...beforeHistory, userData.toJson()];
     final Map<String, dynamic> sendData = {
       'members': members,
       'membersHistory': membersHistory,
