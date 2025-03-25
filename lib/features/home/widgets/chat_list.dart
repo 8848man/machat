@@ -9,23 +9,6 @@ class HomeChatList extends ConsumerWidget {
         ref.read(chatListViewModelProvider.notifier);
     final AsyncValue<ChatListModel> state =
         ref.watch(chatListViewModelProvider);
-
-    final User? user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      return Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text('로그인이 필요합니다.'),
-          GestureDetector(
-            child:
-                const Text('로그인 하러 가기', style: TextStyle(color: Colors.blue)),
-            onTap: () => notifier.goLogin(),
-          ),
-        ],
-      ));
-    }
-
     return state.when(
       data: (ChatListModel data) => buildChatRoom(context, data, notifier),
       error: (error, stackTrace) => Container(),

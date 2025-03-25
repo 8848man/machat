@@ -38,26 +38,14 @@ String? emailValidation(String val) {
   return null; // 검증 통과
 }
 
-// 이름 형식 검증
 String? nameChangeValidation(String val) {
   // 이름이 너무 긴 경우
   if (val.length >= 30) return '이름이 너무 깁니다! 30자 이내로 설정해주세요';
 
   // 특수문자 및 공백 포함 여부 검증
-  final RegExp specialCharOrSpace = RegExp(r'[^\w가-힣ㄱ-ㅎㅏ-ㅣ]');
-  if (specialCharOrSpace.hasMatch(val)) {
-    return '이름에 특수문자나 공백, 단자음, 단모음을 포함할 수 없습니다!';
-  }
-
-  return null; // 검증 통과
-}
-
-// 이름 자모음 추가 검증
-String? nameConsVowValidation(String val) {
-  // 특수문자 및 공백 포함 여부 검증
   final RegExp specialCharOrSpace = RegExp(r'[^\w가-힣]'); // 특수문자 및 공백 탐지
   if (specialCharOrSpace.hasMatch(val)) {
-    return '이름에 특수문자나 공백, 단자음, 단모음을 포함할 수 없습니다!';
+    return '이름에 특수문자나 공백을 포함할 수 없습니다!';
   }
 
   return null; // 검증 통과
@@ -65,8 +53,7 @@ String? nameConsVowValidation(String val) {
 
 String? nameValidation(String val) {
   if (val.isEmpty) return '이름을 다시 확인해주십시오.';
-  if (nameChangeValidation(val) != null) return nameChangeValidation(val);
-  if (nameConsVowValidation(val) != null) return nameConsVowValidation(val);
+  if (nameChangeValidation(val) != null) return '이름을 다시 확인해주십시오.';
 
   return null; // 검증 통과
 }

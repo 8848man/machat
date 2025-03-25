@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/design_system/lib.dart';
 import 'package:machat/features/profile/widgets/profile_auth_button.dart';
+import 'package:machat/router/lib.dart';
 
 class ProfileFooter extends ConsumerWidget {
   const ProfileFooter({super.key});
@@ -21,11 +22,12 @@ class ProfileFooter extends ConsumerWidget {
 
   Widget buildProfileBottomRow(WidgetRef ref) {
     final User? user = FirebaseAuth.instance.currentUser;
+    final router = ref.read(goRouterProvider);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         if (user != null) buildConversation(),
-        buildAuthButton(user, ref),
+        buildAuthButton(user, router),
       ],
     );
   }

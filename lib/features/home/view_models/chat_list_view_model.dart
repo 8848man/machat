@@ -89,9 +89,4 @@ class ChatListViewModel extends _$ChatListViewModel {
     final router = ref.read(goRouterProvider);
     router.goNamed(RouterPath.chat.name);
   }
-
-  void goLogin() {
-    final router = ref.read(goRouterProvider);
-    router.goNamed(RouterPath.login.name);
-  }
 }

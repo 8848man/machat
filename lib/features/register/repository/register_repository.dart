@@ -1,19 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/features/common/interfaces/repository_service.dart';
-import 'package:machat/features/snack_bar_manager/lib.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 final registerRepositoryProvider = Provider<RepositoryService>((ref) {
-  return RegisterRepository(ref: ref);
+  return RegisterRepository();
 });
 
 class RegisterRepository implements RepositoryService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final Ref ref;
-
-  RegisterRepository({required this.ref});
 
   // 회원가입
   @override
@@ -36,15 +32,7 @@ class RegisterRepository implements RepositoryService {
       });
 
       return {'success': true};
-    } on FirebaseAuthException catch (e) {
-      // 이메일이 이미 사용 중인 경우 처리
-      if (e.code == 'email-already-in-use') {
-        SnackBarCaller().callSnackBar(ref, '중복된 이메일입니다.');
-      }
-      // 다른 예외 처리
-      return {'success': false};
     } catch (e) {
-      SnackBarCaller().callSnackBar(ref, '알 수 없는 에러가 발생했습니다. 다시 시도해주세요.');
       // 나중에 다이얼로그 띄우도록 변경
       print(e);
       return {'success': false};

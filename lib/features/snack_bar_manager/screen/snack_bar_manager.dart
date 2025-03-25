@@ -20,14 +20,14 @@ class SnackBarManager extends ConsumerWidget {
       if (snackBarState.dialogCall) {
         final snackBarNotifier = ref.read(snackBarManagerProvider.notifier);
 
-        if (snackBarNotifier.state.dialogCall) {
-          // 실제 스낵바를 띄우는 함수 호출
-          toastification.show(
-            context: context,
-            title: Text(snackBarNotifier.state.text),
-            autoCloseDuration: const Duration(seconds: 2),
-          );
-        } // 스낵바 리셋 함수 호출
+        // 실제 스낵바를 띄우는 함수 호출
+        toastification.show(
+          context: context,
+          title: Text(snackBarNotifier.state.text),
+          autoCloseDuration: const Duration(seconds: 2),
+        );
+
+        // 스낵바 리셋 함수 호출
         SnackBarCaller().resetSnackBar(ref);
       }
     }
