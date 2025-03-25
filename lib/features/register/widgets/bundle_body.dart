@@ -29,6 +29,7 @@ class RegisterBundleBody extends ConsumerWidget {
       labelText: '이메일',
       errorText: state.emailErrorText,
       onChanged: (val) => notifier.emailChangeValidate(),
+      onSubmitted: (a) => notifier.registUser(),
     );
   }
 
@@ -41,6 +42,7 @@ class RegisterBundleBody extends ConsumerWidget {
       labelText: '비밀번호',
       errorText: state.pwdErrorText,
       isObscure: true,
+      onSubmitted: (a) => notifier.registUser(),
     );
   }
 
@@ -53,6 +55,7 @@ class RegisterBundleBody extends ConsumerWidget {
       labelText: '이름',
       errorText: state.nameErrorText,
       onChanged: (val) => notifier.nameChangeValidate(),
+      onSubmitted: (a) => notifier.registUser(),
     );
   }
 }
