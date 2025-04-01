@@ -20,7 +20,7 @@ class DrawerProfile extends ConsumerWidget {
           loading: () => const Center(child: CircularProgressIndicator()),
         ),
       ),
-      onTap: () => notifier.goLogin(),
+      onTap: () => notifier.goProfile(),
     );
   }
 

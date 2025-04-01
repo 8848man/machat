@@ -5,9 +5,14 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const DefaultLayout(
-      floatingActionButton: AnimatedFAB(),
-      child: Center(
+    return DefaultLayout(
+      title: '홈',
+      // floatingActionButton: AnimatedFAB(),
+      floatingActionButton: Transform.translate(
+        offset: const Offset(0, -100), // 20픽셀 위로 이동
+        child: const AnimatedFAB(),
+      ),
+      child: const Center(
         child: HomeBundle(),
       ),
     );

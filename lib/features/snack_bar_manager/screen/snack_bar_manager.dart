@@ -13,19 +13,21 @@ class SnackBarManager extends ConsumerWidget {
     final SnackBarManagerData snackBarState =
         ref.watch(snackBarManagerProvider);
 
+    if (!snackBarState.dialogCall) return Container();
+
     // 스낵바를 호출하는 함수
-    void handleSnackBarCall() {
+    void handleSnackBarCall() async {
       if (snackBarState.dialogCall) {
         final snackBarNotifier = ref.read(snackBarManagerProvider.notifier);
 
-        // 실제 스낵바를 띄우는 함수 호출
-        toastification.show(
-          context: context,
-          title: Text(snackBarNotifier.state.text),
-          autoCloseDuration: const Duration(seconds: 2),
-        );
-
-        // 스낵바 리셋 함수 호출
+        if (snackBarNotifier.state.dialogCall) {
+          // 실제 스낵바를 띄우는 함수 호출
+          toastification.show(
+            context: context,
+            title: Text(snackBarNotifier.state.text),
+            autoCloseDuration: const Duration(seconds: 2),
+          );
+        } // 스낵바 리셋 함수 호출
         SnackBarCaller().resetSnackBar(ref);
       }
     }

@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:machat/features/chat_create/lib.dart';
 import 'package:machat/features/chat_create/models/chat_create_model.dart';
+import 'package:machat/features/common/models/user_data.dart';
+import 'package:machat/features/common/view_models/user_view_model.dart';
 import 'package:machat/router/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -27,7 +29,6 @@ class ChatCreateViewModel extends _$ChatCreateViewModel {
   /// 라우팅/
 
   Future<void> createChatRoomProcess() async {
-    print('test001');
     final router = ref.read(goRouterProvider);
     await createChatRoom();
 
@@ -36,6 +37,14 @@ class ChatCreateViewModel extends _$ChatCreateViewModel {
 
   Future<void> createChatRoom() async {
     try {
+      final UserData userData = await ref.read(userViewModelProvider.future);
+      final RoomUserData historyUserData = RoomUserData(
+        name: userData.name,
+        id: userData.id,
+        email: userData.email,
+        lastJoinedAt: DateTime.now().toString(),
+      );
+
       // FirebaseAuth를 이용하여 현재 로그인된 사용자 ID 가져오기
       final currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser == null) {
@@ -46,6 +55,7 @@ class ChatCreateViewModel extends _$ChatCreateViewModel {
       final Map<String, dynamic> qData = {
         'userId': userId,
         'name': roomNameController.text,
+        'membersHistory': historyUserData.toJson(),
       };
 
       // Repository 호출

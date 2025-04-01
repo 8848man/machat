@@ -55,3 +55,6 @@ firebase.json
 
 # hosting related
 apphosting.yaml
+
+# FVM Version Cache
+.fvm/

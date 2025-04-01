@@ -25,4 +25,10 @@ class SharedPreferencesCacheService implements CacheService {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
   }
+
+  @override
+  Future<void> deleteAll() {
+    // TODO: implement deleteAll
+    throw UnimplementedError();
+  }
 }

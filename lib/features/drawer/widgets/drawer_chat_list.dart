@@ -39,7 +39,7 @@ class DrawerChatList extends ConsumerWidget {
           const Spacer(),
           GestureDetector(
             child: const Icon(IconData(0xf317, fontFamily: 'MaterialIcons')),
-            onTap: () => notifier.deleteChatRoom(),
+            onTap: () => notifier.deleteChatRoom(data),
           ),
         ],
       ),

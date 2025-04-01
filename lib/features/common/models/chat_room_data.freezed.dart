@@ -24,11 +24,16 @@ mixin _$ChatRoomData {
   String get createdBy => throw _privateConstructorUsedError;
   String? get createdAt => throw _privateConstructorUsedError;
   List<String> get members => throw _privateConstructorUsedError;
+  List<RoomUserData> get membersHistory => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   bool get isMine => throw _privateConstructorUsedError;
 
+  /// Serializes this ChatRoomData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ChatRoomData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ChatRoomDataCopyWith<ChatRoomData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -44,6 +49,7 @@ abstract class $ChatRoomDataCopyWith<$Res> {
       String createdBy,
       String? createdAt,
       List<String> members,
+      List<RoomUserData> membersHistory,
       String name,
       bool isMine});
 }
@@ -58,6 +64,8 @@ class _$ChatRoomDataCopyWithImpl<$Res, $Val extends ChatRoomData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ChatRoomData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -65,6 +73,7 @@ class _$ChatRoomDataCopyWithImpl<$Res, $Val extends ChatRoomData>
     Object? createdBy = null,
     Object? createdAt = freezed,
     Object? members = null,
+    Object? membersHistory = null,
     Object? name = null,
     Object? isMine = null,
   }) {
@@ -85,6 +94,10 @@ class _$ChatRoomDataCopyWithImpl<$Res, $Val extends ChatRoomData>
           ? _value.members
           : members // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      membersHistory: null == membersHistory
+          ? _value.membersHistory
+          : membersHistory // ignore: cast_nullable_to_non_nullable
+              as List<RoomUserData>,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -110,6 +123,7 @@ abstract class _$$ChatRoomDataImplCopyWith<$Res>
       String createdBy,
       String? createdAt,
       List<String> members,
+      List<RoomUserData> membersHistory,
       String name,
       bool isMine});
 }
@@ -122,6 +136,8 @@ class __$$ChatRoomDataImplCopyWithImpl<$Res>
       _$ChatRoomDataImpl _value, $Res Function(_$ChatRoomDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ChatRoomData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -129,6 +145,7 @@ class __$$ChatRoomDataImplCopyWithImpl<$Res>
     Object? createdBy = null,
     Object? createdAt = freezed,
     Object? members = null,
+    Object? membersHistory = null,
     Object? name = null,
     Object? isMine = null,
   }) {
@@ -149,6 +166,10 @@ class __$$ChatRoomDataImplCopyWithImpl<$Res>
           ? _value._members
           : members // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      membersHistory: null == membersHistory
+          ? _value._membersHistory
+          : membersHistory // ignore: cast_nullable_to_non_nullable
+              as List<RoomUserData>,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -169,9 +190,11 @@ class _$ChatRoomDataImpl implements _ChatRoomData {
       this.createdBy = '',
       this.createdAt,
       final List<String> members = const [],
+      final List<RoomUserData> membersHistory = const [],
       this.name = '',
       this.isMine = false})
-      : _members = members;
+      : _members = members,
+        _membersHistory = membersHistory;
 
   factory _$ChatRoomDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$ChatRoomDataImplFromJson(json);
@@ -193,6 +216,15 @@ class _$ChatRoomDataImpl implements _ChatRoomData {
     return EqualUnmodifiableListView(_members);
   }
 
+  final List<RoomUserData> _membersHistory;
+  @override
+  @JsonKey()
+  List<RoomUserData> get membersHistory {
+    if (_membersHistory is EqualUnmodifiableListView) return _membersHistory;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_membersHistory);
+  }
+
   @override
   @JsonKey()
   final String name;
@@ -202,7 +234,7 @@ class _$ChatRoomDataImpl implements _ChatRoomData {
 
   @override
   String toString() {
-    return 'ChatRoomData(roomId: $roomId, createdBy: $createdBy, createdAt: $createdAt, members: $members, name: $name, isMine: $isMine)';
+    return 'ChatRoomData(roomId: $roomId, createdBy: $createdBy, createdAt: $createdAt, members: $members, membersHistory: $membersHistory, name: $name, isMine: $isMine)';
   }
 
   @override
@@ -216,16 +248,27 @@ class _$ChatRoomDataImpl implements _ChatRoomData {
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             const DeepCollectionEquality().equals(other._members, _members) &&
+            const DeepCollectionEquality()
+                .equals(other._membersHistory, _membersHistory) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.isMine, isMine) || other.isMine == isMine));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, roomId, createdBy, createdAt,
-      const DeepCollectionEquality().hash(_members), name, isMine);
+  int get hashCode => Object.hash(
+      runtimeType,
+      roomId,
+      createdBy,
+      createdAt,
+      const DeepCollectionEquality().hash(_members),
+      const DeepCollectionEquality().hash(_membersHistory),
+      name,
+      isMine);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ChatRoomData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ChatRoomDataImplCopyWith<_$ChatRoomDataImpl> get copyWith =>
@@ -245,6 +288,7 @@ abstract class _ChatRoomData implements ChatRoomData {
       final String createdBy,
       final String? createdAt,
       final List<String> members,
+      final List<RoomUserData> membersHistory,
       final String name,
       final bool isMine}) = _$ChatRoomDataImpl;
 
@@ -260,11 +304,16 @@ abstract class _ChatRoomData implements ChatRoomData {
   @override
   List<String> get members;
   @override
+  List<RoomUserData> get membersHistory;
+  @override
   String get name;
   @override
   bool get isMine;
+
+  /// Create a copy of ChatRoomData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ChatRoomDataImplCopyWith<_$ChatRoomDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

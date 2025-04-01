@@ -6,8 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:machat/features/chat/lib.dart';
 import 'package:machat/features/chat_create/lib.dart';
 import 'package:machat/features/chat_list/lib.dart';
+import 'package:machat/features/chat_expand_image/screens/expand_image.dart';
 import 'package:machat/features/home/lib.dart';
 import 'package:machat/features/login/lib.dart';
+import 'package:machat/features/profile/screens/profile.dart';
 import 'package:machat/features/register/lib.dart';
 import 'package:machat/features/splash/lib.dart';
 

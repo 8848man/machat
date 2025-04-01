@@ -26,8 +26,12 @@ mixin _$UserData {
   String? get profileUrl => throw _privateConstructorUsedError;
   String? get nationId => throw _privateConstructorUsedError;
 
+  /// Serializes this UserData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserDataCopyWith<UserData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -55,6 +59,8 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of UserData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -113,6 +119,8 @@ class __$$UserDataImplCopyWithImpl<$Res>
       _$UserDataImpl _value, $Res Function(_$UserDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -190,12 +198,14 @@ class _$UserDataImpl implements _UserData {
                 other.nationId == nationId));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, name, id, email, profileUrl, nationId);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserDataImplCopyWith<_$UserDataImpl> get copyWith =>
@@ -230,8 +240,214 @@ abstract class _UserData implements UserData {
   String? get profileUrl;
   @override
   String? get nationId;
+
+  /// Create a copy of UserData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserDataImplCopyWith<_$UserDataImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+RoomUserData _$RoomUserDataFromJson(Map<String, dynamic> json) {
+  return _RoomUserData.fromJson(json);
+}
+
+/// @nodoc
+mixin _$RoomUserData {
+  String get name => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
+  String? get email => throw _privateConstructorUsedError;
+  String? get lastJoinedAt => throw _privateConstructorUsedError;
+
+  /// Serializes this RoomUserData to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of RoomUserData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $RoomUserDataCopyWith<RoomUserData> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $RoomUserDataCopyWith<$Res> {
+  factory $RoomUserDataCopyWith(
+          RoomUserData value, $Res Function(RoomUserData) then) =
+      _$RoomUserDataCopyWithImpl<$Res, RoomUserData>;
+  @useResult
+  $Res call({String name, String? id, String? email, String? lastJoinedAt});
+}
+
+/// @nodoc
+class _$RoomUserDataCopyWithImpl<$Res, $Val extends RoomUserData>
+    implements $RoomUserDataCopyWith<$Res> {
+  _$RoomUserDataCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of RoomUserData
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = null,
+    Object? id = freezed,
+    Object? email = freezed,
+    Object? lastJoinedAt = freezed,
+  }) {
+    return _then(_value.copyWith(
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
+      lastJoinedAt: freezed == lastJoinedAt
+          ? _value.lastJoinedAt
+          : lastJoinedAt // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$RoomUserDataImplCopyWith<$Res>
+    implements $RoomUserDataCopyWith<$Res> {
+  factory _$$RoomUserDataImplCopyWith(
+          _$RoomUserDataImpl value, $Res Function(_$RoomUserDataImpl) then) =
+      __$$RoomUserDataImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String name, String? id, String? email, String? lastJoinedAt});
+}
+
+/// @nodoc
+class __$$RoomUserDataImplCopyWithImpl<$Res>
+    extends _$RoomUserDataCopyWithImpl<$Res, _$RoomUserDataImpl>
+    implements _$$RoomUserDataImplCopyWith<$Res> {
+  __$$RoomUserDataImplCopyWithImpl(
+      _$RoomUserDataImpl _value, $Res Function(_$RoomUserDataImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of RoomUserData
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = null,
+    Object? id = freezed,
+    Object? email = freezed,
+    Object? lastJoinedAt = freezed,
+  }) {
+    return _then(_$RoomUserDataImpl(
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
+      lastJoinedAt: freezed == lastJoinedAt
+          ? _value.lastJoinedAt
+          : lastJoinedAt // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$RoomUserDataImpl implements _RoomUserData {
+  const _$RoomUserDataImpl(
+      {required this.name, this.id, this.email, this.lastJoinedAt});
+
+  factory _$RoomUserDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$RoomUserDataImplFromJson(json);
+
+  @override
+  final String name;
+  @override
+  final String? id;
+  @override
+  final String? email;
+  @override
+  final String? lastJoinedAt;
+
+  @override
+  String toString() {
+    return 'RoomUserData(name: $name, id: $id, email: $email, lastJoinedAt: $lastJoinedAt)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$RoomUserDataImpl &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.lastJoinedAt, lastJoinedAt) ||
+                other.lastJoinedAt == lastJoinedAt));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, name, id, email, lastJoinedAt);
+
+  /// Create a copy of RoomUserData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$RoomUserDataImplCopyWith<_$RoomUserDataImpl> get copyWith =>
+      __$$RoomUserDataImplCopyWithImpl<_$RoomUserDataImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$RoomUserDataImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _RoomUserData implements RoomUserData {
+  const factory _RoomUserData(
+      {required final String name,
+      final String? id,
+      final String? email,
+      final String? lastJoinedAt}) = _$RoomUserDataImpl;
+
+  factory _RoomUserData.fromJson(Map<String, dynamic> json) =
+      _$RoomUserDataImpl.fromJson;
+
+  @override
+  String get name;
+  @override
+  String? get id;
+  @override
+  String? get email;
+  @override
+  String? get lastJoinedAt;
+
+  /// Create a copy of RoomUserData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$RoomUserDataImplCopyWith<_$RoomUserDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

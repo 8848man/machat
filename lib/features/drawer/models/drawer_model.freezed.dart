@@ -19,7 +19,9 @@ mixin _$DrawerModel {
   UserData get user => throw _privateConstructorUsedError;
   List<ChatRoomData> get roomList => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DrawerModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $DrawerModelCopyWith<DrawerModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -45,6 +47,8 @@ class _$DrawerModelCopyWithImpl<$Res, $Val extends DrawerModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of DrawerModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -63,6 +67,8 @@ class _$DrawerModelCopyWithImpl<$Res, $Val extends DrawerModel>
     ) as $Val);
   }
 
+  /// Create a copy of DrawerModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $UserDataCopyWith<$Res> get user {
@@ -94,6 +100,8 @@ class __$$DrawerModelImplCopyWithImpl<$Res>
       _$DrawerModelImpl _value, $Res Function(_$DrawerModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DrawerModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -151,7 +159,9 @@ class _$DrawerModelImpl implements _DrawerModel {
   int get hashCode => Object.hash(
       runtimeType, user, const DeepCollectionEquality().hash(_roomList));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DrawerModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DrawerModelImplCopyWith<_$DrawerModelImpl> get copyWith =>
@@ -167,8 +177,11 @@ abstract class _DrawerModel implements DrawerModel {
   UserData get user;
   @override
   List<ChatRoomData> get roomList;
+
+  /// Create a copy of DrawerModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DrawerModelImplCopyWith<_$DrawerModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

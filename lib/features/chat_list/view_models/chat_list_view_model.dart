@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:machat/features/chat_list/models/chat_list_model.dart';
+import 'package:machat/features/common/models/chat_list_model.dart';
 import 'package:machat/features/chat_list/repository/chat_list_repository.dart';
 import 'package:machat/features/common/models/chat_room_data.dart';
+import 'package:machat/features/common/models/user_data.dart';
+import 'package:machat/features/common/providers/chat_room_id.dart';
+import 'package:machat/features/common/utils/router_utils.dart';
+import 'package:machat/features/common/view_models/user_view_model.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:machat/router/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -45,6 +49,7 @@ class ChatListViewModel extends _$ChatListViewModel {
           'name': data['name'],
           'createdBy': data['createdBy'],
           'members': data['members'],
+          'membersHistory': data['membersHistory'],
           'createdAt': (data['createdAt'] as Timestamp)
               .toDate()
               .toString(), // Timestamp를 String으로 변환
@@ -60,7 +65,40 @@ class ChatListViewModel extends _$ChatListViewModel {
     }
   }
 
+  Future<void> deleteChatRoom(ChatRoomData roomData) async {
+    final repository = ref.read(chatListRepositoryProvider);
+    try {
+      // 현재 사용자 ID 가져오기
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser == null) {
+        throw Exception('User is not logged in');
+      }
+      final userId = currentUser.uid;
+
+      // 방 멤버에서 현재 사용자 제거
+      final List<String> newMembers = roomData.members
+          .where((element) => element != userId)
+          .toList(); // 현재 사용자를 제외한 멤버 리스트
+
+      final data = roomData.copyWith(members: newMembers).toJson();
+
+      // Repository 호출
+      await repository.update(roomData.roomId, data);
+    } catch (e) {
+      // 에러 처리
+      print('Error fetching chat rooms: $e');
+      return;
+    }
+  }
+
   Future<void> enterChat(ChatRoomData data) async {
+    final UserData userData = await ref.read(userViewModelProvider.future);
+    final RoomUserData roomUserData = RoomUserData(
+      id: userData.id,
+      name: userData.name,
+      email: userData.email,
+      lastJoinedAt: DateTime.now().toString(),
+    );
     // 로그인 되어있는지 확인
     final User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
@@ -76,16 +114,36 @@ class ChatListViewModel extends _$ChatListViewModel {
     // firebase update할 데이터 셋
     final roomId = data.roomId;
 
-    // 멤버에 이미 등록되어있다면
+    // 이전 멤버 히스토리 데이터를 할당할 리스트 생성
+    List<dynamic> beforeHistory = [];
+
+    // 이전 멤버 히스토리 데이터를 Json 형태로 할당
+    for (RoomUserData i in data.membersHistory) {
+      beforeHistory.add(i.toJson());
+    }
+
+    // 멤버에 추가
     final members = [...data.members, user.uid];
+    final membersHistory = [...beforeHistory, roomUserData.toJson()];
     final Map<String, dynamic> sendData = {
       'members': members,
+      'membersHistory': membersHistory,
     };
 
     // firebase update
-    ref.read(chatListRepositoryProvider).update(roomId, sendData);
+    await ref.read(chatListRepositoryProvider).update(roomId, sendData);
 
+    ref.read(chatRoomIdProvider.notifier).state = roomId;
+
+    Router().goNamed(ref, RouterPath.chat, null);
+
+    // final router = ref.read(goRouterProvider);
+    // router.goNamed(RouterPath.home.name);
+  }
+
+  void goChat(String roomId) {
+    ref.read(chatRoomIdProvider.notifier).state = roomId;
     final router = ref.read(goRouterProvider);
-    router.goNamed(RouterPath.home.name);
+    router.goNamed(RouterPath.chat.name);
   }
 }

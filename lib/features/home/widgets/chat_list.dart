@@ -1,0 +1,70 @@
+part of '../lib.dart';
+
+class HomeChatList extends ConsumerWidget {
+  const HomeChatList({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ChatListViewModel notifier =
+        ref.read(chatListViewModelProvider.notifier);
+    final AsyncValue<ChatListModel> state =
+        ref.watch(chatListViewModelProvider);
+
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      return Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('로그인이 필요합니다.'),
+          GestureDetector(
+            child:
+                const Text('로그인 하러 가기', style: TextStyle(color: Colors.blue)),
+            onTap: () => notifier.goLogin(),
+          ),
+        ],
+      ));
+    }
+
+    return state.when(
+      data: (ChatListModel data) => buildChatRoom(context, data, notifier),
+      error: (error, stackTrace) => Container(),
+      loading: () => const Center(child: CircularProgressIndicator()),
+    );
+  }
+
+  // 데이터 갯수만큼 채팅방 리스트타일 생성
+  Widget buildChatRoom(
+      BuildContext context, ChatListModel data, ChatListViewModel notifier) {
+    return Column(
+      children: [
+        ...List<Widget>.generate(data.roomList.length, (i) {
+          return buildChatRoomListTile(context, data.roomList[i], notifier);
+        }),
+      ],
+    );
+  }
+
+  // 채팅방 리스트타일 위젯
+  Widget buildChatRoomListTile(
+      BuildContext context, ChatRoomData data, ChatListViewModel notifier) {
+    return ListTile(
+      title: Row(
+        children: [
+          const Icon(IconData(0xe153, fontFamily: 'MaterialIcons')),
+          MCSpace().horizontalHalfSpace(),
+          Text(data.name != '' ? data.name : '제목 없음'),
+          const Spacer(),
+          GestureDetector(
+            child: const Icon(IconData(0xf317, fontFamily: 'MaterialIcons')),
+            onTap: () => notifier.deleteChatRoom(data),
+          ),
+        ],
+      ),
+      onTap: () {
+        Scaffold.of(context).closeDrawer();
+        notifier.goChat(data.roomId);
+      },
+    );
+  }
+}
