@@ -24,7 +24,7 @@ mixin _$ChatRoomData {
   String get createdBy => throw _privateConstructorUsedError;
   String? get createdAt => throw _privateConstructorUsedError;
   List<String> get members => throw _privateConstructorUsedError;
-  List<UserData> get membersHistory => throw _privateConstructorUsedError;
+  List<RoomUserData> get membersHistory => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   bool get isMine => throw _privateConstructorUsedError;
 
@@ -49,7 +49,7 @@ abstract class $ChatRoomDataCopyWith<$Res> {
       String createdBy,
       String? createdAt,
       List<String> members,
-      List<UserData> membersHistory,
+      List<RoomUserData> membersHistory,
       String name,
       bool isMine});
 }
@@ -97,7 +97,7 @@ class _$ChatRoomDataCopyWithImpl<$Res, $Val extends ChatRoomData>
       membersHistory: null == membersHistory
           ? _value.membersHistory
           : membersHistory // ignore: cast_nullable_to_non_nullable
-              as List<UserData>,
+              as List<RoomUserData>,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -123,7 +123,7 @@ abstract class _$$ChatRoomDataImplCopyWith<$Res>
       String createdBy,
       String? createdAt,
       List<String> members,
-      List<UserData> membersHistory,
+      List<RoomUserData> membersHistory,
       String name,
       bool isMine});
 }
@@ -169,7 +169,7 @@ class __$$ChatRoomDataImplCopyWithImpl<$Res>
       membersHistory: null == membersHistory
           ? _value._membersHistory
           : membersHistory // ignore: cast_nullable_to_non_nullable
-              as List<UserData>,
+              as List<RoomUserData>,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -190,7 +190,7 @@ class _$ChatRoomDataImpl implements _ChatRoomData {
       this.createdBy = '',
       this.createdAt,
       final List<String> members = const [],
-      final List<UserData> membersHistory = const [],
+      final List<RoomUserData> membersHistory = const [],
       this.name = '',
       this.isMine = false})
       : _members = members,
@@ -216,10 +216,10 @@ class _$ChatRoomDataImpl implements _ChatRoomData {
     return EqualUnmodifiableListView(_members);
   }
 
-  final List<UserData> _membersHistory;
+  final List<RoomUserData> _membersHistory;
   @override
   @JsonKey()
-  List<UserData> get membersHistory {
+  List<RoomUserData> get membersHistory {
     if (_membersHistory is EqualUnmodifiableListView) return _membersHistory;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_membersHistory);
@@ -288,7 +288,7 @@ abstract class _ChatRoomData implements ChatRoomData {
       final String createdBy,
       final String? createdAt,
       final List<String> members,
-      final List<UserData> membersHistory,
+      final List<RoomUserData> membersHistory,
       final String name,
       final bool isMine}) = _$ChatRoomDataImpl;
 
@@ -304,7 +304,7 @@ abstract class _ChatRoomData implements ChatRoomData {
   @override
   List<String> get members;
   @override
-  List<UserData> get membersHistory;
+  List<RoomUserData> get membersHistory;
   @override
   String get name;
   @override

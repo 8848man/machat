@@ -91,6 +91,10 @@ class ChatViewModel extends _$ChatViewModel implements ChatViewModelInterface {
         ExpandWidgetState.collapsed;
   }
 
+  void goProfile() {
+    ref.read(goRouterProvider).goNamed(RouterPath.chatProfile.name);
+  }
+
   @override
   Future<void> sendData() async => sendMessageProcess();
 }

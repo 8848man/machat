@@ -17,7 +17,7 @@ class ChatCreateRepository implements RepositoryService {
         'createdBy': data['userId'],
         'createdAt': FieldValue.serverTimestamp(),
         'members': [data['userId']], // 초기 멤버로 로그인한 사용자 포함
-        'membersHistory': [data['userName']],
+        'membersHistory': [data['membersHistory']],
         'name': data['name'],
       });
 

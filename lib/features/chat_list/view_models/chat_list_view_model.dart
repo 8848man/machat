@@ -93,6 +93,12 @@ class ChatListViewModel extends _$ChatListViewModel {
 
   Future<void> enterChat(ChatRoomData data) async {
     final UserData userData = await ref.read(userViewModelProvider.future);
+    final RoomUserData roomUserData = RoomUserData(
+      id: userData.id,
+      name: userData.name,
+      email: userData.email,
+      lastJoinedAt: DateTime.now().toString(),
+    );
     // 로그인 되어있는지 확인
     final User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
@@ -112,13 +118,13 @@ class ChatListViewModel extends _$ChatListViewModel {
     List<dynamic> beforeHistory = [];
 
     // 이전 멤버 히스토리 데이터를 Json 형태로 할당
-    for (UserData i in data.membersHistory) {
+    for (RoomUserData i in data.membersHistory) {
       beforeHistory.add(i.toJson());
     }
 
     // 멤버에 추가
     final members = [...data.members, user.uid];
-    final membersHistory = [...beforeHistory, userData.toJson()];
+    final membersHistory = [...beforeHistory, roomUserData.toJson()];
     final Map<String, dynamic> sendData = {
       'members': members,
       'membersHistory': membersHistory,
