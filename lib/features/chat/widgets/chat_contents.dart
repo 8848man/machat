@@ -61,17 +61,9 @@ class ChatContents extends ConsumerWidget {
           // 시간 숨김 여부
           final bool isContinue = shouldHideTime(value, reverseIndex);
 
-          // 메세지를 보낸 사람
-          String sender = '';
-
-          // 채팅방 정보와 보낸 사람 id를 비교해 이름을 가져옴
-          for (var element in data.membersHistory) {
-            if (element.id == value[reverseIndex]['createdBy']) {
-              sender = element.name;
-            } else {
-              sender = '알 수 없는 사용자';
-            }
-          }
+          // 보낸 사람 이름 가져오기
+          String sender =
+              getSender(data: data, value: value, reverseIndex: reverseIndex);
 
           // 프로필 숨김 여부
           final bool isHideProfile = shouldHideProfile(value, reverseIndex);
@@ -186,10 +178,7 @@ class ChatContents extends ConsumerWidget {
                   if (type == ChatContentsType.chat)
                     ChatBubble(
                         isMine: true, message: strValue, size: textWidth),
-                  if (type == ChatContentsType.image)
-                    ChatImage(
-                      url: strValue,
-                    ),
+                  if (type == ChatContentsType.image) ChatImage(url: strValue),
                   MCSpace().horizontalHalfSpace(),
                 ],
               ),
@@ -234,10 +223,7 @@ class ChatContents extends ConsumerWidget {
                   if (type == ChatContentsType.chat)
                     ChatBubble(
                         isMine: false, message: strValue, size: textWidth),
-                  if (type == ChatContentsType.image)
-                    ChatImage(
-                      url: strValue,
-                    ),
+                  if (type == ChatContentsType.image) ChatImage(url: strValue),
                   MCSpace().horizontalHalfSpace(),
                   buildChatInfo(false, createdAt, isContinue),
                 ],
@@ -346,5 +332,20 @@ class ChatContents extends ConsumerWidget {
       isHideProfile: isHideProfile,
       type: type,
     );
+  }
+
+  String getSender({
+    required ChatRoomData data,
+    required List<dynamic> value,
+    required int reverseIndex,
+  }) {
+    // 채팅방 정보와 보낸 사람 id를 비교해 이름을 가져옴
+    for (var element in data.membersHistory) {
+      if (element.id == value[reverseIndex]['createdBy']) {
+        return element.name;
+      }
+    }
+
+    return '알 수 없는 사용자';
   }
 }

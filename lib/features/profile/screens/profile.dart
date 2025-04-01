@@ -7,6 +7,9 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const DefaultLayout(title: '프로필', child: ProfileBundle());
+    return const DefaultLayout(
+      title: '프로필',
+      child: ProfileBundle(),
+    );
   }
 }

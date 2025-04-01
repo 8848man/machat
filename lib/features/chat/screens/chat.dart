@@ -10,8 +10,13 @@ class ChatScreen extends ConsumerWidget {
     return DefaultLayout(
       child: Column(
         children: [
+          // 채팅 컨텐츠
           const ChatContents().expand(),
+          // 채팅 입력창
           const ChatInput(),
+          // 채팅 전송 컨텐츠
+          const ChatSendingContents(),
+          // 채팅 + 버튼 확장 위젯
           const ChatExpand(),
         ],
       ),

@@ -12,6 +12,7 @@ class ProfileBody extends ConsumerWidget {
     final state = ref.watch(profileViewModelProvider);
     return state.when(
       data: (data) => Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           gradientAvatar(data),
           MCSpace().verticalSpace(),

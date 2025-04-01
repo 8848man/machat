@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:machat/features/expand_image/providers/selected_image_url_provider.dart';
+import 'package:machat/features/chat_expand_image/providers/selected_image_url_provider.dart';
 import 'package:machat/router/lib.dart';
 
 class ChatImage extends ConsumerWidget {

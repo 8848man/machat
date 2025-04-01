@@ -38,6 +38,12 @@ class ChatCreateViewModel extends _$ChatCreateViewModel {
   Future<void> createChatRoom() async {
     try {
       final UserData userData = await ref.read(userViewModelProvider.future);
+      final RoomUserData historyUserData = RoomUserData(
+        name: userData.name,
+        id: userData.id,
+        email: userData.email,
+        lastJoinedAt: DateTime.now().toString(),
+      );
 
       // FirebaseAuth를 이용하여 현재 로그인된 사용자 ID 가져오기
       final currentUser = FirebaseAuth.instance.currentUser;
@@ -49,7 +55,7 @@ class ChatCreateViewModel extends _$ChatCreateViewModel {
       final Map<String, dynamic> qData = {
         'userId': userId,
         'name': roomNameController.text,
-        'userName': userData.toJson(),
+        'membersHistory': historyUserData.toJson(),
       };
 
       // Repository 호출

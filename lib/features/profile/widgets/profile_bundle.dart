@@ -15,8 +15,8 @@ class ProfileBundle extends StatelessWidget {
         const ProfileBackground(),
         Column(
           children: [
-            const ProfileHeader().expand(flex: 5),
-            const ProfileBody().expand(flex: 2),
+            const ProfileHeader().expand(flex: 2),
+            const ProfileBody().expand(flex: 5),
             const ProfileFooter().expand(flex: 3),
           ],
         ),
