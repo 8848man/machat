@@ -10,20 +10,11 @@ class HomeChatList extends ConsumerWidget {
     final AsyncValue<ChatListModel> state =
         ref.watch(chatListViewModelProvider);
 
+    // FirebaseAuth 인스턴스에서 현재 사용자 가져오기
     final User? user = FirebaseAuth.instance.currentUser;
+    // 현재 사용자가 null인 경우 로그인 화면으로 이동
     if (user == null) {
-      return Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text('로그인이 필요합니다.'),
-          GestureDetector(
-            child:
-                const Text('로그인 하러 가기', style: TextStyle(color: Colors.blue)),
-            onTap: () => notifier.goLogin(),
-          ),
-        ],
-      ));
+      return buildNeedLogin(notifier);
     }
 
     return state.when(
@@ -65,6 +56,24 @@ class HomeChatList extends ConsumerWidget {
         Scaffold.of(context).closeDrawer();
         notifier.goChat(data.roomId);
       },
+    );
+  }
+
+  Widget buildNeedLogin(ChatListViewModel notifier) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('로그인이 필요합니다.'),
+          GestureDetector(
+            child: const Text(
+              '로그인 하러 가기',
+              style: TextStyle(color: Colors.blue),
+            ),
+            onTap: () => notifier.goLogin(),
+          ),
+        ],
+      ),
     );
   }
 }

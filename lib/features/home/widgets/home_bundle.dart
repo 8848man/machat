@@ -48,7 +48,7 @@ class _HomeBundleState extends ConsumerState<HomeBundle>
           children: const <Widget>[
             Firends(),
             HomeChatList(),
-            Center(child: Text("It's sunny here")),
+            Center(child: Text("해당 기능은 준비중입니다.")),
           ],
         ).expand(),
         TabBar(
@@ -56,7 +56,7 @@ class _HomeBundleState extends ConsumerState<HomeBundle>
           controller: _tabController,
           tabs: const <Widget>[
             Tab(icon: Icon(Icons.person)),
-            Tab(icon: Icon(Icons.chat_bubble)),
+            Tab(icon: Icon(IconData(0xe153, fontFamily: 'MaterialIcons'))),
             Tab(icon: Icon(Icons.brightness_5_sharp)),
           ],
         ),

@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:machat/features/common/interfaces/repository_service.dart';
 import 'package:machat/features/common/models/chat_list_model.dart';
-import 'package:machat/features/chat_list/repository/chat_list_repository.dart';
 import 'package:machat/features/common/models/chat_room_data.dart';
 import 'package:machat/features/common/models/user_data.dart';
 import 'package:machat/features/common/providers/chat_room_id.dart';
+import 'package:machat/features/common/repositories/chat_room_crud_repository.dart';
 import 'package:machat/features/common/utils/router_utils.dart';
 import 'package:machat/features/common/view_models/user_view_model.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
@@ -15,7 +16,6 @@ part 'chat_list_view_model.g.dart';
 
 @riverpod
 class ChatListViewModel extends _$ChatListViewModel {
-  List<ChatRoomData> chatRooms = [];
   @override
   Future<ChatListModel> build() async {
     final ChatListModel data = await initData();
@@ -30,17 +30,18 @@ class ChatListViewModel extends _$ChatListViewModel {
   }
 
   Future<List<ChatRoomData>> getChatRooms() async {
-    final repository = ref.read(chatListRepositoryProvider);
+    final RepositoryService repository = ref.read(chatRoomCrudProvider);
     try {
       // 현재 사용자 ID 가져오기
-      final currentUser = FirebaseAuth.instance.currentUser;
+      final User? currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser == null) {
         throw Exception('User is not logged in');
       }
-      final userId = currentUser.uid;
+      final String userId = currentUser.uid;
 
       // Repository 호출
-      final rawChatRooms = await repository.readAll();
+      final List<Map<String, dynamic>> rawChatRooms =
+          await repository.readAll();
 
       // Firestore 데이터를 ChatRoomData로 변환
       List<ChatRoomData> chatRooms = rawChatRooms.map((data) {
@@ -66,7 +67,7 @@ class ChatListViewModel extends _$ChatListViewModel {
   }
 
   Future<void> deleteChatRoom(ChatRoomData roomData) async {
-    final repository = ref.read(chatListRepositoryProvider);
+    final repository = ref.read(chatRoomCrudProvider);
     try {
       // 현재 사용자 ID 가져오기
       final currentUser = FirebaseAuth.instance.currentUser;
@@ -131,7 +132,7 @@ class ChatListViewModel extends _$ChatListViewModel {
     };
 
     // firebase update
-    await ref.read(chatListRepositoryProvider).update(roomId, sendData);
+    await ref.read(chatRoomCrudProvider).update(roomId, sendData);
 
     ref.read(chatRoomIdProvider.notifier).state = roomId;
 
