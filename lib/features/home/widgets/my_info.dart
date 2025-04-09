@@ -10,7 +10,7 @@ class MyInfo extends ConsumerWidget {
         ref.read(friendsViewModelProvider.notifier);
     return userState.when(
       data: (data) {
-        return buildMyInfo(
+        return buildInfo(
           user: data,
           notifier: notifier,
         );
@@ -24,24 +24,6 @@ class MyInfo extends ConsumerWidget {
           child: CircularProgressIndicator(),
         );
       },
-    );
-  }
-
-  Widget buildMyInfo({
-    required UserData user,
-    required FriendsViewModel notifier,
-  }) {
-    return infoBox(
-      child: Row(
-        children: [
-          gradientAvatar(
-            user: user,
-            notifier: notifier,
-          ),
-          const SizedBox(width: 10),
-          profileTextColumn(user),
-        ],
-      ),
     );
   }
 }

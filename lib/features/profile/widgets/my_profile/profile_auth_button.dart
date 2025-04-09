@@ -2,25 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/features/common/view_models/user_view_model.dart';
-import 'package:machat/features/profile/view_models/profile_view_model.dart';
 import 'package:machat/router/lib.dart';
-
-Widget buildConversation(WidgetRef ref) {
-  final notifier = ref.read(profileViewModelProvider.notifier);
-  return Column(
-    children: [
-      IconButton(
-        icon: const Icon(
-          IconData(0xe153, fontFamily: 'MaterialIcons'),
-          size: 25,
-        ),
-        tooltip: '대화하기',
-        onPressed: () => notifier.createOneToOneChat(),
-      ),
-      const Text('대화하기'),
-    ],
-  );
-}
 
 Widget buildAuthButton(User? user, WidgetRef ref) {
   return user == null ? buildLogin(ref) : buildLogout(ref);

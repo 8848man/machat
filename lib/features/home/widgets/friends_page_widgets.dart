@@ -7,7 +7,7 @@ Widget infoBox({required Widget child}) {
   );
 }
 
-Widget buildMyInfo({
+Widget buildInfo({
   required UserData user,
   required FriendsViewModel notifier,
 }) {

@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/design_system/lib.dart';
-import 'package:machat/features/profile/widgets/my_profile/profile_auth_button.dart';
+import 'package:machat/features/profile/widgets/other_profile.dart/profile_auth_button.dart';
 
 class OtherProfileFooter extends ConsumerWidget {
   const OtherProfileFooter({super.key});
@@ -26,6 +26,7 @@ class OtherProfileFooter extends ConsumerWidget {
       children: [
         if (user != null) buildConversation(ref),
         // buildAuthButton(user, ref),
+        buildAddFriend(ref),
       ],
     );
   }

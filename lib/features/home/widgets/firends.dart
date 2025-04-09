@@ -9,6 +9,7 @@ class Firends extends ConsumerWidget {
       children: [
         MyInfo(),
         Divider(),
+        FriendListWidget(),
       ],
     );
   }
