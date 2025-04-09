@@ -7,7 +7,9 @@ import 'package:machat/features/chat/providers/chat_focus_node_provider.dart';
 import 'package:machat/features/chat/repository/chat_repository.dart';
 import 'package:machat/features/common/interfaces/repository_service.dart';
 import 'package:machat/features/common/models/chat_room_data.dart';
+import 'package:machat/features/common/models/user_data.dart';
 import 'package:machat/features/common/providers/chat_room_id.dart';
+import 'package:machat/features/profile/view_models/profile_view_model.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:machat/router/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -91,7 +93,15 @@ class ChatViewModel extends _$ChatViewModel implements ChatViewModelInterface {
         ExpandWidgetState.collapsed;
   }
 
-  void goProfile() {
+  void goProfile(RoomUserData? userData) {
+    if (userData == null) {
+      return;
+    }
+    // 프로필 화면으로 이동
+    // 프로필 화면으로 이동하기 전에, 프로필 정보를 업데이트
+    ref
+        .read(profileViewModelProvider.notifier)
+        .updateUserData(userData.toUserData());
     ref.read(goRouterProvider).goNamed(RouterPath.chatProfile.name);
   }
 

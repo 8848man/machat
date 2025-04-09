@@ -84,7 +84,7 @@ final goRouterProvider = Provider<GoRouter>(
                   pageBuilder: (context, state) => CustomTransitionPage<void>(
                     transitionDuration: const Duration(milliseconds: 500),
                     key: state.pageKey,
-                    child: const Profile(),
+                    child: const OtherProfile(),
                     transitionsBuilder: slideTransition,
                   ),
                 ),
@@ -119,7 +119,7 @@ final goRouterProvider = Provider<GoRouter>(
               name: RouterPath.profile.name,
               pageBuilder: (context, state) => CustomTransitionPage<void>(
                 key: state.pageKey,
-                child: const Profile(),
+                child: const MyProfile(),
                 transitionsBuilder: fadeTransition,
               ),
             ),

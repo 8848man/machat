@@ -61,8 +61,7 @@ class ChatContents extends ConsumerWidget {
           // 시간 숨김 여부
           final bool isContinue = shouldHideTime(value, reverseIndex);
 
-          // 보낸 사람 이름 가져오기
-          String sender =
+          RoomUserData sender =
               getSender(data: data, value: value, reverseIndex: reverseIndex);
 
           // 프로필 숨김 여부
@@ -109,7 +108,7 @@ class ChatContents extends ConsumerWidget {
     required bool isContinue,
     required bool isHideProfile,
     required ChatRoomData data,
-    required String sender,
+    required RoomUserData sender,
     User? user,
   }) {
     const ChatContentsType type = ChatContentsType.chat;
@@ -127,7 +126,7 @@ class ChatContents extends ConsumerWidget {
       return buildOtherContents(
         strValue: message,
         createdAt: chat.createdAt,
-        createdBy: sender,
+        sender: sender,
         isContinue: isContinue,
         isHideProfile: isHideProfile,
         type: type,
@@ -149,7 +148,7 @@ class ChatContents extends ConsumerWidget {
     return buildOtherContents(
       strValue: message,
       createdAt: chat.createdAt,
-      createdBy: sender,
+      sender: sender,
       isContinue: isContinue,
       isHideProfile: isHideProfile,
       type: type,
@@ -194,7 +193,7 @@ class ChatContents extends ConsumerWidget {
   Widget buildOtherContents({
     required String strValue,
     required String createdAt,
-    required String createdBy,
+    required RoomUserData sender,
     required bool isContinue,
     required bool isHideProfile,
     required ChatContentsType type,
@@ -208,7 +207,7 @@ class ChatContents extends ConsumerWidget {
             if (!isHideProfile)
               Padding(
                 padding: const EdgeInsets.only(left: 8),
-                child: Text(createdBy),
+                child: Text(sender.name),
               ),
             if (!isHideProfile) MCSpace().verticalHalfSpace(),
             SizedBox(
@@ -217,7 +216,8 @@ class ChatContents extends ConsumerWidget {
               child: Row(
                 children: [
                   MCSpace().horizontalHalfSpace(),
-                  if (!isHideProfile) const ChatProfile(size: 40.0),
+                  if (!isHideProfile)
+                    ChatProfileIcon(size: 40.0, userData: sender),
                   if (isHideProfile) const SizedBox(width: 40.0, height: 40.0),
                   MCSpace().horizontalHalfSpace(),
                   if (type == ChatContentsType.chat)
@@ -287,7 +287,7 @@ class ChatContents extends ConsumerWidget {
     required bool isContinue,
     required bool isHideProfile,
     required ChatRoomData data,
-    required String sender,
+    required RoomUserData sender,
     User? user,
   }) {
     const ChatContentsType type = ChatContentsType.image;
@@ -305,7 +305,7 @@ class ChatContents extends ConsumerWidget {
       return buildOtherContents(
         strValue: url,
         createdAt: image.createdAt,
-        createdBy: image.createdBy,
+        sender: sender,
         isContinue: isContinue,
         isHideProfile: isHideProfile,
         type: type,
@@ -327,25 +327,25 @@ class ChatContents extends ConsumerWidget {
     return buildOtherContents(
       strValue: url,
       createdAt: image.createdAt,
-      createdBy: sender,
+      sender: sender,
       isContinue: isContinue,
       isHideProfile: isHideProfile,
       type: type,
     );
   }
 
-  String getSender({
+  RoomUserData getSender({
     required ChatRoomData data,
     required List<dynamic> value,
     required int reverseIndex,
   }) {
     // 채팅방 정보와 보낸 사람 id를 비교해 이름을 가져옴
-    for (var element in data.membersHistory) {
+    for (RoomUserData element in data.membersHistory) {
       if (element.id == value[reverseIndex]['createdBy']) {
-        return element.name;
+        return element;
       }
     }
 
-    return '알 수 없는 사용자';
+    return const RoomUserData(name: '알 수 없는 사용자');
   }
 }

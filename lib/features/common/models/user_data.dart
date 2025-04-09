@@ -24,6 +24,8 @@ class RoomUserData with _$RoomUserData {
     required String name,
     String? id,
     String? email,
+    String? profileUrl,
+    String? nationId,
     String? lastJoinedAt,
   }) = _RoomUserData;
 
@@ -32,4 +34,24 @@ class RoomUserData with _$RoomUserData {
         ...json,
         'lastJoinedAt': parseDateToString(json['lastJoinedAt']),
       });
+}
+
+extension RoomUserDataX on RoomUserData {
+  UserData toUserData() => UserData(
+        name: name,
+        id: id,
+        email: email,
+        profileUrl: profileUrl,
+        nationId: nationId,
+      );
+}
+
+extension UserDataX on UserData {
+  RoomUserData toRoomUserData() => RoomUserData(
+        name: name,
+        id: id,
+        email: email,
+        profileUrl: profileUrl,
+        nationId: nationId,
+      );
 }
