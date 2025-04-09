@@ -258,6 +258,8 @@ mixin _$RoomUserData {
   String get name => throw _privateConstructorUsedError;
   String? get id => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
+  String? get profileUrl => throw _privateConstructorUsedError;
+  String? get nationId => throw _privateConstructorUsedError;
   String? get lastJoinedAt => throw _privateConstructorUsedError;
 
   /// Serializes this RoomUserData to a JSON map.
@@ -276,7 +278,13 @@ abstract class $RoomUserDataCopyWith<$Res> {
           RoomUserData value, $Res Function(RoomUserData) then) =
       _$RoomUserDataCopyWithImpl<$Res, RoomUserData>;
   @useResult
-  $Res call({String name, String? id, String? email, String? lastJoinedAt});
+  $Res call(
+      {String name,
+      String? id,
+      String? email,
+      String? profileUrl,
+      String? nationId,
+      String? lastJoinedAt});
 }
 
 /// @nodoc
@@ -297,6 +305,8 @@ class _$RoomUserDataCopyWithImpl<$Res, $Val extends RoomUserData>
     Object? name = null,
     Object? id = freezed,
     Object? email = freezed,
+    Object? profileUrl = freezed,
+    Object? nationId = freezed,
     Object? lastJoinedAt = freezed,
   }) {
     return _then(_value.copyWith(
@@ -311,6 +321,14 @@ class _$RoomUserDataCopyWithImpl<$Res, $Val extends RoomUserData>
       email: freezed == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
+              as String?,
+      profileUrl: freezed == profileUrl
+          ? _value.profileUrl
+          : profileUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      nationId: freezed == nationId
+          ? _value.nationId
+          : nationId // ignore: cast_nullable_to_non_nullable
               as String?,
       lastJoinedAt: freezed == lastJoinedAt
           ? _value.lastJoinedAt
@@ -328,7 +346,13 @@ abstract class _$$RoomUserDataImplCopyWith<$Res>
       __$$RoomUserDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, String? id, String? email, String? lastJoinedAt});
+  $Res call(
+      {String name,
+      String? id,
+      String? email,
+      String? profileUrl,
+      String? nationId,
+      String? lastJoinedAt});
 }
 
 /// @nodoc
@@ -347,6 +371,8 @@ class __$$RoomUserDataImplCopyWithImpl<$Res>
     Object? name = null,
     Object? id = freezed,
     Object? email = freezed,
+    Object? profileUrl = freezed,
+    Object? nationId = freezed,
     Object? lastJoinedAt = freezed,
   }) {
     return _then(_$RoomUserDataImpl(
@@ -362,6 +388,14 @@ class __$$RoomUserDataImplCopyWithImpl<$Res>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String?,
+      profileUrl: freezed == profileUrl
+          ? _value.profileUrl
+          : profileUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      nationId: freezed == nationId
+          ? _value.nationId
+          : nationId // ignore: cast_nullable_to_non_nullable
+              as String?,
       lastJoinedAt: freezed == lastJoinedAt
           ? _value.lastJoinedAt
           : lastJoinedAt // ignore: cast_nullable_to_non_nullable
@@ -374,7 +408,12 @@ class __$$RoomUserDataImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$RoomUserDataImpl implements _RoomUserData {
   const _$RoomUserDataImpl(
-      {required this.name, this.id, this.email, this.lastJoinedAt});
+      {required this.name,
+      this.id,
+      this.email,
+      this.profileUrl,
+      this.nationId,
+      this.lastJoinedAt});
 
   factory _$RoomUserDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$RoomUserDataImplFromJson(json);
@@ -386,11 +425,15 @@ class _$RoomUserDataImpl implements _RoomUserData {
   @override
   final String? email;
   @override
+  final String? profileUrl;
+  @override
+  final String? nationId;
+  @override
   final String? lastJoinedAt;
 
   @override
   String toString() {
-    return 'RoomUserData(name: $name, id: $id, email: $email, lastJoinedAt: $lastJoinedAt)';
+    return 'RoomUserData(name: $name, id: $id, email: $email, profileUrl: $profileUrl, nationId: $nationId, lastJoinedAt: $lastJoinedAt)';
   }
 
   @override
@@ -401,13 +444,18 @@ class _$RoomUserDataImpl implements _RoomUserData {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.email, email) || other.email == email) &&
+            (identical(other.profileUrl, profileUrl) ||
+                other.profileUrl == profileUrl) &&
+            (identical(other.nationId, nationId) ||
+                other.nationId == nationId) &&
             (identical(other.lastJoinedAt, lastJoinedAt) ||
                 other.lastJoinedAt == lastJoinedAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, name, id, email, lastJoinedAt);
+  int get hashCode => Object.hash(
+      runtimeType, name, id, email, profileUrl, nationId, lastJoinedAt);
 
   /// Create a copy of RoomUserData
   /// with the given fields replaced by the non-null parameter values.
@@ -430,6 +478,8 @@ abstract class _RoomUserData implements RoomUserData {
       {required final String name,
       final String? id,
       final String? email,
+      final String? profileUrl,
+      final String? nationId,
       final String? lastJoinedAt}) = _$RoomUserDataImpl;
 
   factory _RoomUserData.fromJson(Map<String, dynamic> json) =
@@ -441,6 +491,10 @@ abstract class _RoomUserData implements RoomUserData {
   String? get id;
   @override
   String? get email;
+  @override
+  String? get profileUrl;
+  @override
+  String? get nationId;
   @override
   String? get lastJoinedAt;
 
