@@ -1,9 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
-import 'package:machat/features/chat_create/lib.dart';
 import 'package:machat/features/chat_create/models/chat_create_model.dart';
-import 'package:machat/features/common/models/user_data.dart';
-import 'package:machat/features/common/view_models/user_view_model.dart';
+import 'package:machat/features/common/view_models/chat_room_crud_view_model.dart';
+import 'package:machat/features/common/widgets/mc_check_box_view.dart';
 import 'package:machat/router/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -30,43 +28,17 @@ class ChatCreateViewModel extends _$ChatCreateViewModel {
 
   Future<void> createChatRoomProcess() async {
     final router = ref.read(goRouterProvider);
-    await createChatRoom();
+    ChatRoomType type = ChatRoomType.group;
+    final bool isOpenChat = ref.read(checkboxStateProvider.notifier).state;
+    if (isOpenChat) {
+      type = ChatRoomType.open;
+    }
+    await ref.read(chatRoomCrudViewModelProvider.notifier).createChatRoom(
+          roomName: roomNameController.text,
+          type: type,
+        );
+    // await createChatRoom();
 
     router.goNamed(RouterPath.home.name);
-  }
-
-  Future<void> createChatRoom() async {
-    try {
-      final UserData userData = await ref.read(userViewModelProvider.future);
-      final RoomUserData historyUserData = RoomUserData(
-        name: userData.name,
-        id: userData.id,
-        email: userData.email,
-        lastJoinedAt: DateTime.now().toString(),
-      );
-
-      // FirebaseAuth를 이용하여 현재 로그인된 사용자 ID 가져오기
-      final currentUser = FirebaseAuth.instance.currentUser;
-      if (currentUser == null) {
-        throw Exception('User is not logged in');
-      }
-      final userId = currentUser.uid;
-
-      final Map<String, dynamic> qData = {
-        'userId': userId,
-        'name': roomNameController.text,
-        'membersHistory': historyUserData.toJson(),
-      };
-
-      // Repository 호출
-      final repository = ref.read(chatCreateRepositoryProvider);
-      await repository.create(qData);
-
-      // 성공 메시지
-      print('Chat room created successfully!');
-    } catch (e) {
-      // 에러 처리
-      print('Error creating chat room: $e');
-    }
   }
 }
