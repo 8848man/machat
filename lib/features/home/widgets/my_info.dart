@@ -6,13 +6,12 @@ class MyInfo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<UserData> userState = ref.watch(userViewModelProvider);
-    final FriendsViewModel notifier =
-        ref.read(friendsViewModelProvider.notifier);
     return userState.when(
       data: (data) {
         return buildInfo(
           user: data,
-          notifier: notifier,
+          ref: ref,
+          context: context,
         );
       },
       error: (error, stackTrace) {

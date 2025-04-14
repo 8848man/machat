@@ -8,26 +8,15 @@ class FriendListWidget extends ConsumerWidget {
     final AsyncValue<FriendListModel> state =
         ref.watch(friendListViewModelProvider);
 
-    state.when(
+    return state.when(
       data: (data) {
-        print('test003, data is $data');
-        // return ListView.builder(
-        //   itemCount: data.friends.length,
-        //   itemBuilder: (context, index) {
-        //     final friend = data.friends[index];
-        //     return ListTile(
-        //       title: Text(friend.name),
-        //       subtitle: Text(friend.status),
-        //       leading: CircleAvatar(
-        //         backgroundImage: NetworkImage(friend.profileImageUrl),
-        //       ),
-        //       onTap: () {
-        //         // Handle friend tap
-        //       },
-        //     );
-        //   },
-        // );
-        return Container();
+        return ListView.builder(
+          itemCount: data.friends.length,
+          itemBuilder: (context, index) {
+            final UserData friend = data.friends[index];
+            return buildInfo(user: friend, ref: ref, context: context);
+          },
+        ).expand();
       },
       error: (error, stackTrace) {
         return const Center(
@@ -40,7 +29,5 @@ class FriendListWidget extends ConsumerWidget {
         );
       },
     );
-
-    return Container();
   }
 }

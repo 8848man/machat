@@ -38,3 +38,22 @@ Widget buildAddFriend(WidgetRef ref) {
     ],
   );
 }
+
+Widget buildDeleteFreind(WidgetRef ref) {
+  final notifier = ref.read(profileViewModelProvider.notifier);
+  return Column(
+    children: [
+      IconButton(
+        icon: SvgPicture.asset(
+          'lib/assets/icons/person_minus.svg',
+          width: 25,
+          height: 25,
+          color: Colors.black, // 필요 시 색상 지정
+        ),
+        tooltip: '친구 삭제하기',
+        onPressed: () => notifier.deleteFriend(),
+      ),
+      const Text('친구 삭제하기'),
+    ],
+  );
+}

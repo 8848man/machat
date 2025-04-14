@@ -27,6 +27,7 @@ class FriendCrudRepository implements RepositoryService {
         'addedAt': FieldValue.serverTimestamp(),
         'status': 'added',
       });
+      SnackBarCaller().callSnackBar(ref, '친구 추가가 완료되었습니다');
       return {};
     } catch (e) {
       SnackBarCaller().callSnackBar(ref, '친구 추가 실패 ${e.toString()}');
@@ -66,15 +67,30 @@ class FriendCrudRepository implements RepositoryService {
     return friends;
   }
 
+  Future<void> deleteFriend(String friendId) async {
+    try {
+      final currentUser = await ref.read(userViewModelProvider.future);
+      await _firestore
+          .collection('users')
+          .doc(currentUser.id)
+          .collection('friends')
+          .doc(friendId)
+          .delete();
+
+      SnackBarCaller().callSnackBar(ref, '친구 삭제가 완료되었습니다.');
+    } catch (e) {
+      SnackBarCaller()
+          .callSnackBar(ref, '친구 삭제에 실패했습니다. 에러코드 : ${e.toString()}');
+      rethrow;
+    }
+  }
+
   @override
   Future<Map<String, dynamic>> create(Map<String, dynamic> data) async =>
       addFriend(data);
 
   @override
-  Future<void> delete(String id, {String? userId}) {
-    // TODO: implement delete
-    throw UnimplementedError();
-  }
+  Future<void> delete(String id, {String? userId}) => deleteFriend(id);
 
   @override
   Future<Map<String, dynamic>> read(String id) {

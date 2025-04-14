@@ -47,4 +47,11 @@ class ProfileViewModel extends _$ProfileViewModel {
     final UserData userData = ref.read(profileUserProvider);
     ref.read(friendListViewModelProvider.notifier).addFriend(userData.toJson());
   }
+
+  Future<void> deleteFriend() async {
+    final UserData userData = ref.read(profileUserProvider);
+    ref
+        .read(friendListViewModelProvider.notifier)
+        .deleteFriend(userData.id ?? ''); // 친구 삭제
+  }
 }

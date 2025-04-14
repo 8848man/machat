@@ -8,16 +8,14 @@ Widget infoBox({required Widget child}) {
 }
 
 Widget buildInfo({
+  required BuildContext context,
   required UserData user,
-  required FriendsViewModel notifier,
+  required WidgetRef ref,
 }) {
   return infoBox(
     child: Row(
       children: [
-        gradientAvatar(
-          user: user,
-          notifier: notifier,
-        ),
+        gradientAvatar(context: context, user: user, ref: ref),
         const SizedBox(width: 10),
         profileTextColumn(user),
       ],
@@ -27,9 +25,11 @@ Widget buildInfo({
 
 // 프로필 사진
 Widget gradientAvatar({
+  required BuildContext context,
   required UserData user,
-  required FriendsViewModel notifier,
+  required WidgetRef ref,
 }) {
+  final FriendsViewModel notifier = ref.read(friendsViewModelProvider.notifier);
   return GestureDetector(
     child: Container(
       height: 50,
@@ -56,7 +56,10 @@ Widget gradientAvatar({
         ),
       ),
     ),
-    onTap: () => notifier.goProfile(),
+    onTap: () {
+      notifier.setProfile(user);
+      showProfile(context, ref, user);
+    },
   );
 }
 
