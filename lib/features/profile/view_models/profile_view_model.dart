@@ -1,5 +1,6 @@
 import 'package:machat/features/common/models/user_data.dart';
 import 'package:machat/features/common/view_models/chat_room_crud_view_model.dart';
+import 'package:machat/features/common/view_models/friend_list_view_model.dart';
 import 'package:machat/features/profile/providers/profile_user_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -40,5 +41,17 @@ class ProfileViewModel extends _$ProfileViewModel {
           roomName: '${userData.name} 님과의 대화',
           type: ChatRoomType.oneToOne,
         );
+  }
+
+  Future<void> addFriend() async {
+    final UserData userData = ref.read(profileUserProvider);
+    ref.read(friendListViewModelProvider.notifier).addFriend(userData.toJson());
+  }
+
+  Future<void> deleteFriend() async {
+    final UserData userData = ref.read(profileUserProvider);
+    ref
+        .read(friendListViewModelProvider.notifier)
+        .deleteFriend(userData.id ?? ''); // 친구 삭제
   }
 }
