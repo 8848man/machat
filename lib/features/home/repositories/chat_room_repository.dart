@@ -41,8 +41,11 @@ class ChatRoomRepository implements RepositoryService {
           .where('members', arrayContains: searchId)
           .get();
 
+      final List<Map<String, dynamic>> roomData =
+          querySnapshot.docs.map((doc) => doc.data()).toList();
+
       // Firestore의 raw 데이터를 반환
-      return querySnapshot.docs.map((doc) => doc.data()).toList();
+      return roomData;
     } catch (e) {
       throw Exception('Failed to fetch chat rooms: $e');
     }
