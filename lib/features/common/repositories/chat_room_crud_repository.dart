@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/features/common/interfaces/repository_service.dart';
+import 'package:machat/features/common/utils/chat_key_generator.dart';
 
-final chatRoomCrudProvider = Provider<RepositoryService>((ref) {
+final chatRoomCrudProvider = Provider<ChatRoomCrudRepository>((ref) {
   return ChatRoomCrudRepository();
 });
 
@@ -28,6 +29,56 @@ class ChatRoomCrudRepository implements RepositoryService {
       return {'success': true};
     } catch (e) {
       print('error Occured! $e');
+      return {'success': false};
+    }
+  }
+
+  Future<Map<String, dynamic>> createOneToOneChat({
+    required Map<String, dynamic> data,
+    required String friendUid,
+  }) async {
+    try {
+      final chatKey = generateChatKey(data['userId'], friendUid);
+      final oneToOneRef = _firestore.collection('oneToOneChats').doc(chatKey);
+
+      final snapshot = await oneToOneRef.get();
+
+      if (snapshot.exists) {
+        return {
+          'success': true,
+          'chatRoomId': snapshot.data()?['chatRoomId'],
+          'isExist': true,
+        };
+      }
+
+      final newChatRoomRef = _firestore.collection('chat_rooms').doc();
+
+      // 트랜잭션
+      // 채팅방 생성
+      // 일대일 채팅방 컬랙션에 해당 채팅방 Id 추가
+      await _firestore.runTransaction((transaction) async {
+        transaction.set(newChatRoomRef, {
+          'roomId': newChatRoomRef.id,
+          'createdBy': data['userId'],
+          'createdAt': FieldValue.serverTimestamp(),
+          'members': [...data['members']], // 초기 멤버들
+          'membersHistory': [...data['membersHistory']], // 초기 멤버 히스토리 갱신
+          'name': null,
+          'type': data['type'],
+        });
+
+        transaction.set(oneToOneRef, {
+          'userIds': [data['userId'], friendUid],
+          'chatRoomId': newChatRoomRef.id,
+        });
+      });
+
+      return {
+        'success': true,
+        'chatRoomId': newChatRoomRef.id,
+      };
+    } catch (e) {
+      print('error in createOneToOneChat: $e');
       return {'success': false};
     }
   }

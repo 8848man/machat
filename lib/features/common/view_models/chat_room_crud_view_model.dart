@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:machat/features/common/models/user_data.dart';
+import 'package:machat/features/common/providers/chat_room_id.dart';
 import 'package:machat/features/common/repositories/chat_room_crud_repository.dart';
 import 'package:machat/features/common/view_models/user_view_model.dart';
+import 'package:machat/router/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'chat_room_crud_view_model.g.dart';
 
@@ -62,10 +64,18 @@ class ChatRoomCrudViewModel extends _$ChatRoomCrudViewModel {
         'members': members,
         'type': type.type, // 그룹 타입으로 설정
       };
+      final ChatRoomCrudRepository repository = ref.read(chatRoomCrudProvider);
 
-      // Repository 호출
-      final repository = ref.read(chatRoomCrudProvider);
-      await repository.create(qData);
+      // 일대일 채팅방의 경우 createOneToOneChatRoom 메서드 호출
+      if (type == ChatRoomType.oneToOne) {
+        final Map<String, dynamic> data = await repository.createOneToOneChat(
+            data: qData, friendUid: addingUsers?.id ?? '');
+        // 생성 후, 혹은 있을 경우 채팅방으로 이동
+        goToChatRoom(data['chatRoomId'] ?? '');
+      } else {
+        // Repository의 create 메서드 호출
+        await repository.create(qData);
+      }
 
       // 성공 메시지
       print('Chat room created successfully!');
@@ -73,5 +83,12 @@ class ChatRoomCrudViewModel extends _$ChatRoomCrudViewModel {
       // 에러 처리
       print('Error creating chat room: $e');
     }
+  }
+
+  // 해당 채팅방으로 이동
+  void goToChatRoom(String chatRoomId) {
+    final router = ref.read(goRouterProvider);
+    ref.read(chatRoomIdProvider.notifier).state = chatRoomId;
+    router.goNamed(RouterPath.chat.name);
   }
 }

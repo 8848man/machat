@@ -3,7 +3,6 @@ import 'package:machat/features/common/models/friends_model.dart';
 import 'package:machat/features/common/models/user_data.dart';
 import 'package:machat/features/common/providers/friend_list.dart';
 import 'package:machat/features/common/repositories/friend_crud_repository.dart';
-import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'friend_list_view_model.g.dart';
 
@@ -11,6 +10,7 @@ part 'friend_list_view_model.g.dart';
 class FriendListViewModel extends _$FriendListViewModel {
   @override
   Future<FriendListModel> build() async {
+    // 친구 리스트 State watch
     ref.watch(friendListProvider);
     return await getFriends();
   }
