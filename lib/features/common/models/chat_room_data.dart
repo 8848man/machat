@@ -22,7 +22,6 @@ class ChatRoomData with _$ChatRoomData {
     @Default([]) List<RoomUserData> membersHistory,
     @Default('') String name,
     @Default(false) bool isMine,
-    @Default([]) List<UserData> memberDatas,
   }) = _ChatRoomData;
 
   factory ChatRoomData.fromJson(Map<String, dynamic> json) =>

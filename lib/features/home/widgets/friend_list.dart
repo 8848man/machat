@@ -16,7 +16,7 @@ class FriendListWidget extends ConsumerWidget {
             final UserData friend = data.friends[index];
             return buildInfo(user: friend, ref: ref, context: context);
           },
-        ).expand();
+        );
       },
       error: (error, stackTrace) {
         return const Center(

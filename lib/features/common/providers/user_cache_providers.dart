@@ -7,7 +7,7 @@ class UserCacheNotifier extends StateNotifier<Map<String, dynamic>> {
     state = {...state, key: value};
   }
 
-  void clearCache() {
+  Future<void> clearCache() async {
     state = {};
   }
 }
@@ -16,7 +16,3 @@ final userCacheProvider =
     StateNotifierProvider<UserCacheNotifier, Map<String, dynamic>>(
   (ref) => UserCacheNotifier(),
 );
-
-void logout(WidgetRef ref) {
-  ref.read(userCacheProvider.notifier).clearCache();
-}

@@ -8,7 +8,7 @@ class FriendListNotifier extends StateNotifier<List<UserData>> {
 
   void set(List<UserData> friends) => state = friends;
 
-  void clear() => state = [];
+  Future<void> clear() async => state = [];
 
   void removeById(String id) {
     state = state.where((user) => user.id != id).toList();
