@@ -15,19 +15,8 @@ Future<void> showProfile(
       isScrollControlled: true, // 중요!!
       backgroundColor: Colors.transparent, // 선택사항
       builder: (context) {
-        return Scaffold(
-          // appBar: AppBar(
-          //   title: const Text('프로필'),
-          //   leading: IconButton(
-          //     icon: const Icon(Icons.arrow_back),
-          //     onPressed: () {
-          //       if (Navigator.canPop(context)) {
-          //         Navigator.pop(context);
-          //       }
-          //     },
-          //   ),
-          // ),
-          body: isMyProfile ? const MyProfile() : const OtherProfile(),
+        return Container(
+          child: isMyProfile ? const MyProfile() : const OtherProfile(),
         );
       },
     );
