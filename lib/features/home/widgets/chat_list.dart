@@ -54,7 +54,7 @@ class HomeChatList extends ConsumerWidget {
       ),
       onTap: () {
         Scaffold.of(context).closeDrawer();
-        notifier.goChat(data.roomId);
+        notifier.goChat(data.roomId, data.name);
       },
     );
   }

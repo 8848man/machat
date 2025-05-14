@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:machat/features/chat/providers/chat_room_name_provider.dart';
 import 'package:machat/features/common/models/user_data.dart';
 import 'package:machat/features/common/providers/chat_room_id.dart';
 import 'package:machat/features/common/repositories/chat_room_crud_repository.dart';
@@ -71,7 +72,7 @@ class ChatRoomCrudViewModel extends _$ChatRoomCrudViewModel {
         final Map<String, dynamic> data = await repository.createOneToOneChat(
             data: qData, friendUid: addingUsers?.id ?? '');
         // 생성 후, 혹은 있을 경우 채팅방으로 이동
-        goToChatRoom(data['chatRoomId'] ?? '');
+        goToChatRoom(data['chatRoomId'] ?? '', data['name'] ?? '채팅방');
       } else {
         // Repository의 create 메서드 호출
         await repository.create(qData);
@@ -86,9 +87,10 @@ class ChatRoomCrudViewModel extends _$ChatRoomCrudViewModel {
   }
 
   // 해당 채팅방으로 이동
-  void goToChatRoom(String chatRoomId) {
+  void goToChatRoom(String chatRoomId, String roomName) {
     final router = ref.read(goRouterProvider);
     ref.read(chatRoomIdProvider.notifier).state = chatRoomId;
+    ref.read(chatRoomNameProvider.notifier).state = roomName;
     router.goNamed(RouterPath.chat.name);
   }
 }
