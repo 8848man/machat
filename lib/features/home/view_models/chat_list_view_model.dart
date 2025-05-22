@@ -79,8 +79,12 @@ class ChatListViewModel extends _$ChatListViewModel {
 
       SnackBarCaller().callSnackBar(ref, '채팅방이 삭제되었습니다.');
 
-      // Repository 호출
-      await repository.update(roomData.roomId, data);
+      if (roomData.members.length == 1) {
+        // 방에 나만 남아있다면 방 삭제
+        repository.delete(roomData.roomId);
+      } else {
+        repository.update(roomData.roomId, data);
+      }
 
       update((state) async {
         final newChatRoom = await getChatRooms();
