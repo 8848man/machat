@@ -15,9 +15,13 @@ class ChatRoomRepository implements RepositoryService {
   }
 
   @override
-  Future<void> delete(String roomId, {String? userId}) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<void> delete(String roomId, {String? userId}) async {
+    try {
+      final chatRoomRef = _firestore.collection('chat_rooms').doc(roomId);
+      await chatRoomRef.delete();
+    } catch (e) {
+      throw Exception('Failed to delete chat room: $e');
+    }
   }
 
   @override
