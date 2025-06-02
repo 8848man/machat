@@ -57,7 +57,7 @@ features/utils : 기능별 유틸리티 모음
 │  ├─chat  
 │  │  │  lib.dart  
 │  │  ├─expand  
-│  │  │  ├─enums
+│  │  │  ├─enums  
 │  │  │  │      chat_contents_type.dart  
 │  │  │  │      expand_state.dart  
 │  │  │  ├─models  
@@ -113,7 +113,7 @@ features/utils : 기능별 유틸리티 모음
 │  │          chat_sending_contents.dart  
 │  ├─chat_create  
 │  │  │  lib.dart  
-│  │  ├─models 
+│  │  ├─models  
 │  │  │      chat_create_model.dart  
 │  │  │      chat_create_model.freezed.dart  
 │  │  ├─screens  
