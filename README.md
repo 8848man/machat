@@ -2,11 +2,25 @@
 
 실시간 채팅 앱 마챗입니다.
 
+## lib 폴더별 설명  
+animated_widget : 위젯에 overwrap 하여 사용하는 애니메이션 위젯  
+assets : 이미지나 아이콘과 같은 에셋 모음  
+config : 앱 설정 파일  
+design_system : 버튼, 박스, 색깔 등 프로젝트 내에서 공통으로 사용하는 디자인 요소  
+features : 각 기능별 폴더 모음  
+features/models : 기능 내에서 사용하는 모델 모음  
+features/screen : 라우터를 통해 직접적으로 진입하는 화면 프레임  
+features/widgets : 해당 기능 스크린 명세에 의해 배치되는 위젯들  
+features/repositories : 서버와 직접 통신하는 레포지토리  
+features/providers : 상태 관리를 위한 riverpod provider 모음  
+features/view_models : 화면 제어 및 서버 호출 등의 비지니스 로직을 담당하는 뷰모델 모음  
+features/utils : 기능별 유틸리티 모음  
+
+
 ## 폴더 구조  
 
 │  extensions.dart  
 │  main.dart  
-│  
 ├─animated_widget  
 │      animation_slide_up.dart  
 │      lib.dart  
@@ -26,7 +40,6 @@
 │      firebase_config.dart  
 ├─design_system  
 │  │  lib.dart  
-│  │  
 │  ├─animations  
 │  ├─buttons  
 │  │      buttons.dart  
@@ -36,7 +49,6 @@
 │  │      color.dart  
 │  ├─inputs  
 │  │      text_input.dart  
-│  │  
 │  ├─sized_boxes.dart  
 │  │      padding.dart  
 │  │      space.dart  
