@@ -1,12 +1,17 @@
-part of '../lib.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:machat/features/chat/view_models/member_list_view_model.dart';
+import 'package:machat/features/common/models/user_data.dart';
+// 추후 변경. home이 아닌 common으로 이동할 예정
+import 'package:machat/features/home/lib.dart';
 
-class FriendListWidget extends ConsumerWidget {
-  const FriendListWidget({super.key});
+class ChatMembers extends ConsumerWidget {
+  const ChatMembers({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<UserListModel> state =
-        ref.watch(friendListViewModelProvider);
+        ref.watch(memberListViewModelProvider);
 
     return state.when(
       data: (data) {
@@ -20,7 +25,7 @@ class FriendListWidget extends ConsumerWidget {
       },
       error: (error, stackTrace) {
         return const Center(
-          child: Text('친구 목록을 가져오는데 실패했습니다.'),
+          child: Text('멤버 목록을 가져오는데 실패했습니다.\n 다시 시도해주세요.'),
         );
       },
       loading: () {

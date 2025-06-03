@@ -9,6 +9,9 @@ class DefaultLayout extends StatelessWidget {
   final bool? needLogin;
   final String? title;
   final List<Widget>? adaptors;
+  final List<Widget>? actions;
+  final Widget? drawer;
+  final Widget? endDrawer;
 
   const DefaultLayout({
     super.key,
@@ -17,6 +20,9 @@ class DefaultLayout extends StatelessWidget {
     this.needLogin,
     this.title,
     this.adaptors = const [],
+    this.actions = const [],
+    this.drawer,
+    this.endDrawer,
   });
 
   @override
@@ -28,11 +34,17 @@ class DefaultLayout extends StatelessWidget {
         ? MobileScaffold(
             floatingActionButton: floatingActionButton,
             title: title,
+            actions: [...actions ?? []],
+            drawer: drawer,
+            endDrawer: endDrawer,
             child: child,
           )
         : WebScaffold(
             floatingActionButton: floatingActionButton,
             title: title,
+            actions: [...actions ?? []],
+            drawer: drawer,
+            endDrawer: endDrawer,
             child: child,
           );
 

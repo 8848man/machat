@@ -55,3 +55,10 @@ extension UserDataX on UserData {
         nationId: nationId,
       );
 }
+
+@freezed
+class UserListModel with _$UserListModel {
+  const factory UserListModel({
+    @Default([]) List<UserData> friends,
+  }) = _UserListModel;
+}

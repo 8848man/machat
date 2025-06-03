@@ -11,6 +11,9 @@ class ChatScreen extends ConsumerWidget {
 
     return DefaultLayout(
       title: title,
+      actions: const [ChatMenu()],
+      // endDrawer: const ChatRoomInfo(),
+      endDrawer: const ChatRoomInfo(),
       child: Column(
         children: [
           // 채팅 컨텐츠

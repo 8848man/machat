@@ -21,6 +21,8 @@ import 'package:machat/features/chat/providers/chat_room_name_provider.dart';
 import 'package:machat/features/chat/providers/chat_sending_widget_proivder.dart';
 import 'package:machat/features/chat/view_models/chat_view_model.dart';
 import 'package:machat/features/chat/widgets/chat_image.dart';
+import 'package:machat/features/chat/widgets/chat_menu.dart';
+import 'package:machat/features/chat/widgets/chat_room_info.dart';
 import 'package:machat/features/common/layouts/lib.dart';
 import 'package:machat/features/common/models/chat_room_data.dart';
 import 'package:machat/features/common/models/user_data.dart';

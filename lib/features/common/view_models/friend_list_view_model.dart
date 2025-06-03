@@ -9,7 +9,7 @@ part 'friend_list_view_model.g.dart';
 @riverpod
 class FriendListViewModel extends _$FriendListViewModel {
   @override
-  Future<FriendListModel> build() async {
+  Future<UserListModel> build() async {
     // 친구 리스트 State watch
     ref.watch(friendListProvider);
     return await getFriends();
@@ -29,10 +29,10 @@ class FriendListViewModel extends _$FriendListViewModel {
     ref.read(friendListProvider.notifier).addFriend(newFriend);
   }
 
-  Future<FriendListModel> getFriends() async {
+  Future<UserListModel> getFriends() async {
     List<UserData> cachedFriends = getCachedFriends();
     if (cachedFriends.isNotEmpty) {
-      return FriendListModel(friends: cachedFriends);
+      return UserListModel(friends: cachedFriends);
     }
     try {
       final RepositoryService repository = ref.read(friendCrudRepository);
@@ -43,12 +43,12 @@ class FriendListViewModel extends _$FriendListViewModel {
 
       // 빈 친구 목록인 경우, 빈 리스트를 반환합니다.
       if (parsedFriends.isEmpty) {
-        return const FriendListModel(friends: []);
+        return const UserListModel(friends: []);
       }
       // 친구 목록을 상태에 저장합니다.
       cacheFriends(parsedFriends);
 
-      return FriendListModel(friends: parsedFriends);
+      return UserListModel(friends: parsedFriends);
     } catch (e) {
       rethrow;
     }
