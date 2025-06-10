@@ -1,4 +1,4 @@
-part of '../../lib.dart';
+part of '../../../lib.dart';
 
 class ChatExpand extends ConsumerStatefulWidget {
   const ChatExpand({super.key});

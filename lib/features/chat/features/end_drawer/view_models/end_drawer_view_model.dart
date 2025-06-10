@@ -3,14 +3,15 @@ import 'package:machat/features/common/models/user_data.dart';
 import 'package:machat/features/common/providers/user_cache_providers.dart';
 import 'package:machat/features/common/repositories/friend_crud_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-part 'friend_list_view_model.g.dart';
+
+part 'end_drawer_view_model.g.dart';
 
 @riverpod
-class FriendListViewModel extends _$FriendListViewModel {
+class EndDrawerViewModel extends _$EndDrawerViewModel {
   @override
   Future<UserListModel> build() async {
     // 친구 리스트 State watch
-    ref.watch(friendListProvider);
+    ref.watch(roomMemberListProvider);
     return await getFriends();
   }
 
@@ -25,7 +26,7 @@ class FriendListViewModel extends _$FriendListViewModel {
         UserData.fromJson(data); // Map<String, dynamic> -> UserData
 
     // 캐시에 바로 추가
-    ref.read(friendListProvider.notifier).addUsers(newFriend);
+    ref.read(roomMemberListProvider.notifier).addUsers(newFriend);
   }
 
   Future<UserListModel> getFriends() async {
@@ -58,18 +59,18 @@ class FriendListViewModel extends _$FriendListViewModel {
     await repository.delete(friendId);
 
     // 삭제 후 캐시에서도 제거
-    ref.read(friendListProvider.notifier).removeById(friendId);
+    ref.read(roomMemberListProvider.notifier).removeById(friendId);
   }
 
   void cacheFriends(List<UserData> friends) {
-    ref.read(friendListProvider.notifier).set(friends);
+    ref.read(roomMemberListProvider.notifier).set(friends);
   }
 
   void deleteCachedFriends() {
-    ref.read(friendListProvider.notifier).clear();
+    ref.read(roomMemberListProvider.notifier).clear();
   }
 
   List<UserData> getCachedFriends() {
-    return ref.read(friendListProvider.notifier).list;
+    return ref.read(roomMemberListProvider.notifier).list;
   }
 }

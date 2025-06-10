@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:machat/features/chat/expand/enums/expand_state.dart';
-import 'package:machat/features/chat/expand/providers/expand_widget_state_provider.dart';
-import 'package:machat/features/chat/expand/view_models/chat_image_view_model.dart';
-import 'package:machat/features/chat/expand/widgets/chat_picture.dart';
-import 'package:machat/features/chat/expand/widgets/chat_upload.dart';
+import 'package:machat/features/chat/features/expand/enums/expand_state.dart';
+import 'package:machat/features/chat/features/expand/providers/expand_widget_state_provider.dart';
+import 'package:machat/features/chat/features/expand/view_models/chat_image_view_model.dart';
+import 'package:machat/features/chat/features/expand/widgets/chat_picture.dart';
+import 'package:machat/features/chat/features/expand/widgets/chat_upload.dart';
 
 class ChatExpandBrancher extends ConsumerWidget {
   const ChatExpandBrancher({super.key});

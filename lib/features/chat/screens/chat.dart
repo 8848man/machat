@@ -13,7 +13,7 @@ class ChatScreen extends ConsumerWidget {
       title: title,
       actions: const [ChatMenu()],
       // endDrawer: const ChatRoomInfo(),
-      endDrawer: const ChatRoomInfo(),
+      endDrawer: const ChatRoomEndDrawer(),
       child: Column(
         children: [
           // 채팅 컨텐츠

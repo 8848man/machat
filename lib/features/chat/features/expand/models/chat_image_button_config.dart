@@ -1,6 +1,6 @@
 // 데이터 모델 클래스 생성
 import 'package:flutter/material.dart';
-import 'package:machat/features/chat/expand/view_models/chat_image_view_model.dart';
+import 'package:machat/features/chat/features/expand/view_models/chat_image_view_model.dart';
 
 class ImageButtonConfig {
   final IconData icon;

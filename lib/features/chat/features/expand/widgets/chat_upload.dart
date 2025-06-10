@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/design_system/lib.dart';
-import 'package:machat/features/chat/expand/models/chat_image_button_config.dart';
-import 'package:machat/features/chat/expand/view_models/chat_image_view_model.dart';
+import 'package:machat/features/chat/features/expand/models/chat_image_button_config.dart';
+import 'package:machat/features/chat/features/expand/view_models/chat_image_view_model.dart';
 
 class ChatExpandSelector extends ConsumerStatefulWidget {
   const ChatExpandSelector({super.key});

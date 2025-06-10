@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
-import 'package:machat/features/chat/expand/enums/expand_state.dart';
-import 'package:machat/features/chat/expand/providers/expand_widget_state_provider.dart';
+import 'package:machat/features/chat/features/expand/enums/expand_state.dart';
+import 'package:machat/features/chat/features/expand/providers/expand_widget_state_provider.dart';
 import 'package:machat/features/chat/interface/chat_view_model_interface.dart';
 import 'package:machat/features/chat/providers/chat_focus_node_provider.dart';
 import 'package:machat/features/chat/repository/chat_repository.dart';
