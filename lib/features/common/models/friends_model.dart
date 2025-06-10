@@ -10,10 +10,3 @@ class FriendsModel with _$FriendsModel {
     @Default([]) List<UserData> friends,
   }) = _FriendsModel;
 }
-
-@freezed
-class FriendListModel with _$FriendListModel {
-  const factory FriendListModel({
-    @Default([]) List<UserData> friends,
-  }) = _FriendListModel;
-}

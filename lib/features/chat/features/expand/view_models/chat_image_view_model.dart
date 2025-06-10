@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:machat/features/chat/expand/enums/expand_state.dart';
-import 'package:machat/features/chat/expand/models/chat_expand_model.dart';
-import 'package:machat/features/chat/expand/models/chat_image_list.dart';
-import 'package:machat/features/chat/expand/providers/expand_image_state_provider.dart';
-import 'package:machat/features/chat/expand/providers/expand_widget_state_provider.dart';
-import 'package:machat/features/chat/expand/repositories/chat_image_repository.dart';
+import 'package:machat/features/chat/features/expand/enums/expand_state.dart';
+import 'package:machat/features/chat/features/expand/models/chat_expand_model.dart';
+import 'package:machat/features/chat/features/expand/models/chat_image_list.dart';
+import 'package:machat/features/chat/features/expand/providers/expand_image_state_provider.dart';
+import 'package:machat/features/chat/features/expand/providers/expand_widget_state_provider.dart';
+import 'package:machat/features/chat/features/expand/repositories/chat_image_repository.dart';
 import 'package:machat/features/chat/interface/chat_view_model_interface.dart';
 import 'package:machat/features/common/providers/chat_room_id.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:machat/features/chat/expand/models/chat_expand_model.dart';
-import 'package:machat/features/chat/expand/view_models/chat_image_view_model.dart';
+import 'package:machat/features/chat/features/expand/models/chat_expand_model.dart';
+import 'package:machat/features/chat/features/expand/view_models/chat_image_view_model.dart';
 
 class ChatPicture extends ConsumerWidget {
   const ChatPicture({super.key});

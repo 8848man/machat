@@ -505,3 +505,140 @@ abstract class _RoomUserData implements RoomUserData {
   _$$RoomUserDataImplCopyWith<_$RoomUserDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+/// @nodoc
+mixin _$UserListModel {
+  List<UserData> get friends => throw _privateConstructorUsedError;
+
+  /// Create a copy of UserListModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $UserListModelCopyWith<UserListModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $UserListModelCopyWith<$Res> {
+  factory $UserListModelCopyWith(
+          UserListModel value, $Res Function(UserListModel) then) =
+      _$UserListModelCopyWithImpl<$Res, UserListModel>;
+  @useResult
+  $Res call({List<UserData> friends});
+}
+
+/// @nodoc
+class _$UserListModelCopyWithImpl<$Res, $Val extends UserListModel>
+    implements $UserListModelCopyWith<$Res> {
+  _$UserListModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of UserListModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? friends = null,
+  }) {
+    return _then(_value.copyWith(
+      friends: null == friends
+          ? _value.friends
+          : friends // ignore: cast_nullable_to_non_nullable
+              as List<UserData>,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$UserListModelImplCopyWith<$Res>
+    implements $UserListModelCopyWith<$Res> {
+  factory _$$UserListModelImplCopyWith(
+          _$UserListModelImpl value, $Res Function(_$UserListModelImpl) then) =
+      __$$UserListModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({List<UserData> friends});
+}
+
+/// @nodoc
+class __$$UserListModelImplCopyWithImpl<$Res>
+    extends _$UserListModelCopyWithImpl<$Res, _$UserListModelImpl>
+    implements _$$UserListModelImplCopyWith<$Res> {
+  __$$UserListModelImplCopyWithImpl(
+      _$UserListModelImpl _value, $Res Function(_$UserListModelImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of UserListModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? friends = null,
+  }) {
+    return _then(_$UserListModelImpl(
+      friends: null == friends
+          ? _value._friends
+          : friends // ignore: cast_nullable_to_non_nullable
+              as List<UserData>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$UserListModelImpl implements _UserListModel {
+  const _$UserListModelImpl({final List<UserData> friends = const []})
+      : _friends = friends;
+
+  final List<UserData> _friends;
+  @override
+  @JsonKey()
+  List<UserData> get friends {
+    if (_friends is EqualUnmodifiableListView) return _friends;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_friends);
+  }
+
+  @override
+  String toString() {
+    return 'UserListModel(friends: $friends)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$UserListModelImpl &&
+            const DeepCollectionEquality().equals(other._friends, _friends));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_friends));
+
+  /// Create a copy of UserListModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$UserListModelImplCopyWith<_$UserListModelImpl> get copyWith =>
+      __$$UserListModelImplCopyWithImpl<_$UserListModelImpl>(this, _$identity);
+}
+
+abstract class _UserListModel implements UserListModel {
+  const factory _UserListModel({final List<UserData> friends}) =
+      _$UserListModelImpl;
+
+  @override
+  List<UserData> get friends;
+
+  /// Create a copy of UserListModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$UserListModelImplCopyWith<_$UserListModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
