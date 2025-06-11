@@ -21,7 +21,6 @@ class EndDrawerViewModel extends _$EndDrawerViewModel {
     // 서버에 친구 추가 요청 → 응답으로 UserData 받는다고 가정
     await repository.create(data); // 타입: UserData
 
-    // 서버에서 받은 응답을 UserData로 변환
     final UserData newMember =
         UserData.fromJson(data); // Map<String, dynamic> -> UserData
 
@@ -55,7 +54,6 @@ class EndDrawerViewModel extends _$EndDrawerViewModel {
       rethrow;
     }
   }
-
   Future<void> deleteMember(String friendId) async {
     final repository = ref.read(memberCrudRepository);
     await repository.delete(friendId);
