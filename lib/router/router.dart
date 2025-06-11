@@ -123,6 +123,17 @@ final goRouterProvider = Provider<GoRouter>(
                 transitionsBuilder: fadeTransition,
               ),
             ),
+
+            /// add friend
+            GoRoute(
+              path: RouterPath.addFriend.path,
+              name: RouterPath.addFriend.name,
+              pageBuilder: (context, state) => CustomTransitionPage<void>(
+                key: state.pageKey,
+                child: const AddFriend(),
+                transitionsBuilder: fadeTransition,
+              ),
+            ),
           ],
         ),
 
@@ -147,6 +158,16 @@ final goRouterProvider = Provider<GoRouter>(
             ),
           ],
         ),
+
+        // GoRoute(
+        //   path: RouterPath.addFriend.path,
+        //   name: RouterPath.addFriend.name,
+        //   pageBuilder: (context, state) => CustomTransitionPage<void>(
+        //     key: state.pageKey,
+        //     child: const AddFriend(),
+        //     transitionsBuilder: fadeTransition,
+        //   ),
+        // ),
 
         // GoRoute(
         //     path: RouterPath.app.path,

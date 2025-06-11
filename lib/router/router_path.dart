@@ -13,6 +13,7 @@ enum RouterPath {
   chatList('/chat_list', 'chat_list'),
   chatImage('/chat_image', 'chat_image'),
   profile('/profile', 'profile'),
+  addFriend('/add_friend', 'add_friend'),
   // newHome('/newHome', 'newHome'),
   // example('/example', 'example'),
   // registerTemp('/registerTemp', 'registerTemp'),
