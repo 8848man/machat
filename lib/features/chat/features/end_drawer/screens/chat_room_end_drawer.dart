@@ -4,7 +4,6 @@ import 'package:machat/extensions.dart';
 import 'package:machat/features/chat/features/end_drawer/view_models/end_drawer_view_model.dart';
 import 'package:machat/features/chat/providers/chat_room_name_provider.dart';
 import 'package:machat/features/common/models/user_data.dart';
-import 'package:machat/features/common/view_models/friend_list_view_model.dart';
 import 'package:machat/features/home/lib.dart';
 
 class ChatRoomEndDrawer extends ConsumerWidget {
@@ -17,7 +16,7 @@ class ChatRoomEndDrawer extends ConsumerWidget {
         children: [
           DrawerHeader(
             child: Text(
-              ref.watch(chatRoomNameProvider),
+              ref.read(chatRoomNameProvider),
               style: const TextStyle(fontSize: 18),
             ),
           ),
@@ -25,7 +24,6 @@ class ChatRoomEndDrawer extends ConsumerWidget {
         ],
       ),
     );
-    // return Container();
   }
 
   Consumer buildMembers() {
