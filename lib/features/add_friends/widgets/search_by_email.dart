@@ -9,7 +9,15 @@ class SearchByEmail extends ConsumerStatefulWidget {
 
 class _SearchByEmailState extends ConsumerState<SearchByEmail> {
   bool showOverlay = false;
-  final TextEditingController _nameController = TextEditingController();
+
+  late final AddFriendViewModel _viewModel;
+  final TextEditingController _emailController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _viewModel = ref.read(addFriendViewModelProvider.notifier);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +34,7 @@ class _SearchByEmailState extends ConsumerState<SearchByEmail> {
           bottom: 0,
           left: showOverlay ? 0 : MediaQuery.of(context).size.width,
           right: showOverlay ? 0 : -MediaQuery.of(context).size.width,
-          child: buildOverlay(),
+          child: SearchedFriends(onToggleOverlay: toggleOverlay),
         ),
       ],
     );
@@ -51,14 +59,20 @@ class _SearchByEmailState extends ConsumerState<SearchByEmail> {
                     border: OutlineInputBorder(),
                     labelText: '이메일',
                   ),
-                  controller: _nameController,
+                  controller: _emailController,
+                  onSubmitted: (value) async {
+                    await _viewModel.searchByEmail(_emailController.text);
+                    setState(() => showOverlay = !showOverlay);
+                  },
                 ).expand(),
                 MCSpace().horizontalSpace(),
-                ElevatedButton(
-                  onPressed: () {
-                    // 이메일로 친구 검색 로직
+                MCButtons().getPositiveButton(
+                  width: 100,
+                  title: '검색',
+                  onTap: () async {
+                    await _viewModel.searchByEmail(_emailController.text);
+                    setState(() => showOverlay = !showOverlay);
                   },
-                  child: const Text('검색'),
                 ),
               ],
             ),
@@ -87,7 +101,8 @@ class _SearchByEmailState extends ConsumerState<SearchByEmail> {
                   // 친구 선택 시 동작
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                        content: Text('${_nameController.text} 친구 $index 선택됨')),
+                        content:
+                            Text('${_emailController.text} 친구 $index 선택됨')),
                   );
                 },
               );
@@ -109,80 +124,15 @@ class _SearchByEmailState extends ConsumerState<SearchByEmail> {
     return Padding(
       padding: MCPadding().left(),
       child: Text(
-        '"${_nameController.text}"(으)로 검색된 친구',
+        '"${_emailController.text}"(으)로 검색된 친구',
         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
       ),
     );
   }
-}
 
-class AddByEmail extends ConsumerWidget {
-  const AddByEmail({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Center(
-      child: Padding(
-        padding: MCPadding().horizontal(),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              '이메일로 친구를 추가하세요',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            MCSpace().verticalSpace(),
-            const TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '이메일 주소',
-              ),
-            ),
-            MCSpace().verticalSpace(),
-            ElevatedButton(
-              onPressed: () {
-                // 이메일로 친구 추가 로직
-              },
-              child: const Text('친구 추가'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildSearchBundle() {
-    return Center(
-      child: Padding(
-        padding: MCPadding().all(),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              '이메일로 친구를 검색해요',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            MCSpace().verticalSpace(),
-            Row(
-              children: [
-                TextField(
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: '이메일',
-                  ),
-                ).expand(),
-                MCSpace().horizontalSpace(),
-                ElevatedButton(
-                  onPressed: () {
-                    // 이메일로 친구 검색 로직
-                  },
-                  child: const Text('검색'),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+  void toggleOverlay() {
+    setState(() {
+      showOverlay = !showOverlay;
+    });
   }
 }

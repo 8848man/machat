@@ -21,6 +21,7 @@ class _AddFriendState extends ConsumerState<AddFriend>
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
+      needLogin: true,
       child: Padding(
         padding: MCPadding().vertical(),
         child: Column(
@@ -66,7 +67,7 @@ class _AddFriendState extends ConsumerState<AddFriend>
     return TabBarView(
       controller: _tabController,
       children: const [
-        AddByEmail(),
+        SearchByEmail(),
         SearchByName(),
       ],
     );

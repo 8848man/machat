@@ -68,6 +68,7 @@ class ChatContentsRepository {
     return StreamGroup.merge([chatStream, imageStream]).map((event) {
       // (지난 실행 맥락을 저장하는 로직은 ViewModel or StateNotifier에서 담당)
       // 여기서는 단순히 합쳐진 리스트를 반환
+      print('test002: ${event}'); // 디버깅용
       return event;
     });
   }

@@ -1,15 +1,22 @@
 part of '../lib.dart';
 
-class SearchByName extends StatefulWidget {
+class SearchByName extends ConsumerStatefulWidget {
   const SearchByName({super.key});
 
   @override
-  State<SearchByName> createState() => _SearchByNameState();
+  ConsumerState<SearchByName> createState() => _SearchByNameState();
 }
 
-class _SearchByNameState extends State<SearchByName> {
+class _SearchByNameState extends ConsumerState<SearchByName> {
   bool showOverlay = false;
+  late final AddFriendViewModel _viewModel;
   final TextEditingController _nameController = TextEditingController();
+
+  @override
+  void initState() {
+    _viewModel = ref.read(addFriendViewModelProvider.notifier);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +33,9 @@ class _SearchByNameState extends State<SearchByName> {
           bottom: 0,
           left: showOverlay ? 0 : MediaQuery.of(context).size.width,
           right: showOverlay ? 0 : -MediaQuery.of(context).size.width,
-          child: buildOverlay(),
+          child: SearchedFriends(
+            onToggleOverlay: toggleOverlay,
+          ),
         ),
       ],
     );
@@ -53,13 +62,19 @@ class _SearchByNameState extends State<SearchByName> {
                     labelText: '이름',
                   ),
                   controller: _nameController,
-                ).expand(),
-                MCSpace().horizontalSpace(),
-                ElevatedButton(
-                  onPressed: () {
+                  onSubmitted: (value) async {
+                    await _viewModel.searchByNickname(_nameController.text);
                     setState(() => showOverlay = !showOverlay);
                   },
-                  child: const Text('검색'),
+                ).expand(),
+                MCSpace().horizontalSpace(),
+                MCButtons().getPositiveButton(
+                  width: 100,
+                  title: '검색',
+                  onTap: () async {
+                    await _viewModel.searchByNickname(_nameController.text);
+                    setState(() => showOverlay = !showOverlay);
+                  },
                 ),
               ],
             ),
@@ -70,50 +85,9 @@ class _SearchByNameState extends State<SearchByName> {
     );
   }
 
-  /// 회색 오버레이 위젯 (B 위젯 역할)
-  Widget buildOverlay() {
-    return Container(
-      color: Colors.white.withOpacity(0.8),
-      alignment: Alignment.center,
-      child: Column(
-        children: [
-          buildOverlayTitle(),
-          MCSpace().verticalSpace(),
-          ListView.builder(
-            shrinkWrap: true,
-            itemCount: 10, // 예시로 10개의 친구를 표시
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text('친구 $index'),
-                onTap: () {
-                  // 친구 선택 시 동작
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                        content: Text('${_nameController.text} 친구 $index 선택됨')),
-                  );
-                },
-              );
-            },
-          ).expand(),
-          MCSpace().verticalSpace(),
-          ElevatedButton(
-            onPressed: () {
-              setState(() => showOverlay = !showOverlay);
-            },
-            child: const Text('뒤로가기'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildOverlayTitle() {
-    return Padding(
-      padding: MCPadding().left(),
-      child: Text(
-        '"${_nameController.text}"(으)로 검색된 친구',
-        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      ),
-    );
+  void toggleOverlay() {
+    setState(() {
+      showOverlay = !showOverlay;
+    });
   }
 }
