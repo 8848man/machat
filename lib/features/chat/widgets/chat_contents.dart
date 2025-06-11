@@ -46,6 +46,7 @@ class ChatContents extends ConsumerWidget {
     if (!completer.isCompleted) {
       completer.complete(); // Future.delayed 무효화
     }
+    print('test001, value: $value');
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus(); // 키보드 닫기

@@ -3,6 +3,7 @@ library mc_router;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:machat/features/add_friends/lib.dart';
 import 'package:machat/features/chat/lib.dart';
 import 'package:machat/features/chat_create/lib.dart';
 import 'package:machat/features/chat_list/lib.dart';
