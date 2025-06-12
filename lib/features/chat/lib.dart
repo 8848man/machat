@@ -14,11 +14,13 @@ import 'package:machat/features/chat/features/expand/view_models/chat_image_view
 import 'package:machat/features/chat/features/expand/widgets/chat_expand_brancher.dart';
 import 'package:machat/features/chat/interface/chat_view_model_interface.dart';
 import 'package:machat/features/chat/models/chat.dart';
+import 'package:machat/features/chat/models/chat_contents.dart';
 import 'package:machat/features/chat/models/image.dart';
 import 'package:machat/features/chat/providers/chat_focus_node_provider.dart';
 import 'package:machat/features/chat/providers/chat_message_group_provider.dart';
 import 'package:machat/features/chat/providers/chat_room_name_provider.dart';
 import 'package:machat/features/chat/providers/chat_sending_widget_proivder.dart';
+import 'package:machat/features/chat/view_models/chat_contents_view_model.dart';
 import 'package:machat/features/chat/view_models/chat_view_model.dart';
 import 'package:machat/features/chat/widgets/chat_image.dart';
 import 'package:machat/features/chat/widgets/chat_menu.dart';

@@ -39,7 +39,7 @@ class ChatImageRepository implements RepositoryService {
       final docRef = _firestore
           .collection('chat_rooms')
           .doc(roomId)
-          .collection('images')
+          .collection('chat')
           .doc(); // 여기서 고유한 ID 생성
 
       // 가져온 URL을 기반으로 Firestore에 저장

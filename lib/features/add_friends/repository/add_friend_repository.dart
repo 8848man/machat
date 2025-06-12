@@ -22,8 +22,6 @@ class AddFriendRepository implements RepositoryService {
         .limit(1)
         .get();
 
-    print('test001, ${snapshot.docs}');
-
     if (snapshot.docs.isEmpty) return {};
     return snapshot.docs.first.data();
   }
