@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -7,9 +6,13 @@ import 'package:machat/features/common/providers/chat_room_id.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
+
 class MockCollectionReference extends Mock implements CollectionReference {}
+
 class MockDocumentReference extends Mock implements DocumentReference {}
+
 class MockQuerySnapshot extends Mock implements QuerySnapshot {}
+
 class MockQueryDocumentSnapshot extends Mock implements QueryDocumentSnapshot {}
 
 void main() {
@@ -32,22 +35,23 @@ void main() {
         ],
       );
 
-      when(() => mockFirestore.collection('chat_rooms')).thenReturn(mockChatCollection);
-      when(() => mockChatCollection.doc('test_room_id')).thenReturn(mockChatRoomDoc);
-      when(() => mockChatRoomDoc.collection('chat')).thenReturn(mockChatCollection);
-      when(() => mockChatRoomDoc.collection('images')).thenReturn(mockImageCollection);
+      when(() => mockFirestore.collection('chat_rooms'))
+          .thenReturn(mockChatCollection);
+      when(() => mockChatCollection.doc('test_room_id'))
+          .thenReturn(mockChatRoomDoc);
+      when(() => mockChatRoomDoc.collection('chat'))
+          .thenReturn(mockChatCollection);
+      when(() => mockChatRoomDoc.collection('images'))
+          .thenReturn(mockImageCollection);
     });
 
     tearDown(() {
       container.dispose();
     });
 
-    test('previousChatStateProvider should initialize with empty list', () {
-      final state = container.read(previousChatStateProvider);
-      expect(state, isEmpty);
-    });
-
-    test('mergedChatStreamProvider should return empty stream when roomId is empty', () {
+    test(
+        'mergedChatStreamProvider should return empty stream when roomId is empty',
+        () {
       container.updateOverrides([
         chatRoomIdProvider.overrideWithValue(''),
       ]);
@@ -56,7 +60,8 @@ void main() {
       expect(stream, emitsDone);
     });
 
-    test('mergedChatStreamProvider should merge chat and image streams', () async {
+    test('mergedChatStreamProvider should merge chat and image streams',
+        () async {
       final mockChatSnapshot = MockQuerySnapshot();
       final mockImageSnapshot = MockQuerySnapshot();
       final mockChatDoc = MockQueryDocumentSnapshot();
@@ -130,7 +135,8 @@ void main() {
       expect(result[0]['id'], 'chat1');
     });
 
-    test('mergedChatStreamProvider should sort messages by createdAt', () async {
+    test('mergedChatStreamProvider should sort messages by createdAt',
+        () async {
       final mockChatSnapshot = MockQuerySnapshot();
       final mockChatDoc1 = MockQueryDocumentSnapshot();
       final mockChatDoc2 = MockQueryDocumentSnapshot();
@@ -152,7 +158,8 @@ void main() {
         'type': 'chat',
       });
 
-      when(() => mockChatSnapshot.docs).thenReturn([mockChatDoc1, mockChatDoc2]);
+      when(() => mockChatSnapshot.docs)
+          .thenReturn([mockChatDoc1, mockChatDoc2]);
 
       when(() => mockChatCollection.orderBy('createdAt', descending: false))
           .thenReturn(mockChatCollection);
@@ -172,4 +179,4 @@ void main() {
       expect(result[1]['message'], 'Later message');
     });
   });
-} 
+}

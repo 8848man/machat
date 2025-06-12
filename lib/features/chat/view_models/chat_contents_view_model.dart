@@ -1,34 +1,65 @@
-import 'dart:async';
-
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:machat/features/chat/models/chat_contents.dart';
 import 'package:machat/features/chat/repository/chat_contents_repository.dart';
+import 'package:machat/features/chat/view_models/chat_view_model.dart';
+import 'package:machat/features/common/models/chat_room_data.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class ChatContentsViewModel extends StateNotifier<List<Map<String, dynamic>>> {
-  ChatContentsViewModel(this._repo, this._roomId, this._entryTime) : super([]) {
-    _init();
-  }
+part 'chat_contents_view_model.g.dart';
 
-  final ChatContentsRepository _repo;
-  final String _roomId;
-  final DateTime _entryTime;
-
-  StreamSubscription? _streamSub;
-
-  Future<void> _init() async {
-    // 1. 초기 데이터 가져오기
-    final initialMessages = await _repo.getInitialChats(_roomId);
-    state = [...initialMessages];
-
-    // 2. 이후 메시지 실시간 수신
-    _streamSub =
-        _repo.subscribeToNewChats(_roomId, _entryTime).listen((newMessages) {
-      state = [...state, ...newMessages]; // 중복 제거 로직 추가 가능
-    });
-  }
-
+@riverpod
+class ChatContentsViewModel extends _$ChatContentsViewModel {
   @override
-  void dispose() {
-    _streamSub?.cancel();
-    super.dispose();
+  Future<ChatContentsModel> build() async {
+    final ChatRoomData roomData = await ref.watch(chatViewModelProvider.future);
+    final ChatContentsModel initState = await fetchInitialChats(roomData);
+    // print('initState  : $initState');
+    return initState;
+  }
+
+  Future<ChatContentsModel> fetchInitialChats(ChatRoomData roomData) async {
+    final repo = ref.read(chatContentsRepositoryProvider);
+    final initialMessages = await repo.getInitialChats(roomData.roomId);
+
+    final ChatContentsModel chatContentsModel = ChatContentsModel(
+      contents: initialMessages,
+      lastDoc: initialMessages.isNotEmpty
+          ? initialMessages.last['lastDoc'] as DocumentSnapshot
+          : null,
+      isLoading: false,
+      hasMore: initialMessages.length == 30,
+      roomData: roomData,
+    );
+
+    return chatContentsModel;
+  }
+
+  Future<void> fetchPreviousChats({
+    required String roomId,
+    required DocumentSnapshot lastDoc,
+  }) async {
+    final repo = ref.read(chatContentsRepositoryProvider);
+    final previousMessages = await repo.getPreviousChats(
+      roomId: roomId,
+      lastDoc: lastDoc,
+    );
+
+    update((state) {
+      if (previousMessages.isEmpty) {
+        state = state.copyWith(hasMore: false);
+        return state;
+      }
+      final updatedContents = [
+        ...previousMessages,
+        ...state.contents,
+      ];
+      final newLastDoc = previousMessages.last['lastDoc'] as DocumentSnapshot;
+
+      return state = state.copyWith(
+        contents: updatedContents,
+        lastDoc: newLastDoc,
+        hasMore: previousMessages.length == 30,
+      );
+    });
   }
 }
