@@ -8,6 +8,7 @@ class ChatScreen extends ConsumerWidget {
     // chatContents 상태와 상관 없이 포커스노드를 유지하기 위한 read
     ref.read(chatFocusNodeProvider);
     final title = ref.watch(chatRoomNameProvider);
+    final ExpandWidgetState expandState = ref.watch(expandWidgetStateProvider);
 
     return DefaultLayout(
       title: title,
@@ -23,7 +24,7 @@ class ChatScreen extends ConsumerWidget {
           // 채팅 전송 컨텐츠
           const ChatSendingContents(),
           // 채팅 + 버튼 확장 위젯
-          const ChatExpand(),
+          if (expandState != ExpandWidgetState.collapsed) const ChatExpand(),
         ],
       ),
     );

@@ -27,39 +27,10 @@ class DrawerProfile extends ConsumerWidget {
   Widget boxRow(DrawerModel data) {
     return Row(
       children: [
-        gradientAvatar(data.user),
+        gradientAvatar(size: 120, user: data.user),
         MCSpace().horizontalHalfSpace(),
         profileTextColumn(data.user).expand(),
       ],
-    );
-  }
-
-  // 프로필 사진
-  Widget gradientAvatar(UserData user) {
-    return Container(
-      height: 120,
-      width: 120,
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.bottomRight,
-          end: Alignment.topLeft,
-          colors: [
-            Color(0xff4dabf7),
-            Color(0xffda77f2),
-            Color(0xfff783ac),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(500),
-      ),
-      child: const CircleAvatar(
-        radius: 30,
-        child: Icon(
-          Icons.person,
-          color: Color(0xffCCCCCC),
-          size: 70,
-        ),
-      ),
     );
   }
 

@@ -12,54 +12,21 @@ Widget buildInfo({
   required UserData user,
   required WidgetRef ref,
 }) {
+  final FriendsViewModel notifier = ref.read(friendsViewModelProvider.notifier);
   return infoBox(
     child: Row(
       children: [
-        gradientAvatar(context: context, user: user, ref: ref),
+        gradientAvatar(
+            size: 50,
+            user: user,
+            onTap: () {
+              notifier.setProfile(user);
+              showProfile(context, ref, user);
+            }),
         const SizedBox(width: 10),
         profileTextColumn(user),
       ],
     ),
-  );
-}
-
-// 프로필 사진
-Widget gradientAvatar({
-  required BuildContext context,
-  required UserData user,
-  required WidgetRef ref,
-}) {
-  final FriendsViewModel notifier = ref.read(friendsViewModelProvider.notifier);
-  return GestureDetector(
-    child: Container(
-      height: 50,
-      width: 50,
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.bottomRight,
-          end: Alignment.topLeft,
-          colors: [
-            Color(0xff4dabf7),
-            Color(0xffda77f2),
-            Color(0xfff783ac),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(500),
-      ),
-      child: const CircleAvatar(
-        radius: 30,
-        child: Icon(
-          Icons.person,
-          color: Color(0xffCCCCCC),
-          size: 30,
-        ),
-      ),
-    ),
-    onTap: () {
-      notifier.setProfile(user);
-      showProfile(context, ref, user);
-    },
   );
 }
 

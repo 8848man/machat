@@ -8,7 +8,7 @@ class ChatContents extends ConsumerStatefulWidget {
 }
 
 class _ChatContentsState extends ConsumerState<ChatContents>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
