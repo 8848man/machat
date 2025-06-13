@@ -258,6 +258,8 @@ mixin _$RoomUserData {
   String get name => throw _privateConstructorUsedError;
   String? get id => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
+  String? get profileUrl => throw _privateConstructorUsedError;
+  String? get nationId => throw _privateConstructorUsedError;
   String? get lastJoinedAt => throw _privateConstructorUsedError;
 
   /// Serializes this RoomUserData to a JSON map.
@@ -276,7 +278,13 @@ abstract class $RoomUserDataCopyWith<$Res> {
           RoomUserData value, $Res Function(RoomUserData) then) =
       _$RoomUserDataCopyWithImpl<$Res, RoomUserData>;
   @useResult
-  $Res call({String name, String? id, String? email, String? lastJoinedAt});
+  $Res call(
+      {String name,
+      String? id,
+      String? email,
+      String? profileUrl,
+      String? nationId,
+      String? lastJoinedAt});
 }
 
 /// @nodoc
@@ -297,6 +305,8 @@ class _$RoomUserDataCopyWithImpl<$Res, $Val extends RoomUserData>
     Object? name = null,
     Object? id = freezed,
     Object? email = freezed,
+    Object? profileUrl = freezed,
+    Object? nationId = freezed,
     Object? lastJoinedAt = freezed,
   }) {
     return _then(_value.copyWith(
@@ -311,6 +321,14 @@ class _$RoomUserDataCopyWithImpl<$Res, $Val extends RoomUserData>
       email: freezed == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
+              as String?,
+      profileUrl: freezed == profileUrl
+          ? _value.profileUrl
+          : profileUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      nationId: freezed == nationId
+          ? _value.nationId
+          : nationId // ignore: cast_nullable_to_non_nullable
               as String?,
       lastJoinedAt: freezed == lastJoinedAt
           ? _value.lastJoinedAt
@@ -328,7 +346,13 @@ abstract class _$$RoomUserDataImplCopyWith<$Res>
       __$$RoomUserDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, String? id, String? email, String? lastJoinedAt});
+  $Res call(
+      {String name,
+      String? id,
+      String? email,
+      String? profileUrl,
+      String? nationId,
+      String? lastJoinedAt});
 }
 
 /// @nodoc
@@ -347,6 +371,8 @@ class __$$RoomUserDataImplCopyWithImpl<$Res>
     Object? name = null,
     Object? id = freezed,
     Object? email = freezed,
+    Object? profileUrl = freezed,
+    Object? nationId = freezed,
     Object? lastJoinedAt = freezed,
   }) {
     return _then(_$RoomUserDataImpl(
@@ -362,6 +388,14 @@ class __$$RoomUserDataImplCopyWithImpl<$Res>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String?,
+      profileUrl: freezed == profileUrl
+          ? _value.profileUrl
+          : profileUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      nationId: freezed == nationId
+          ? _value.nationId
+          : nationId // ignore: cast_nullable_to_non_nullable
+              as String?,
       lastJoinedAt: freezed == lastJoinedAt
           ? _value.lastJoinedAt
           : lastJoinedAt // ignore: cast_nullable_to_non_nullable
@@ -374,7 +408,12 @@ class __$$RoomUserDataImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$RoomUserDataImpl implements _RoomUserData {
   const _$RoomUserDataImpl(
-      {required this.name, this.id, this.email, this.lastJoinedAt});
+      {required this.name,
+      this.id,
+      this.email,
+      this.profileUrl,
+      this.nationId,
+      this.lastJoinedAt});
 
   factory _$RoomUserDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$RoomUserDataImplFromJson(json);
@@ -386,11 +425,15 @@ class _$RoomUserDataImpl implements _RoomUserData {
   @override
   final String? email;
   @override
+  final String? profileUrl;
+  @override
+  final String? nationId;
+  @override
   final String? lastJoinedAt;
 
   @override
   String toString() {
-    return 'RoomUserData(name: $name, id: $id, email: $email, lastJoinedAt: $lastJoinedAt)';
+    return 'RoomUserData(name: $name, id: $id, email: $email, profileUrl: $profileUrl, nationId: $nationId, lastJoinedAt: $lastJoinedAt)';
   }
 
   @override
@@ -401,13 +444,18 @@ class _$RoomUserDataImpl implements _RoomUserData {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.email, email) || other.email == email) &&
+            (identical(other.profileUrl, profileUrl) ||
+                other.profileUrl == profileUrl) &&
+            (identical(other.nationId, nationId) ||
+                other.nationId == nationId) &&
             (identical(other.lastJoinedAt, lastJoinedAt) ||
                 other.lastJoinedAt == lastJoinedAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, name, id, email, lastJoinedAt);
+  int get hashCode => Object.hash(
+      runtimeType, name, id, email, profileUrl, nationId, lastJoinedAt);
 
   /// Create a copy of RoomUserData
   /// with the given fields replaced by the non-null parameter values.
@@ -430,6 +478,8 @@ abstract class _RoomUserData implements RoomUserData {
       {required final String name,
       final String? id,
       final String? email,
+      final String? profileUrl,
+      final String? nationId,
       final String? lastJoinedAt}) = _$RoomUserDataImpl;
 
   factory _RoomUserData.fromJson(Map<String, dynamic> json) =
@@ -442,6 +492,10 @@ abstract class _RoomUserData implements RoomUserData {
   @override
   String? get email;
   @override
+  String? get profileUrl;
+  @override
+  String? get nationId;
+  @override
   String? get lastJoinedAt;
 
   /// Create a copy of RoomUserData
@@ -449,5 +503,142 @@ abstract class _RoomUserData implements RoomUserData {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RoomUserDataImplCopyWith<_$RoomUserDataImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$UserListModel {
+  List<UserData> get friends => throw _privateConstructorUsedError;
+
+  /// Create a copy of UserListModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $UserListModelCopyWith<UserListModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $UserListModelCopyWith<$Res> {
+  factory $UserListModelCopyWith(
+          UserListModel value, $Res Function(UserListModel) then) =
+      _$UserListModelCopyWithImpl<$Res, UserListModel>;
+  @useResult
+  $Res call({List<UserData> friends});
+}
+
+/// @nodoc
+class _$UserListModelCopyWithImpl<$Res, $Val extends UserListModel>
+    implements $UserListModelCopyWith<$Res> {
+  _$UserListModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of UserListModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? friends = null,
+  }) {
+    return _then(_value.copyWith(
+      friends: null == friends
+          ? _value.friends
+          : friends // ignore: cast_nullable_to_non_nullable
+              as List<UserData>,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$UserListModelImplCopyWith<$Res>
+    implements $UserListModelCopyWith<$Res> {
+  factory _$$UserListModelImplCopyWith(
+          _$UserListModelImpl value, $Res Function(_$UserListModelImpl) then) =
+      __$$UserListModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({List<UserData> friends});
+}
+
+/// @nodoc
+class __$$UserListModelImplCopyWithImpl<$Res>
+    extends _$UserListModelCopyWithImpl<$Res, _$UserListModelImpl>
+    implements _$$UserListModelImplCopyWith<$Res> {
+  __$$UserListModelImplCopyWithImpl(
+      _$UserListModelImpl _value, $Res Function(_$UserListModelImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of UserListModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? friends = null,
+  }) {
+    return _then(_$UserListModelImpl(
+      friends: null == friends
+          ? _value._friends
+          : friends // ignore: cast_nullable_to_non_nullable
+              as List<UserData>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$UserListModelImpl implements _UserListModel {
+  const _$UserListModelImpl({final List<UserData> friends = const []})
+      : _friends = friends;
+
+  final List<UserData> _friends;
+  @override
+  @JsonKey()
+  List<UserData> get friends {
+    if (_friends is EqualUnmodifiableListView) return _friends;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_friends);
+  }
+
+  @override
+  String toString() {
+    return 'UserListModel(friends: $friends)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$UserListModelImpl &&
+            const DeepCollectionEquality().equals(other._friends, _friends));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_friends));
+
+  /// Create a copy of UserListModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$UserListModelImplCopyWith<_$UserListModelImpl> get copyWith =>
+      __$$UserListModelImplCopyWithImpl<_$UserListModelImpl>(this, _$identity);
+}
+
+abstract class _UserListModel implements UserListModel {
+  const factory _UserListModel({final List<UserData> friends}) =
+      _$UserListModelImpl;
+
+  @override
+  List<UserData> get friends;
+
+  /// Create a copy of UserListModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$UserListModelImplCopyWith<_$UserListModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

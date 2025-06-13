@@ -10,7 +10,8 @@ class ChatCreateBody extends ConsumerWidget {
     return Column(
       children: [
         inputNameField(state, notifier),
-        // MCSpace().verticalHalfSpace(),
+        MCSpace().verticalHalfSpace(),
+        isOpenChat(ref),
         // inputPwdField(state, notifier),
       ],
     );
@@ -25,6 +26,27 @@ class ChatCreateBody extends ConsumerWidget {
       labelText: '채팅방 이름',
       error: state.roomNameErrorText != null ? Container() : null,
       // onChanged: (val) => notifier.emailChangeValidate(),
+    );
+  }
+
+  Widget isOpenChat(WidgetRef ref) {
+    return GestureDetector(
+      child: const Row(
+        children: [
+          MyCheckboxView(),
+          Text(
+            '채팅방을 공개합니다',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+      onTap: () {
+        ref.read(checkboxStateProvider.notifier).state =
+            !ref.read(checkboxStateProvider.notifier).state;
+      },
     );
   }
 

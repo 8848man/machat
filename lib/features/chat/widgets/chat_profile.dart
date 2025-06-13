@@ -1,11 +1,14 @@
 part of '../lib.dart';
 
-class ChatProfile extends ConsumerWidget {
+class ChatProfileIcon extends ConsumerWidget {
   final double size;
-  const ChatProfile({super.key, required this.size});
+  final RoomUserData userData;
+  const ChatProfileIcon(
+      {super.key, required this.size, required this.userData});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final notifier = ref.read(chatViewModelProvider.notifier);
     return GestureDetector(
       child: Container(
         height: size,
@@ -32,10 +35,7 @@ class ChatProfile extends ConsumerWidget {
           ),
         ),
       ),
-      onTap: () {
-        final notifier = ref.read(chatViewModelProvider.notifier);
-        notifier.goProfile();
-      },
+      onTap: () => notifier.goProfile(userData),
     );
   }
 }

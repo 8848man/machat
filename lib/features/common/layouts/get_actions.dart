@@ -22,7 +22,7 @@ List<Widget> getActions(User? user, WidgetRef ref) {
             scale: 20,
           ),
         ),
-        onPressed: () => notifier.signOutProcess(),
+        onPressed: () async => await notifier.signOutProcess(),
       ),
   ];
 }

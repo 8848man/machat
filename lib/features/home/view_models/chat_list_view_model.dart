@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:machat/features/chat/providers/chat_room_name_provider.dart';
 import 'package:machat/features/common/models/chat_list_model.dart';
 import 'package:machat/features/common/models/chat_room_data.dart';
 import 'package:machat/features/common/providers/chat_room_id.dart';
@@ -78,8 +79,12 @@ class ChatListViewModel extends _$ChatListViewModel {
 
       SnackBarCaller().callSnackBar(ref, '채팅방이 삭제되었습니다.');
 
-      // Repository 호출
-      await repository.update(roomData.roomId, data);
+      if (roomData.members.length == 1) {
+        // 방에 나만 남아있다면 방 삭제
+        repository.delete(roomData.roomId);
+      } else {
+        repository.update(roomData.roomId, data);
+      }
 
       update((state) async {
         final newChatRoom = await getChatRooms();
@@ -93,8 +98,11 @@ class ChatListViewModel extends _$ChatListViewModel {
     }
   }
 
-  void goChat(String roomId) {
+  void goChat(String roomId, String? roomName) {
     ref.read(chatRoomIdProvider.notifier).state = roomId;
+    // 방 이름을 상태에 저장
+    // 방 이름이 null인 경우 기본값으로 '채팅방' 사용
+    ref.read(chatRoomNameProvider.notifier).state = roomName ?? '채팅방';
     final router = ref.read(goRouterProvider);
     router.goNamed(RouterPath.chat.name);
   }

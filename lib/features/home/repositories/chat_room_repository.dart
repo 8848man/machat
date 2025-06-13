@@ -15,9 +15,13 @@ class ChatRoomRepository implements RepositoryService {
   }
 
   @override
-  Future<void> delete(String roomId, {String? userId}) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<void> delete(String roomId, {String? userId}) async {
+    try {
+      final chatRoomRef = _firestore.collection('chat_rooms').doc(roomId);
+      await chatRoomRef.delete();
+    } catch (e) {
+      throw Exception('Failed to delete chat room: $e');
+    }
   }
 
   @override
@@ -41,8 +45,11 @@ class ChatRoomRepository implements RepositoryService {
           .where('members', arrayContains: searchId)
           .get();
 
+      final List<Map<String, dynamic>> roomData =
+          querySnapshot.docs.map((doc) => doc.data()).toList();
+
       // Firestore의 raw 데이터를 반환
-      return querySnapshot.docs.map((doc) => doc.data()).toList();
+      return roomData;
     } catch (e) {
       throw Exception('Failed to fetch chat rooms: $e');
     }

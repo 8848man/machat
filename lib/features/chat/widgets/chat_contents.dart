@@ -1,12 +1,85 @@
 part of '../lib.dart';
 
-class ChatContents extends ConsumerWidget {
+class ChatContents extends ConsumerStatefulWidget {
   const ChatContents({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<ChatRoomData> chatState = ref.watch(chatViewModelProvider);
+  ConsumerState<ChatContents> createState() => _ChatContentsState();
+}
+
+class _ChatContentsState extends ConsumerState<ChatContents>
+    with SingleTickerProviderStateMixin {
+  final ScrollController _scrollController = ScrollController();
+  late AnimationController _controller;
+  late Animation<Offset> _offsetAnimation;
+
+  bool _isFetching = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController.addListener(() async {
+      // 스크롤이 최상단에 닿았을 때
+      if (_scrollController.position.pixels >=
+              _scrollController.position.maxScrollExtent - 50 &&
+          !_isFetching) {
+        setFetching(true);
+        final vm = ref.read(chatContentsViewModelProvider.notifier);
+        final state = await ref.read(chatContentsViewModelProvider.future);
+
+        if (state.hasMore && state.lastDoc != null) {
+          await vm.fetchPreviousChats(
+            roomId: state.roomData.roomId,
+            lastDoc: state.lastDoc!,
+          );
+        }
+
+        setFetching(false);
+      }
+
+      // 애니메이션 컨트롤러
+      _controller = AnimationController(
+        duration: const Duration(milliseconds: 300),
+        vsync: this,
+      );
+
+      // 애니메이션 정의
+      _offsetAnimation = Tween<Offset>(
+        begin: const Offset(0, -1), // 화면 위쪽에서 시작
+        end: Offset.zero, // 제자리로
+      ).animate(CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeOutBack, // 통 튀듯한 느낌
+      ));
+    });
+  }
+
+  void setFetching(bool value) {
+    setState(() {
+      _isFetching = value;
+      if (value) {
+        _controller.forward();
+      } else {
+        _controller.reverse();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final ChatViewModel notifier = ref.read(chatViewModelProvider.notifier);
+
+    // 채팅 컨텐츠 상태 가져오기
+    final AsyncValue<ChatContentsModel> chatContentsState =
+        ref.watch(chatContentsViewModelProvider);
 
     // 합성된 챗 스트림 프로바이더 가져오기
     final AsyncValue<List<dynamic>> streamProvider =
@@ -14,15 +87,22 @@ class ChatContents extends ConsumerWidget {
 
     final Completer completer = ref.watch(cancelCompleterProvider);
 
-    return chatState.when(
-      data: (ChatRoomData data) {
+    return chatContentsState.when(
+      data: (ChatContentsModel data) {
         return switch (streamProvider) {
-          AsyncData(:final value) => buildMessage(
-              value: value,
-              data: data,
-              completer: completer,
-              notifier: notifier,
-              context: context,
+          AsyncData(:final value) => Stack(
+              children: [
+                buildMessage(
+                  initValue: data.contents,
+                  value: value,
+                  data: data.roomData,
+                  completer: completer,
+                  notifier: notifier,
+                  context: context,
+                ),
+                // 채팅방 데이터를 가져오는 도중에는
+                if (_isFetching) fetchLoading(),
+              ],
             ),
           AsyncError(:final error) => Text(error.toString()),
           _ => loadingOvertime(ref),
@@ -37,6 +117,7 @@ class ChatContents extends ConsumerWidget {
 
   // 메세지 위젯 빌드
   Widget buildMessage({
+    required List<dynamic> initValue,
     required List<dynamic> value,
     required Completer completer,
     required ChatRoomData data,
@@ -46,6 +127,9 @@ class ChatContents extends ConsumerWidget {
     if (!completer.isCompleted) {
       completer.complete(); // Future.delayed 무효화
     }
+
+    final List<dynamic> combinedValue = [...initValue, ...value];
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus(); // 키보드 닫기
@@ -53,28 +137,30 @@ class ChatContents extends ConsumerWidget {
       },
       child: ListView.builder(
         // Show messages from bottom to top
+        controller: _scrollController,
         reverse: true,
-        itemCount: value.length,
+        itemCount: combinedValue.length,
         itemBuilder: (context, index) {
           final user = FirebaseAuth.instance.currentUser;
-          final reverseIndex = value.length - 1 - index;
-          // 시간 숨김 여부
-          final bool isContinue = shouldHideTime(value, reverseIndex);
+          final reverseIndex = combinedValue.length - 1 - index;
 
-          // 보낸 사람 이름 가져오기
-          String sender =
-              getSender(data: data, value: value, reverseIndex: reverseIndex);
+          // 시간 숨김 여부
+          final bool isContinue = shouldHideTime(combinedValue, reverseIndex);
+
+          RoomUserData sender = getSender(
+              data: data, value: combinedValue, reverseIndex: reverseIndex);
 
           // 프로필 숨김 여부
-          final bool isHideProfile = shouldHideProfile(value, reverseIndex);
+          final bool isHideProfile =
+              shouldHideProfile(combinedValue, reverseIndex);
 
           // 데이터 타입이 정의되지 않거나 채팅일 경우
           // 정의되지 않았을 때에도 buildChat을 그리는 이유는
           // 이전 데이터 호환성때문
-          if (value[reverseIndex]['type'] == null ||
-              value[reverseIndex]['type'] == 'chat') {
+          if (combinedValue[reverseIndex]['type'] == null ||
+              combinedValue[reverseIndex]['type'] == 'chat') {
             return buildChat(
-              value: value,
+              value: combinedValue,
               reverseIndex: reverseIndex,
               isContinue: isContinue,
               isHideProfile: isHideProfile,
@@ -84,9 +170,9 @@ class ChatContents extends ConsumerWidget {
             );
           }
           // 데이터 타입이 이미지일 경우
-          if (value[reverseIndex]['type'] == 'image') {
+          if (combinedValue[reverseIndex]['type'] == 'image') {
             return buildImage(
-              value: value,
+              value: combinedValue,
               reverseIndex: reverseIndex,
               isContinue: isContinue,
               isHideProfile: isHideProfile,
@@ -109,7 +195,7 @@ class ChatContents extends ConsumerWidget {
     required bool isContinue,
     required bool isHideProfile,
     required ChatRoomData data,
-    required String sender,
+    required RoomUserData sender,
     User? user,
   }) {
     const ChatContentsType type = ChatContentsType.chat;
@@ -127,7 +213,7 @@ class ChatContents extends ConsumerWidget {
       return buildOtherContents(
         strValue: message,
         createdAt: chat.createdAt,
-        createdBy: sender,
+        sender: sender,
         isContinue: isContinue,
         isHideProfile: isHideProfile,
         type: type,
@@ -149,7 +235,7 @@ class ChatContents extends ConsumerWidget {
     return buildOtherContents(
       strValue: message,
       createdAt: chat.createdAt,
-      createdBy: sender,
+      sender: sender,
       isContinue: isContinue,
       isHideProfile: isHideProfile,
       type: type,
@@ -194,7 +280,7 @@ class ChatContents extends ConsumerWidget {
   Widget buildOtherContents({
     required String strValue,
     required String createdAt,
-    required String createdBy,
+    required RoomUserData sender,
     required bool isContinue,
     required bool isHideProfile,
     required ChatContentsType type,
@@ -208,7 +294,7 @@ class ChatContents extends ConsumerWidget {
             if (!isHideProfile)
               Padding(
                 padding: const EdgeInsets.only(left: 8),
-                child: Text(createdBy),
+                child: Text(sender.name),
               ),
             if (!isHideProfile) MCSpace().verticalHalfSpace(),
             SizedBox(
@@ -217,7 +303,8 @@ class ChatContents extends ConsumerWidget {
               child: Row(
                 children: [
                   MCSpace().horizontalHalfSpace(),
-                  if (!isHideProfile) const ChatProfile(size: 40.0),
+                  if (!isHideProfile)
+                    ChatProfileIcon(size: 40.0, userData: sender),
                   if (isHideProfile) const SizedBox(width: 40.0, height: 40.0),
                   MCSpace().horizontalHalfSpace(),
                   if (type == ChatContentsType.chat)
@@ -287,7 +374,7 @@ class ChatContents extends ConsumerWidget {
     required bool isContinue,
     required bool isHideProfile,
     required ChatRoomData data,
-    required String sender,
+    required RoomUserData sender,
     User? user,
   }) {
     const ChatContentsType type = ChatContentsType.image;
@@ -305,7 +392,7 @@ class ChatContents extends ConsumerWidget {
       return buildOtherContents(
         strValue: url,
         createdAt: image.createdAt,
-        createdBy: image.createdBy,
+        sender: sender,
         isContinue: isContinue,
         isHideProfile: isHideProfile,
         type: type,
@@ -327,25 +414,42 @@ class ChatContents extends ConsumerWidget {
     return buildOtherContents(
       strValue: url,
       createdAt: image.createdAt,
-      createdBy: sender,
+      sender: sender,
       isContinue: isContinue,
       isHideProfile: isHideProfile,
       type: type,
     );
   }
 
-  String getSender({
+  RoomUserData getSender({
     required ChatRoomData data,
     required List<dynamic> value,
     required int reverseIndex,
   }) {
     // 채팅방 정보와 보낸 사람 id를 비교해 이름을 가져옴
-    for (var element in data.membersHistory) {
+    for (RoomUserData element in data.membersHistory) {
       if (element.id == value[reverseIndex]['createdBy']) {
-        return element.name;
+        return element;
       }
     }
 
-    return '알 수 없는 사용자';
+    return const RoomUserData(name: '알 수 없는 사용자');
+  }
+
+  Widget fetchLoading() {
+    // return const Center(
+    //   child: CircularProgressIndicator(),
+    // );
+    return Positioned(
+      top: 20,
+      left: 0,
+      right: 0,
+      child: SlideTransition(
+        position: _offsetAnimation,
+        child: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      ),
+    );
   }
 }
