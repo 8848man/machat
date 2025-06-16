@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:machat/features/chat_create/models/chat_create_model.dart';
+import 'package:machat/features/common/providers/view_model_disposer.dart';
 import 'package:machat/features/common/view_models/chat_room_crud_view_model.dart';
 import 'package:machat/features/common/widgets/mc_check_box_view.dart';
 import 'package:machat/router/lib.dart';
@@ -37,7 +38,9 @@ class ChatCreateViewModel extends _$ChatCreateViewModel {
           roomName: roomNameController.text,
           type: type,
         );
-    // await createChatRoom();
+
+    // disposer를 통해 HomeChatList의 ViewModel을 업데이트
+    ref.read(viewModelDisposerProvider.notifier).update((state) => !state);
 
     router.goNamed(RouterPath.home.name);
   }

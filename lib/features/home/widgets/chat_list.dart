@@ -49,21 +49,18 @@ class HomeChatList extends ConsumerWidget {
           GestureDetector(
             child: const Icon(IconData(0xf317, fontFamily: 'MaterialIcons')),
             onTap: () {
-              // 현재 사용자가 방의 유일한 멤버인 경우, 방 삭제
-              // 삭제 전에 다이얼로그를 띄워 확인
-              if (data.members.length == 1) {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return DeleteChatRoomDialog(
-                      onDelete: notifier.deleteChatRoom,
-                      roomData: data,
-                    );
-                  },
-                );
-                return;
-              }
-              notifier.deleteChatRoom(data);
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return DeleteChatRoomDialog(
+                    onDelete: notifier.deleteChatRoom,
+                    roomData: data,
+                    title: data.members.length == 1
+                        ? '채팅방을 삭제하시겠습니까?'
+                        : '채팅방을 나가시겠습니까?',
+                  );
+                },
+              );
             },
           ),
         ],
