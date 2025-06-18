@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/design_system/lib.dart';
 import 'package:machat/features/common/layouts/lib.dart';
+import 'package:machat/features/common/providers/loading_state_provider.dart';
 import 'package:machat/features/register/models/register_model.dart';
 import 'package:machat/features/register/view_models/register_view_model.dart';
 
