@@ -147,4 +147,16 @@ class ChatListViewModel extends _$ChatListViewModel {
     final router = ref.read(goRouterProvider);
     router.goNamed(RouterPath.chat.name);
   }
+
+  void goChatCreate() {
+    final route = ref.read(goRouterProvider);
+
+    route.goNamed(RouterPath.chatCreate.name);
+  }
+
+  Future<void> goChatRoomListPage() async {
+    final route = ref.read(goRouterProvider);
+
+    route.goNamed(RouterPath.chatList.name);
+  }
 }
