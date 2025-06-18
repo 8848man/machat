@@ -1,0 +1,4 @@
+enum ChatDialogState {
+  initial,
+  delete,
+}
