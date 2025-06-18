@@ -22,6 +22,7 @@ class ChatListMobile extends ConsumerWidget {
 
   Widget buildChatRoom(BuildContext context, ChatListModel data,
       ChatListViewModel notifier, User user) {
+    
     return Column(
       children: [
         ...List<Widget>.generate(data.roomList.length, (i) {
