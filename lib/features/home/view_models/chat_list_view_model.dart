@@ -4,6 +4,7 @@ import 'package:machat/features/chat/providers/chat_room_name_provider.dart';
 import 'package:machat/features/common/models/chat_list_model.dart';
 import 'package:machat/features/common/models/chat_room_data.dart';
 import 'package:machat/features/common/providers/chat_room_id.dart';
+import 'package:machat/features/common/providers/view_model_disposer.dart';
 import 'package:machat/features/home/repositories/chat_room_repository.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:machat/router/lib.dart';
@@ -15,6 +16,8 @@ part 'chat_list_view_model.g.dart';
 class ChatListViewModel extends _$ChatListViewModel {
   @override
   Future<ChatListModel> build() async {
+    // 외부의 ViewModelDisposerProvider를 사용하여 초기화
+    ref.watch(viewModelDisposerProvider);
     final ChatListModel data = await initData();
 
     return data;
@@ -77,14 +80,14 @@ class ChatListViewModel extends _$ChatListViewModel {
 
       final data = roomData.copyWith(members: newMembers).toJson();
 
-      SnackBarCaller().callSnackBar(ref, '채팅방이 삭제되었습니다.');
-
       if (roomData.members.length == 1) {
         // 방에 나만 남아있다면 방 삭제
         repository.delete(roomData.roomId);
       } else {
         repository.update(roomData.roomId, data);
       }
+
+      SnackBarCaller().callSnackBar(ref, '채팅방이 삭제되었습니다.');
 
       update((state) async {
         final newChatRoom = await getChatRooms();

@@ -6,8 +6,12 @@ import 'package:machat/features/common/models/chat_room_data.dart';
 class DeleteChatRoomDialog extends ConsumerWidget {
   final Future<void> Function(ChatRoomData) onDelete;
   final ChatRoomData roomData;
+  final String title;
   const DeleteChatRoomDialog(
-      {super.key, required this.onDelete, required this.roomData});
+      {super.key,
+      required this.onDelete,
+      required this.roomData,
+      required this.title});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,8 +29,8 @@ class DeleteChatRoomDialog extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                '채팅방을 삭제하시겠습니까?',
+              Text(
+                title,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               MCSpace().verticalSpace(),
