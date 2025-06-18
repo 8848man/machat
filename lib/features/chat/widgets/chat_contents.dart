@@ -8,7 +8,7 @@ class ChatContents extends ConsumerStatefulWidget {
 }
 
 class _ChatContentsState extends ConsumerState<ChatContents>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
@@ -19,40 +19,42 @@ class _ChatContentsState extends ConsumerState<ChatContents>
   void initState() {
     super.initState();
 
-    _scrollController.addListener(() async {
-      // 스크롤이 최상단에 닿았을 때
-      if (_scrollController.position.pixels >=
-              _scrollController.position.maxScrollExtent - 50 &&
-          !_isFetching) {
-        setFetching(true);
-        final vm = ref.read(chatContentsViewModelProvider.notifier);
-        final state = await ref.read(chatContentsViewModelProvider.future);
+    _scrollController.addListener(() async => fetchMore());
+  }
 
-        if (state.hasMore && state.lastDoc != null) {
-          await vm.fetchPreviousChats(
-            roomId: state.roomData.roomId,
-            lastDoc: state.lastDoc!,
-          );
-        }
+  Future<void> fetchMore() async {
+    // 스크롤이 최상단에 닿았을 때
+    if (_scrollController.position.pixels >=
+            _scrollController.position.maxScrollExtent - 50 &&
+        !_isFetching) {
+      setFetching(true);
+      final vm = ref.read(chatContentsViewModelProvider.notifier);
+      final state = await ref.read(chatContentsViewModelProvider.future);
 
-        setFetching(false);
+      if (state.hasMore && state.lastDoc != null) {
+        await vm.fetchPreviousChats(
+          roomId: state.roomData.roomId,
+          lastDoc: state.lastDoc!,
+        );
       }
 
-      // 애니메이션 컨트롤러
-      _controller = AnimationController(
-        duration: const Duration(milliseconds: 300),
-        vsync: this,
-      );
+      setFetching(false);
+    }
 
-      // 애니메이션 정의
-      _offsetAnimation = Tween<Offset>(
-        begin: const Offset(0, -1), // 화면 위쪽에서 시작
-        end: Offset.zero, // 제자리로
-      ).animate(CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeOutBack, // 통 튀듯한 느낌
-      ));
-    });
+    // 애니메이션 컨트롤러
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+
+    // 애니메이션 정의
+    _offsetAnimation = Tween<Offset>(
+      begin: const Offset(0, -1), // 화면 위쪽에서 시작
+      end: Offset.zero, // 제자리로
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOutBack, // 통 튀듯한 느낌
+    ));
   }
 
   void setFetching(bool value) {
@@ -92,7 +94,7 @@ class _ChatContentsState extends ConsumerState<ChatContents>
         return switch (streamProvider) {
           AsyncData(:final value) => Stack(
               children: [
-                buildMessage(
+                buildContents(
                   initValue: data.contents,
                   value: value,
                   data: data.roomData,
@@ -100,7 +102,7 @@ class _ChatContentsState extends ConsumerState<ChatContents>
                   notifier: notifier,
                   context: context,
                 ),
-                // 채팅방 데이터를 가져오는 도중에는
+                // 채팅방 데이터를 가져오는 도중에는 로딩 위젯 표시
                 if (_isFetching) fetchLoading(),
               ],
             ),
@@ -116,7 +118,7 @@ class _ChatContentsState extends ConsumerState<ChatContents>
   }
 
   // 메세지 위젯 빌드
-  Widget buildMessage({
+  Widget buildContents({
     required List<dynamic> initValue,
     required List<dynamic> value,
     required Completer completer,
@@ -150,40 +152,35 @@ class _ChatContentsState extends ConsumerState<ChatContents>
           RoomUserData sender = getSender(
               data: data, value: combinedValue, reverseIndex: reverseIndex);
 
+          final User? currentUser = FirebaseAuth.instance.currentUser;
+
           // 프로필 숨김 여부
           final bool isHideProfile =
               shouldHideProfile(combinedValue, reverseIndex);
 
-          // 데이터 타입이 정의되지 않거나 채팅일 경우
-          // 정의되지 않았을 때에도 buildChat을 그리는 이유는
-          // 이전 데이터 호환성때문
-          if (combinedValue[reverseIndex]['type'] == null ||
-              combinedValue[reverseIndex]['type'] == 'chat') {
-            return buildChat(
-              value: combinedValue,
-              reverseIndex: reverseIndex,
-              isContinue: isContinue,
-              isHideProfile: isHideProfile,
-              data: data,
-              user: user,
-              sender: sender,
-            );
-          }
-          // 데이터 타입이 이미지일 경우
-          if (combinedValue[reverseIndex]['type'] == 'image') {
-            return buildImage(
-              value: combinedValue,
-              reverseIndex: reverseIndex,
-              isContinue: isContinue,
-              isHideProfile: isHideProfile,
-              data: data,
-              user: user,
-              sender: sender,
-            );
+          final bool isHidden = isHiddenChat(
+            combinedValue[reverseIndex],
+            currentUser?.uid ?? '',
+            sender.id ?? '',
+          );
+
+          // 차단된 채팅은 표시하지 않음
+          if (isHidden) {
+            return const SizedBox.shrink();
           }
 
-          // 정의되지 않은 데이터, 기본값 : 표기하지 않음
-          return Container();
+          return ChatOptionGestureDetector(
+            chatValue: combinedValue[reverseIndex],
+            child: buildMessageWidget(
+              combinedValue: combinedValue,
+              reverseIndex: reverseIndex,
+              isContinue: isContinue,
+              isHideProfile: isHideProfile,
+              data: data,
+              user: user,
+              sender: sender,
+            ),
+          );
         },
       ),
     );
@@ -451,5 +448,46 @@ class _ChatContentsState extends ConsumerState<ChatContents>
         ),
       ),
     );
+  }
+
+  Widget buildMessageWidget({
+    required List<dynamic> combinedValue,
+    required int reverseIndex,
+    required bool isContinue,
+    required bool isHideProfile,
+    required ChatRoomData data,
+    required User? user,
+    required RoomUserData sender,
+  }) {
+    // 데이터 타입이 정의되지 않거나 채팅일 경우
+    // 정의되지 않았을 때에도 buildChat을 그리는 이유는
+    // 이전 데이터 호환성때문
+    if (combinedValue[reverseIndex]['type'] == null ||
+        combinedValue[reverseIndex]['type'] == 'chat') {
+      return buildChat(
+        value: combinedValue,
+        reverseIndex: reverseIndex,
+        isContinue: isContinue,
+        isHideProfile: isHideProfile,
+        data: data,
+        user: user,
+        sender: sender,
+      );
+    }
+    // 데이터 타입이 이미지일 경우
+    if (combinedValue[reverseIndex]['type'] == 'image') {
+      return buildImage(
+        value: combinedValue,
+        reverseIndex: reverseIndex,
+        isContinue: isContinue,
+        isHideProfile: isHideProfile,
+        data: data,
+        user: user,
+        sender: sender,
+      );
+    }
+
+    // 정의되지 않은 데이터, 기본값 : 표기하지 않음
+    return Container();
   }
 }

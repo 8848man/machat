@@ -29,3 +29,20 @@ bool shouldHideProfile(List<dynamic> messages, int currentIndex) {
 
   return currentSender == nextSender;
 }
+
+// 메시지가 전체 삭제된 경우, 해당 메시지를 숨김 처리합니다.
+// 작성자가 차단되었을 경우, 해당 메시지를 숨김 처리합니다.
+// 내가 해당 메세지를 나에게만 삭제할 경우, 해당 메시지를 숨김 처리합니다.
+bool isHiddenChat(dynamic message, String userId, String senderId) {
+  // 전체 삭제된 메시지는 무조건 숨김
+  if (message['isDeletedForEveryone'] == true) {
+    return true;
+  }
+
+  // 작성자가 차단된 경우의 메시지 숨김 처리 로직 구현
+
+  // deletedTo가 null이거나 없을 수도 있으니 안전하게 처리
+  final deletedTo = (message['deletedTo'] ?? []) as List<dynamic>;
+
+  return deletedTo.contains(userId);
+}
