@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:machat/features/common/providers/loading_state_provider.dart';
 import 'package:machat/features/register/lib.dart';
 import 'package:machat/features/register/models/register_model.dart';
 import 'package:machat/features/register/repository/register_repository.dart';
@@ -73,6 +74,8 @@ class RegisterViewModel extends _$RegisterViewModel {
 
   // 유저 등록
   Future<void> registUser() async {
+    // 로딩 상태 true로 변경
+    ref.read(loadingStateProvider.notifier).update((state) => true);
     // 이메일, 이름, 비밀번호 검증
     if (!emailValidate()) return;
     if (!nameValidate()) return;
@@ -88,6 +91,10 @@ class RegisterViewModel extends _$RegisterViewModel {
       final router = ref.read(goRouterProvider);
       router.goNamed(RouterPath.login.name);
     }
+
+    
+    // 로딩 상태 true로 변경
+    ref.read(loadingStateProvider.notifier).update((state) => false);
   }
 
   void goLogin() {

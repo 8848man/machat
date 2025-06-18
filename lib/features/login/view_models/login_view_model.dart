@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:machat/features/common/providers/loading_state_provider.dart';
 import 'package:machat/features/login/models/login_model.dart';
 import 'package:machat/features/login/repository/login_repository.dart';
+import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:machat/router/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -20,35 +22,30 @@ class LoginViewModel extends _$LoginViewModel {
   }
 
   Future<void> login() async {
-    final repository = ref.read(loginRepositoryProvider);
+    try{
+      // 로딩 상태 true로 변경
+      ref.read(loadingStateProvider.notifier).update((state) => true);
+      final repository = ref.read(loginRepositoryProvider);
 
-    // 로그인 로직 실행
-    final isLogined =
-        await repository.login(emailController.text, pwdController.text);
+      // 로그인 로직 실행
+      final isLogined =
+          await repository.login(emailController.text, pwdController.text);
 
-    // 로그인 성공 로직
-    if (isLogined) {
-      // FirebaseAuth에서 현재 사용자 가져오기
-      // 추후 캐싱 모듈 완성시 유저 캐싱 구현
-      // final user = FirebaseAuth.instance.currentUser;
-
-      // if (user == null) {
-      //   throw Exception("User is not authenticated.");
-      // }
-
-      // // 유저 프로필 가져오기
-      // final userProfile = await repository.getUserProfile(user.uid);
-
-      // // 필요한 로직 처리 (예: 상태 업데이트, UI 반영 등)
-      // print('User Profile: $userProfile');
-
-      // 페이지 이동
-      final router = ref.read(goRouterProvider);
-      router.goNamed(RouterPath.home.name);
-    } else {
-      state = state.copyWith(
-          emailErrorText: '이메일 확인', pwdErrorText: '이메일 혹은 비밀번호를 다시 한번 확인해주세요.');
+      // 로그인 성공 로직
+      if (isLogined) {
+        // 페이지 이동
+        final router = ref.read(goRouterProvider);
+        router.goNamed(RouterPath.home.name);
+      } else {
+        state = state.copyWith(
+            emailErrorText: '이메일 확인', pwdErrorText: '이메일 혹은 비밀번호를 다시 한번 확인해주세요.');
+      }} catch(e){
+        SnackBarCaller().callSnackBar(ref, '알 수 없는 이유로 로그인에 실패했습니다. 개발자에게 문의해주세요.');
+      } finally{
+    // 로딩 상태 true로 변경
+    ref.read(loadingStateProvider.notifier).update((state) => true);
     }
+    
   }
 
   void goRegister() {
