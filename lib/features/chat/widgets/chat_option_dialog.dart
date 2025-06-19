@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/design_system/lib.dart';
@@ -114,6 +115,7 @@ class ChatOptionDialog extends ConsumerWidget {
     final notifier = ref.read(chatContentsViewModelProvider.notifier);
     final roomId = ref.read(chatRoomIdProvider);
     final dynamic value = ref.read(chatDialogValueProvider);
+    final User? currentUser = FirebaseAuth.instance.currentUser;
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -143,6 +145,14 @@ class ChatOptionDialog extends ConsumerWidget {
                 width: 100,
                 title: '모두에게서 삭제',
                 onTap: () {
+                  if (currentUser == null ||
+                      value['createdBy'] != currentUser.uid) {
+                    SnackBarCaller().callSnackBar(
+                      ref,
+                      '본인이 작성한 채팅만 모두에게서 삭제할 수 있어요.',
+                    );
+                    return;
+                  }
                   notifier.deleteChatFromAll(
                     roomId: roomId,
                     chatId: value['id'],
