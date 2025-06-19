@@ -197,6 +197,7 @@ class _ChatContentsState extends ConsumerState<ChatContents>
   }) {
     const ChatContentsType type = ChatContentsType.chat;
     final Chat chat = Chat(
+      id: value[reverseIndex]['id'],
       createdAt: value[reverseIndex]['createdAt'],
       createdBy: value[reverseIndex]['createdBy'],
       message: value[reverseIndex]['message'],

@@ -1,7 +1,7 @@
 import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:machat/features/common/models/user_data.dart';
+import 'package:machat/features/chat/models/chat.dart';
 import 'package:machat/networks/firestore_provider.dart';
 
 final chatContentsRepositoryProvider = Provider<ChatContentsRepository>((ref) {
@@ -99,14 +99,6 @@ class ChatContentsRepository {
         };
       }).toList();
 
-  Iterable<List<UserData>> _testDocs(QuerySnapshot snap) =>
-      snap.docs.map((doc) {
-        final data = doc.data() as Map<String, dynamic>;
-        List userList = [];
-        // userList.add();
-        return [];
-      });
-
   Stream<List<Map<String, dynamic>>> subscribeToNewChats(
     String roomId,
     DateTime entryTime,
@@ -168,5 +160,73 @@ class ChatContentsRepository {
     } catch (e) {
       print('error occured when interecting servers!');
     }
+  }
+
+  ////////// refactoring codes
+
+  /// 📌 최신 30개 채팅 가져오기
+  Future<ChatFetchResult> getInitialChats2(String roomId) async {
+    final snapshot = await firestore
+        .collection('chat_rooms')
+        .doc(roomId)
+        .collection('chat')
+        .orderBy('createdAt', descending: true)
+        .limit(30)
+        .get();
+
+    final chats = snapshot.docs
+        .map((doc) => Chat.fromDocumentSnapshot(doc))
+        .toList()
+        .reversed
+        .toList();
+
+    final lastDoc = snapshot.docs.isNotEmpty ? snapshot.docs.last : null;
+
+    return ChatFetchResult(chats: chats, lastDoc: lastDoc);
+  }
+
+  /// 📌 이전 채팅 가져오기 (무한스크롤용)
+  Future<ChatFetchResult> getPreviousChats2({
+    required String roomId,
+    required DocumentSnapshot lastDoc,
+    int limit = 30,
+  }) async {
+    final snapshot = await firestore
+        .collection('chat_rooms')
+        .doc(roomId)
+        .collection('chat')
+        .orderBy('createdAt', descending: true)
+        .startAfterDocument(lastDoc)
+        .limit(limit)
+        .get();
+    final chats = snapshot.docs
+        .map((doc) => Chat.fromDocumentSnapshot(doc))
+        .toList()
+        .reversed
+        .toList();
+
+    final gettingLastDoc = snapshot.docs.isNotEmpty ? snapshot.docs.last : null;
+
+    return ChatFetchResult(chats: chats, lastDoc: gettingLastDoc);
+  }
+
+  Stream<List<Chat>> subscribeToNewChats2(
+    String roomId,
+    DateTime entryTime,
+  ) {
+    if (roomId.isEmpty) return const Stream.empty();
+
+    final Stream<List<Chat>> chatStream = firestore
+        .collection('chat_rooms')
+        .doc(roomId)
+        .collection('chat')
+        .orderBy('createdAt', descending: false)
+        .startAfter([Timestamp.fromDate(entryTime)])
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => Chat.fromDocumentSnapshot(doc))
+            .toList());
+
+    return StreamGroup.merge([chatStream]);
   }
 }

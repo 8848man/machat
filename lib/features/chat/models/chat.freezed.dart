@@ -20,10 +20,16 @@ Chat _$ChatFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Chat {
+  String get id => throw _privateConstructorUsedError;
   String get message => throw _privateConstructorUsedError;
   String get createdBy => throw _privateConstructorUsedError;
-  String get createdAt => throw _privateConstructorUsedError;
+  String get createdAt =>
+      throw _privateConstructorUsedError; // ✅ Timestamp → DateTime
   bool get isMine => throw _privateConstructorUsedError;
+  String get type => throw _privateConstructorUsedError;
+  String? get imageUrl => throw _privateConstructorUsedError;
+  List<String> get deletedTo => throw _privateConstructorUsedError;
+  bool get isDeletedForEveryone => throw _privateConstructorUsedError;
 
   /// Serializes this Chat to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +45,16 @@ abstract class $ChatCopyWith<$Res> {
   factory $ChatCopyWith(Chat value, $Res Function(Chat) then) =
       _$ChatCopyWithImpl<$Res, Chat>;
   @useResult
-  $Res call({String message, String createdBy, String createdAt, bool isMine});
+  $Res call(
+      {String id,
+      String message,
+      String createdBy,
+      String createdAt,
+      bool isMine,
+      String type,
+      String? imageUrl,
+      List<String> deletedTo,
+      bool isDeletedForEveryone});
 }
 
 /// @nodoc
@@ -57,12 +72,21 @@ class _$ChatCopyWithImpl<$Res, $Val extends Chat>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? message = null,
     Object? createdBy = null,
     Object? createdAt = null,
     Object? isMine = null,
+    Object? type = null,
+    Object? imageUrl = freezed,
+    Object? deletedTo = null,
+    Object? isDeletedForEveryone = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       message: null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -79,6 +103,22 @@ class _$ChatCopyWithImpl<$Res, $Val extends Chat>
           ? _value.isMine
           : isMine // ignore: cast_nullable_to_non_nullable
               as bool,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      imageUrl: freezed == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      deletedTo: null == deletedTo
+          ? _value.deletedTo
+          : deletedTo // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      isDeletedForEveryone: null == isDeletedForEveryone
+          ? _value.isDeletedForEveryone
+          : isDeletedForEveryone // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -90,7 +130,16 @@ abstract class _$$ChatImplCopyWith<$Res> implements $ChatCopyWith<$Res> {
       __$$ChatImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String message, String createdBy, String createdAt, bool isMine});
+  $Res call(
+      {String id,
+      String message,
+      String createdBy,
+      String createdAt,
+      bool isMine,
+      String type,
+      String? imageUrl,
+      List<String> deletedTo,
+      bool isDeletedForEveryone});
 }
 
 /// @nodoc
@@ -105,12 +154,21 @@ class __$$ChatImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? message = null,
     Object? createdBy = null,
     Object? createdAt = null,
     Object? isMine = null,
+    Object? type = null,
+    Object? imageUrl = freezed,
+    Object? deletedTo = null,
+    Object? isDeletedForEveryone = null,
   }) {
     return _then(_$ChatImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       message: null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -127,6 +185,22 @@ class __$$ChatImplCopyWithImpl<$Res>
           ? _value.isMine
           : isMine // ignore: cast_nullable_to_non_nullable
               as bool,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      imageUrl: freezed == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      deletedTo: null == deletedTo
+          ? _value._deletedTo
+          : deletedTo // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      isDeletedForEveryone: null == isDeletedForEveryone
+          ? _value.isDeletedForEveryone
+          : isDeletedForEveryone // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -135,27 +209,53 @@ class __$$ChatImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ChatImpl implements _Chat {
   const _$ChatImpl(
-      {required this.message,
+      {required this.id,
+      required this.message,
       required this.createdBy,
       required this.createdAt,
-      this.isMine = false});
+      this.isMine = false,
+      this.type = 'chat',
+      this.imageUrl,
+      final List<String> deletedTo = const [],
+      this.isDeletedForEveryone = false})
+      : _deletedTo = deletedTo;
 
   factory _$ChatImpl.fromJson(Map<String, dynamic> json) =>
       _$$ChatImplFromJson(json);
 
+  @override
+  final String id;
   @override
   final String message;
   @override
   final String createdBy;
   @override
   final String createdAt;
+// ✅ Timestamp → DateTime
   @override
   @JsonKey()
   final bool isMine;
+  @override
+  @JsonKey()
+  final String type;
+  @override
+  final String? imageUrl;
+  final List<String> _deletedTo;
+  @override
+  @JsonKey()
+  List<String> get deletedTo {
+    if (_deletedTo is EqualUnmodifiableListView) return _deletedTo;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_deletedTo);
+  }
+
+  @override
+  @JsonKey()
+  final bool isDeletedForEveryone;
 
   @override
   String toString() {
-    return 'Chat(message: $message, createdBy: $createdBy, createdAt: $createdAt, isMine: $isMine)';
+    return 'Chat(id: $id, message: $message, createdBy: $createdBy, createdAt: $createdAt, isMine: $isMine, type: $type, imageUrl: $imageUrl, deletedTo: $deletedTo, isDeletedForEveryone: $isDeletedForEveryone)';
   }
 
   @override
@@ -163,18 +263,35 @@ class _$ChatImpl implements _Chat {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ChatImpl &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.message, message) || other.message == message) &&
             (identical(other.createdBy, createdBy) ||
                 other.createdBy == createdBy) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
-            (identical(other.isMine, isMine) || other.isMine == isMine));
+            (identical(other.isMine, isMine) || other.isMine == isMine) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl) &&
+            const DeepCollectionEquality()
+                .equals(other._deletedTo, _deletedTo) &&
+            (identical(other.isDeletedForEveryone, isDeletedForEveryone) ||
+                other.isDeletedForEveryone == isDeletedForEveryone));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, message, createdBy, createdAt, isMine);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      message,
+      createdBy,
+      createdAt,
+      isMine,
+      type,
+      imageUrl,
+      const DeepCollectionEquality().hash(_deletedTo),
+      isDeletedForEveryone);
 
   /// Create a copy of Chat
   /// with the given fields replaced by the non-null parameter values.
@@ -194,21 +311,36 @@ class _$ChatImpl implements _Chat {
 
 abstract class _Chat implements Chat {
   const factory _Chat(
-      {required final String message,
+      {required final String id,
+      required final String message,
       required final String createdBy,
       required final String createdAt,
-      final bool isMine}) = _$ChatImpl;
+      final bool isMine,
+      final String type,
+      final String? imageUrl,
+      final List<String> deletedTo,
+      final bool isDeletedForEveryone}) = _$ChatImpl;
 
   factory _Chat.fromJson(Map<String, dynamic> json) = _$ChatImpl.fromJson;
 
+  @override
+  String get id;
   @override
   String get message;
   @override
   String get createdBy;
   @override
-  String get createdAt;
+  String get createdAt; // ✅ Timestamp → DateTime
   @override
   bool get isMine;
+  @override
+  String get type;
+  @override
+  String? get imageUrl;
+  @override
+  List<String> get deletedTo;
+  @override
+  bool get isDeletedForEveryone;
 
   /// Create a copy of Chat
   /// with the given fields replaced by the non-null parameter values.
