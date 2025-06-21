@@ -7,7 +7,7 @@ class EmptyChatRoomIndicator extends ConsumerWidget {
   const EmptyChatRoomIndicator({super.key});
 
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final notifier = ref.read(chatListViewModelProvider.notifier);
     return Center(
       child: Column(

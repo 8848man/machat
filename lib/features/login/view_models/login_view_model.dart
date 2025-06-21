@@ -22,7 +22,7 @@ class LoginViewModel extends _$LoginViewModel {
   }
 
   Future<void> login() async {
-    try{
+    try {
       // 로딩 상태 true로 변경
       ref.read(loadingStateProvider.notifier).update((state) => true);
       final repository = ref.read(loginRepositoryProvider);
@@ -38,14 +38,16 @@ class LoginViewModel extends _$LoginViewModel {
         router.goNamed(RouterPath.home.name);
       } else {
         state = state.copyWith(
-            emailErrorText: '이메일 확인', pwdErrorText: '이메일 혹은 비밀번호를 다시 한번 확인해주세요.');
-      }} catch(e){
-        SnackBarCaller().callSnackBar(ref, '알 수 없는 이유로 로그인에 실패했습니다. 개발자에게 문의해주세요.');
-      } finally{
-    // 로딩 상태 true로 변경
-    ref.read(loadingStateProvider.notifier).update((state) => true);
+            emailErrorText: '이메일 확인',
+            pwdErrorText: '이메일 혹은 비밀번호를 다시 한번 확인해주세요.');
+      }
+    } catch (e) {
+      SnackBarCaller()
+          .callSnackBar(ref, '알 수 없는 이유로 로그인에 실패했습니다. 개발자에게 문의해주세요.');
+    } finally {
+      // 로딩 상태 true로 변경
+      ref.read(loadingStateProvider.notifier).update((state) => false);
     }
-    
   }
 
   void goRegister() {
