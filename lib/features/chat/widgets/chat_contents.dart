@@ -70,6 +70,8 @@ class _ChatContentsState extends ConsumerState<ChatContents>
 
   @override
   void dispose() {
+    print('test002, chatContents dispose');
+    _scrollController.removeListener(() => fetchMore());
     _scrollController.dispose();
     _controller.dispose();
     super.dispose();

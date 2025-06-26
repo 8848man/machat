@@ -70,6 +70,7 @@ class ChatOptionDialog extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
   ) {
+    final notifier = ref.read(chatContentsViewModelProvider.notifier);
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -98,9 +99,11 @@ class ChatOptionDialog extends ConsumerWidget {
                   leading: const Icon(Icons.speaker_rounded),
                   title: const Text('읽어주기'),
                   onTap: () {
-                    SnackBarCaller().callSnackBar(ref, '해당 기능은 준비중이에요!');
+                    // SnackBarCaller().callSnackBar(ref, '해당 기능은 준비중이에요!');
+                    notifier.speakChatMessage();
+
                     // 채팅방 삭제 로직
-                    Navigator.of(context).pop(); // 다이얼로그 닫기
+                    // Navigator.of(context).pop(); // 다이얼로그 닫기
                   },
                 ),
               ],
@@ -114,6 +117,7 @@ class ChatOptionDialog extends ConsumerWidget {
   Widget buildChatDeleteState(BuildContext context, WidgetRef ref) {
     final notifier = ref.read(chatContentsViewModelProvider.notifier);
     final roomId = ref.read(chatRoomIdProvider);
+    // Todo : 타입에 맞도록 파싱
     final dynamic value = ref.read(chatDialogValueProvider);
     final User? currentUser = FirebaseAuth.instance.currentUser;
     return Center(
