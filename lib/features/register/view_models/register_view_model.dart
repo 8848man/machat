@@ -3,6 +3,7 @@ import 'package:machat/features/common/providers/loading_state_provider.dart';
 import 'package:machat/features/register/lib.dart';
 import 'package:machat/features/register/models/register_model.dart';
 import 'package:machat/features/register/repository/register_repository.dart';
+import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:machat/router/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -74,27 +75,30 @@ class RegisterViewModel extends _$RegisterViewModel {
 
   // 유저 등록
   Future<void> registUser() async {
-    // 로딩 상태 true로 변경
-    ref.read(loadingStateProvider.notifier).update((state) => true);
-    // 이메일, 이름, 비밀번호 검증
-    if (!emailValidate()) return;
-    if (!nameValidate()) return;
-    if (!pwdValidate()) return;
+    try {
+      // 로딩 상태 true로 변경
+      ref.read(loadingStateProvider.notifier).update((state) => true);
+      // 이메일, 이름, 비밀번호 검증
+      if (!emailValidate()) return;
+      if (!nameValidate()) return;
+      if (!pwdValidate()) return;
 
-    final bool isSuccess = await signUp(
-      emailController.text,
-      pwdController.text,
-      nameController.text,
-    );
+      final bool isSuccess = await signUp(
+        emailController.text,
+        pwdController.text,
+        nameController.text,
+      );
 
-    if (isSuccess) {
-      final router = ref.read(goRouterProvider);
-      router.goNamed(RouterPath.login.name);
+      if (isSuccess) {
+        final router = ref.read(goRouterProvider);
+        router.goNamed(RouterPath.login.name);
+      }
+    } catch (e) {
+      SnackBarCaller().callSnackBar(ref, '회원가입에 실패했습니다. error occured by $e');
+    } finally {
+      // 로딩 상태 true로 변경
+      ref.read(loadingStateProvider.notifier).update((state) => false);
     }
-
-    
-    // 로딩 상태 true로 변경
-    ref.read(loadingStateProvider.notifier).update((state) => false);
   }
 
   void goLogin() {

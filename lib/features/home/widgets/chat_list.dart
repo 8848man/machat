@@ -27,12 +27,9 @@ class HomeChatList extends ConsumerWidget {
   // 데이터 갯수만큼 채팅방 리스트타일 생성
   Widget buildChatRoom(
       BuildContext context, ChatListModel data, ChatListViewModel notifier) {
-        
-        print('test001, data.roomList is ${data.roomList}' );
     // 채팅방이 없을 경우 인디케이터 생성
-    if(data.roomList.isEmpty) return const EmptyChatRoomIndicator();
+    if (data.roomList.isEmpty) return const EmptyChatRoomIndicator();
 
-    
     return Column(
       children: [
         ...List<Widget>.generate(data.roomList.length, (i) {
