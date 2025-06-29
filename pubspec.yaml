@@ -32,6 +32,12 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+
+  # tts package
+  rwkim_tts:
+    git:
+      url: https://github.com/8848man/rwkim_tts
+      ref: version/1.0.0  
     
   ## 상태관리
   flutter_riverpod: ^2.4.9

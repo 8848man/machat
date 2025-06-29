@@ -1,7 +1,6 @@
 import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:machat/features/common/models/user_data.dart';
 import 'package:machat/networks/firestore_provider.dart';
 
 final chatContentsRepositoryProvider = Provider<ChatContentsRepository>((ref) {
@@ -98,14 +97,6 @@ class ChatContentsRepository {
           'isDeletedForEveryone': data['isDeletedForEveryone'],
         };
       }).toList();
-
-  Iterable<List<UserData>> _testDocs(QuerySnapshot snap) =>
-      snap.docs.map((doc) {
-        final data = doc.data() as Map<String, dynamic>;
-        List userList = [];
-        // userList.add();
-        return [];
-      });
 
   Stream<List<Map<String, dynamic>>> subscribeToNewChats(
     String roomId,
