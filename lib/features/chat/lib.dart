@@ -25,7 +25,7 @@ import 'package:machat/features/chat/view_models/chat_view_model.dart';
 import 'package:machat/features/chat/widgets/chat_image.dart';
 import 'package:machat/features/chat/widgets/chat_menu.dart';
 import 'package:machat/features/chat/features/end_drawer/screens/chat_room_end_drawer.dart';
-import 'package:machat/features/chat/widgets/chat_option_dialog.dart';
+import 'package:machat/features/chat/features/chat_option_dialog/widgets/chat_option_dialog.dart';
 import 'package:machat/features/common/layouts/lib.dart';
 import 'package:machat/features/common/models/chat_room_data.dart';
 import 'package:machat/features/common/models/user_data.dart';

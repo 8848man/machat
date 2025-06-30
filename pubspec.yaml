@@ -37,7 +37,7 @@ dependencies:
   rwkim_tts:
     git:
       url: https://github.com/8848man/rwkim_tts
-      ref: version/1.0.0  
+      ref: version/1.0.1
     
   ## 상태관리
   flutter_riverpod: ^2.4.9
