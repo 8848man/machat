@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/design_system/lib.dart';
 import 'package:machat/extensions.dart';
+import 'package:machat/features/chat/features/chat_option_dialog/widgets/read_tts_widget.dart';
 import 'package:machat/features/chat/models/chat_dialog_state.dart';
 import 'package:machat/features/chat/providers/chat_dialog_state_provider.dart';
 import 'package:machat/features/chat/view_models/chat_contents_view_model.dart';
@@ -70,7 +71,6 @@ class ChatOptionDialog extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
   ) {
-    final notifier = ref.read(chatContentsViewModelProvider.notifier);
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -95,17 +95,7 @@ class ChatOptionDialog extends ConsumerWidget {
                     });
                   },
                 ),
-                ListTile(
-                  leading: const Icon(Icons.speaker_rounded),
-                  title: const Text('읽어주기'),
-                  onTap: () {
-                    // SnackBarCaller().callSnackBar(ref, '해당 기능은 준비중이에요!');
-                    notifier.speakChatMessage();
-
-                    // 채팅방 삭제 로직
-                    // Navigator.of(context).pop(); // 다이얼로그 닫기
-                  },
-                ),
+                const ReadTtsTile(),
               ],
             ),
           ).expand(),

@@ -55,7 +55,7 @@ packages:
     source: hosted
     version: "2.11.0"
   audioplayers:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: audioplayers
       sha256: a5341380a4f1d3a10a4edde5bb75de5127fe31e0faa8c4d860e64d2f91ad84c7
@@ -526,7 +526,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_tts:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_tts
       sha256: cbb3fd43b946e62398560235469e6113e4fe26c40eab1b7cb5e7c417503fb3a8
@@ -990,8 +990,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "version/1.0.0"
-      resolved-ref: a286b69d8cab5ecaf61ae6c0fe9dee9bb799fcd1
+      ref: "version/1.0.1"
+      resolved-ref: "398390d6a33dae1a9edac7a32d4ff272ac6d0df3"
       url: "https://github.com/8848man/rwkim_tts"
     source: git
     version: "1.0.0+1"
@@ -1097,7 +1097,7 @@ packages:
     source: hosted
     version: "1.10.0"
   speech_to_text:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: speech_to_text
       sha256: "97425fd8cc60424061a0584b6c418c0eedab5201cc5e96ef15a946d7fab7b9b7"
