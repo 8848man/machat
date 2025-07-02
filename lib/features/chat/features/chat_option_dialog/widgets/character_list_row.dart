@@ -1,22 +1,33 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:machat/config/voice_package_config.dart';
+import 'package:machat/features/chat/features/chat_option_dialog/providers/now_character_provider.dart';
+import 'package:machat/features/chat/features/chat_option_dialog/view_models/chat_option_dialog_view_model.dart';
 import 'package:rwkim_tts/features/tts_service/enums/lib.dart';
 
-class CharacterList extends ConsumerStatefulWidget {
-  const CharacterList({super.key});
+class CharacterListRow extends ConsumerStatefulWidget {
+  const CharacterListRow({super.key});
 
   @override
-  ConsumerState<CharacterList> createState() => _AnimatedHorizontalListState();
+  ConsumerState<CharacterListRow> createState() =>
+      _AnimatedHorizontalListState();
 }
 
-class _AnimatedHorizontalListState extends ConsumerState<CharacterList>
+class _AnimatedHorizontalListState extends ConsumerState<CharacterListRow>
     with TickerProviderStateMixin {
   late final List<AnimationController> _controllers;
   late final List<Animation<Offset>> _animations;
+  late final ChatOptionDialogViewModel notifier;
+  final double charBoxSize = 30;
 
   @override
   void initState() {
     super.initState();
+    // 노티파이어 할당
+    notifier = ref.read(chatOptionDialogViewModelProvider.notifier);
+    // 컨트롤러 생성
     _controllers = List.generate(
       voiceCharacters.length,
       (index) => AnimationController(
@@ -25,6 +36,7 @@ class _AnimatedHorizontalListState extends ConsumerState<CharacterList>
       ),
     );
 
+    // 애니메이션 생성
     _animations = _controllers.map((controller) {
       return Tween<Offset>(
         begin: const Offset(4, 0), // 오른쪽에서 시작
@@ -55,8 +67,9 @@ class _AnimatedHorizontalListState extends ConsumerState<CharacterList>
 
   @override
   Widget build(BuildContext context) {
+    final VoiceCharacter nowCharacter = ref.watch(nowCharacterProvider);
     return SizedBox(
-      height: 30,
+      height: charBoxSize,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: voiceCharacters.length,
@@ -64,9 +77,8 @@ class _AnimatedHorizontalListState extends ConsumerState<CharacterList>
           return SlideTransition(
             position: _animations[index],
             child: buildCharacterSelectBox(
-              // context,
-              // ref,
               voiceCharacters[index],
+              nowCharacter == voiceCharacters[index],
             ),
           );
         },
@@ -75,15 +87,21 @@ class _AnimatedHorizontalListState extends ConsumerState<CharacterList>
   }
 
   Widget buildCharacterSelectBox(
-    // BuildContext context,
-    // WidgetRef ref,
     VoiceCharacter character,
+    bool isSelected,
   ) {
-    return CircleAvatar(
-      radius: 30,
-      backgroundImage: AssetImage(
-        getVoiceImagePath(character, packageName: 'rwkim_tts'), // 캐릭터 이미지 경로
-      ), // Replace with your character image
+    return GestureDetector(
+      onTap: () => notifier.changeCharacter(character),
+      child: SizedBox(
+        height: charBoxSize,
+        width: charBoxSize + 16,
+        child: CircleAvatar(
+          radius: 30,
+          backgroundImage: AssetImage(
+            getVoiceImagePath(character, packageName: ttsPackageName),
+          ),
+        ),
+      ),
     );
   }
 }

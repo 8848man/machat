@@ -1,8 +1,11 @@
+import 'package:machat/features/chat/features/chat_option_dialog/providers/now_character_provider.dart';
+import 'package:machat/features/chat/features/chat_option_dialog/providers/selecting_character_state.dart';
 import 'package:machat/features/chat/features/chat_option_dialog/providers/sound_loading_state.dart';
 import 'package:machat/features/chat/providers/chat_dialog_state_provider.dart';
 import 'package:machat/features/chat/providers/chat_tts_provider.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:rwkim_tts/features/tts_service/enums/lib.dart';
 import 'package:rwkim_tts/features/tts_service/services/tts_service.dart';
 // import 'package:rwkim_tts/simple_tts.dart';
 part 'chat_option_dialog_view_model.g.dart';
@@ -17,10 +20,18 @@ class ChatOptionDialogViewModel extends _$ChatOptionDialogViewModel {
     // 캐릭터 선택 상태 초기화
     // ref.read(chatDialogValueProvider.notifier).update((state) => false);
     ref.onDispose(() {
-      print('test000, vm dispose');
       _tts.dispose();
     });
     return false;
+  }
+
+  void changeCharacter(VoiceCharacter character) {
+    ref.read(nowCharacterProvider.notifier).update((state) => character);
+    ref.read(isSelectingCharacterProvider.notifier).update((state) => false);
+    SnackBarCaller().callSnackBar(
+      ref,
+      '${character.displayName} 캐릭터로 변경되었습니다.',
+    );
   }
 
   Future<void> speakChatMessage() async {
@@ -28,12 +39,19 @@ class ChatOptionDialogViewModel extends _$ChatOptionDialogViewModel {
     final chatValue = ref.read(chatDialogValueProvider);
     // 음성 로딩 상태 변경
     ref.read(isChatSoundLoadingProvider.notifier).update((state) => true);
-    print('TTS 시작: ${chatValue['message']}');
+    final VoiceCharacter nowCharacter = ref.read(nowCharacterProvider);
+    final String message = chatValue['message'];
+
+    // 메세지 길이 제한
+    if (message.length >= 50) {
+      SnackBarCaller().callSnackBar(ref, '메세지가 너무 길어요! 50자 이내 메세지를 선택해주세요');
+      return;
+    }
 
     try {
       await _tts.speak({
-        'text': chatValue['message'],
-        'voiceId': 'c9858bccab131431a5c3c7',
+        'text': message,
+        'voiceId': nowCharacter.id,
         'language': 'ko',
       });
     } catch (e) {

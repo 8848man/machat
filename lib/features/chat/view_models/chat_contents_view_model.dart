@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:machat/features/chat/models/chat_contents.dart';
-import 'package:machat/features/chat/providers/chat_dialog_state_provider.dart';
-import 'package:machat/features/chat/providers/chat_tts_provider.dart';
 import 'package:machat/features/chat/repository/chat_contents_repository.dart';
 import 'package:machat/features/chat/view_models/chat_view_model.dart';
 import 'package:machat/features/common/models/chat_room_data.dart';
@@ -23,7 +21,6 @@ class ChatContentsViewModel extends _$ChatContentsViewModel {
     final ChatContentsModel initState = await fetchInitialChats(roomData);
 
     ref.onDispose(() {
-      print('test001, view model dispose');
       _tts.dispose();
     });
 
