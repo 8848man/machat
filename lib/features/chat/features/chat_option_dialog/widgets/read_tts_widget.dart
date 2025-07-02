@@ -17,6 +17,7 @@ class _ReadTtsWidgetState extends ConsumerState<ReadTtsTile> {
   Widget build(BuildContext context) {
     final isLoading = ref.watch(isChatSoundLoadingProvider);
     final isCharacterSelecting = ref.watch(isSelectingCharacterProvider);
+    ref.watch(chatOptionDialogViewModelProvider);
     final notifier = ref.read(chatOptionDialogViewModelProvider.notifier);
     return ListTile(
       leading: _getLeading(isLoading),
@@ -33,9 +34,7 @@ class _ReadTtsWidgetState extends ConsumerState<ReadTtsTile> {
   }
 
   Widget _getTitle(bool isCharacterSelecting) {
-    return isCharacterSelecting
-        ? const AnimatedHorizontalList()
-        : const Text('읽어주기');
+    return isCharacterSelecting ? const CharacterList() : const Text('읽어주기');
   }
 
   Widget _getTrailing() {

@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rwkim_tts/features/tts_service/enums/lib.dart';
 
-class AnimatedHorizontalList extends StatefulWidget {
-  const AnimatedHorizontalList({super.key});
+class CharacterList extends ConsumerStatefulWidget {
+  const CharacterList({super.key});
 
   @override
-  State<AnimatedHorizontalList> createState() => _AnimatedHorizontalListState();
+  ConsumerState<CharacterList> createState() => _AnimatedHorizontalListState();
 }
 
-class _AnimatedHorizontalListState extends State<AnimatedHorizontalList>
+class _AnimatedHorizontalListState extends ConsumerState<CharacterList>
     with TickerProviderStateMixin {
   late final List<AnimationController> _controllers;
   late final List<Animation<Offset>> _animations;
-  final int itemCount = 10;
 
   @override
   void initState() {
     super.initState();
     _controllers = List.generate(
-      itemCount,
+      voiceCharacters.length,
       (index) => AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: 1000),
@@ -58,23 +59,31 @@ class _AnimatedHorizontalListState extends State<AnimatedHorizontalList>
       height: 30,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: itemCount,
+        itemCount: voiceCharacters.length,
         itemBuilder: (context, index) {
           return SlideTransition(
             position: _animations[index],
-            child: Container(
-              width: 30,
-              margin: const EdgeInsets.symmetric(horizontal: 8),
-              color: Colors.blueAccent,
-              alignment: Alignment.center,
-              child: Text(
-                'Item $index',
-                style: const TextStyle(color: Colors.white),
-              ),
+            child: buildCharacterSelectBox(
+              // context,
+              // ref,
+              voiceCharacters[index],
             ),
           );
         },
       ),
+    );
+  }
+
+  Widget buildCharacterSelectBox(
+    // BuildContext context,
+    // WidgetRef ref,
+    VoiceCharacter character,
+  ) {
+    return CircleAvatar(
+      radius: 30,
+      backgroundImage: AssetImage(
+        getVoiceImagePath(character, packageName: 'rwkim_tts'), // 캐릭터 이미지 경로
+      ), // Replace with your character image
     );
   }
 }

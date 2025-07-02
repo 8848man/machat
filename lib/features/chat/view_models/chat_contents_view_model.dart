@@ -141,18 +141,18 @@ class ChatContentsViewModel extends _$ChatContentsViewModel {
     });
   }
 
-  Future<void> speakChatMessage() async {
-    // 다이얼로그에 진입할 때 저장된 채팅 밸류 가져오기
-    final chatValue = ref.read(chatDialogValueProvider);
+  // Future<void> speakChatMessage() async {
+  //   // 다이얼로그에 진입할 때 저장된 채팅 밸류 가져오기
+  //   final chatValue = ref.read(chatDialogValueProvider);
 
-    try {
-      await _tts.speakText(
-        text: chatValue['message'],
-        voiceId: 'c9858bccab131431a5c3c7',
-        language: 'ko',
-      );
-    } catch (e) {
-      SnackBarCaller().callSnackBar(ref, '음성 재생 중 에러가 발생했습니다.');
-    }
-  }
+  //   try {
+  //     await _tts.speakText(
+  //       text: chatValue['message'],
+  //       voiceId: 'c9858bccab131431a5c3c7',
+  //       language: 'ko',
+  //     );
+  //   } catch (e) {
+  //     SnackBarCaller().callSnackBar(ref, '음성 재생 중 에러가 발생했습니다.');
+  //   }
+  // }
 }

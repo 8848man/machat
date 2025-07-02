@@ -55,7 +55,7 @@ packages:
     source: hosted
     version: "2.11.0"
   audioplayers:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: audioplayers
       sha256: a5341380a4f1d3a10a4edde5bb75de5127fe31e0faa8c4d860e64d2f91ad84c7
@@ -991,7 +991,7 @@ packages:
     description:
       path: "."
       ref: "version/1.0.1"
-      resolved-ref: "3ac88e5499059726d88e9417a7e8c4de9d10a5b8"
+      resolved-ref: "398390d6a33dae1a9edac7a32d4ff272ac6d0df3"
       url: "https://github.com/8848man/rwkim_tts"
     source: git
     version: "1.0.0+1"

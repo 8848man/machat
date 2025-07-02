@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/design_system/lib.dart';
 import 'package:machat/extensions.dart';
 import 'package:machat/features/chat/features/chat_option_dialog/widgets/read_tts_widget.dart';
-import 'package:machat/features/chat/features/chat_option_dialog/widgets/charactor_row_view.dart';
 import 'package:machat/features/chat/models/chat_dialog_state.dart';
 import 'package:machat/features/chat/providers/chat_dialog_state_provider.dart';
 import 'package:machat/features/chat/view_models/chat_contents_view_model.dart';
@@ -97,13 +96,6 @@ class ChatOptionDialog extends ConsumerWidget {
                   },
                 ),
                 const ReadTtsTile(),
-                ListTile(
-                  leading: const Icon(Icons.image),
-                  title: const AnimatedHorizontalList(),
-                  onTap: () {
-                    // 이미지 선택 로직
-                  },
-                ),
               ],
             ),
           ).expand(),
