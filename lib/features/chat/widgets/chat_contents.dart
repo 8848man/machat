@@ -18,7 +18,7 @@ class _ChatContentsState extends ConsumerState<ChatContents>
   @override
   void initState() {
     super.initState();
-
+    initController();
     _scrollController.addListener(() async => fetchMore());
   }
 
@@ -40,7 +40,20 @@ class _ChatContentsState extends ConsumerState<ChatContents>
 
       setFetching(false);
     }
+  }
 
+  void setFetching(bool value) {
+    setState(() {
+      _isFetching = value;
+      if (value) {
+        _controller.forward();
+      } else {
+        _controller.reverse();
+      }
+    });
+  }
+
+  void initController() {
     // 애니메이션 컨트롤러
     _controller = AnimationController(
       duration: const Duration(milliseconds: 300),
@@ -55,17 +68,6 @@ class _ChatContentsState extends ConsumerState<ChatContents>
       parent: _controller,
       curve: Curves.easeOutBack, // 통 튀듯한 느낌
     ));
-  }
-
-  void setFetching(bool value) {
-    setState(() {
-      _isFetching = value;
-      if (value) {
-        _controller.forward();
-      } else {
-        _controller.reverse();
-      }
-    });
   }
 
   @override

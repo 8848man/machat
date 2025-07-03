@@ -6,22 +6,19 @@ import 'package:machat/features/chat/view_models/chat_view_model.dart';
 import 'package:machat/features/common/models/chat_room_data.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:rwkim_tts/rwkim_tts.dart';
 
 part 'chat_contents_view_model.g.dart';
 
 @riverpod
 class ChatContentsViewModel extends _$ChatContentsViewModel {
-  late final SimpleTTS _tts;
+  // late final SimpleTTS _tts;
   @override
   Future<ChatContentsModel> build() async {
-    // tts 클래스 초기화
-    // _tts = ref.watch(simpleTTSProvider);
     final ChatRoomData roomData = await ref.watch(chatViewModelProvider.future);
     final ChatContentsModel initState = await fetchInitialChats(roomData);
 
     ref.onDispose(() {
-      _tts.dispose();
+      // _tts.dispose();
     });
 
     return initState;
