@@ -5,8 +5,8 @@ class TokenLoginPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const DefaultLayout(
-      child: Center(
+    return const Scaffold(
+      body: Center(
         child: LoginBundle(),
       ),
     );

@@ -5,7 +5,7 @@ import '../interfaces/token_service.dart';
 /// Firebase 기반 토큰 패키지 서비스 구현체
 class FirebaseTokenPackageService implements TokenPackageService {
   final FirebaseFirestore _firestore;
-  
+
   static const String _tokenPackageCollection = 'token_packages';
 
   FirebaseTokenPackageService({FirebaseFirestore? firestore})
@@ -80,7 +80,8 @@ class FirebaseTokenPackageService implements TokenPackageService {
         query = query.where('price', isLessThanOrEqualTo: maxPrice);
       }
 
-      final querySnapshot = await query.orderBy('price', descending: false).get();
+      final querySnapshot =
+          await query.orderBy('price', descending: false).get();
 
       return querySnapshot.docs
           .map((doc) => TokenPackageModel.fromFirestore(doc))
@@ -107,7 +108,8 @@ class FirebaseTokenPackageService implements TokenPackageService {
         query = query.where('tokenAmount', isLessThanOrEqualTo: maxTokens);
       }
 
-      final querySnapshot = await query.orderBy('tokenAmount', descending: false).get();
+      final querySnapshot =
+          await query.orderBy('tokenAmount', descending: false).get();
 
       return querySnapshot.docs
           .map((doc) => TokenPackageModel.fromFirestore(doc))
@@ -121,7 +123,7 @@ class FirebaseTokenPackageService implements TokenPackageService {
   Future<TokenPackageModel?> getBestValuePackage() async {
     try {
       final packages = await getActivePackages();
-      
+
       if (packages.isEmpty) return null;
 
       packages.sort((a, b) => a.pricePerToken.compareTo(b.pricePerToken));
@@ -148,4 +150,4 @@ class FirebaseTokenPackageService implements TokenPackageService {
       throw Exception('Failed to get packages under price: $e');
     }
   }
-} 
+}

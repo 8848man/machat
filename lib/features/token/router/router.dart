@@ -33,6 +33,17 @@ final goRouterProvider = Provider<GoRouter>(
             transitionsBuilder: fadeTransition,
           ),
         ),
+
+        GoRoute(
+          path: TokenRouterPath.token.path,
+          name: TokenRouterPath.token.name,
+          // builder: (context, state) => const SplashPage(),
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: const TokenPage(),
+            transitionsBuilder: fadeTransition,
+          ),
+        ),
       ],
     );
   },

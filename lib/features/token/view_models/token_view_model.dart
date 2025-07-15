@@ -1,66 +1,78 @@
-import 'package:flutter/foundation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:machat/features/token/models/token_state_model.dart';
 import 'package:machat/features/token/repositories/token_repository.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/token_model.dart';
 import '../models/token_log_model.dart';
 import '../interfaces/token_service.dart';
 
-/// 토큰 뷰모델 - 토큰 관련 비즈니스 로직을 관리
-class TokenViewModel extends ChangeNotifier {
-  final TokenService _tokenService;
+part 'token_view_model.g.dart';
 
-  TokenModel? _userToken;
-  List<TokenLogModel> _tokenLogs = [];
-  bool _isLoading = false;
-  String? _error;
-
-  // Getters
-  TokenModel? get userToken => _userToken;
-  List<TokenLogModel> get tokenLogs => _tokenLogs;
-  bool get isLoading => _isLoading;
-  String? get error => _error;
-
-  // 편의 getters
-  int get currentTokens => _userToken?.currentTokens ?? 0;
-  int get totalEarnedTokens => _userToken?.totalEarnedTokens ?? 0;
-  int get totalSpentTokens => _userToken?.totalSpentTokens ?? 0;
-  bool get canReceiveDailyReward => _userToken?.canReceiveDailyReward() ?? true;
-
-  TokenViewModel({TokenService? tokenService})
-      : _tokenService = tokenService ?? FirebaseTokenService();
+@riverpod
+class TokenViewModel extends _$TokenViewModel {
+  late final TokenService _tokenService;
+  @override
+  Future<TokenStateModel> build() async {
+    final user = FirebaseAuth.instance.currentUser;
+    final uid = user?.uid;
+    _tokenService = FirebaseTokenService();
+    final userToken = await loadUserToken(uid ?? '');
+    final tokenLogs = await loadUserTokenLogs(uid ?? '');
+    return TokenStateModel(
+      userToken: userToken,
+      tokenLogs: tokenLogs,
+    );
+  }
 
   /// 사용자의 토큰 정보를 로드
-  Future<void> loadUserToken(String userId) async {
+  Future<TokenModel?> loadUserToken(String userId) async {
     _setLoading(true);
     _clearError();
 
     try {
-      _userToken = await _tokenService.getUserToken(userId);
-      notifyListeners();
+      return await _tokenService.getUserToken(userId);
     } catch (e) {
+      print('error occured, $e');
       _setError('토큰 정보를 불러오는데 실패했습니다: $e');
     } finally {
       _setLoading(false);
     }
+    return null;
   }
 
   /// 사용자의 토큰 로그를 로드
-  Future<void> loadUserTokenLogs(String userId, {int limit = 50}) async {
+  Future<List<TokenLogModel>> loadUserTokenLogs(String userId,
+      {int limit = 50}) async {
     _setLoading(true);
     _clearError();
 
     try {
-      _tokenLogs = await _tokenService.getUserTokenLogs(userId, limit: limit);
-      notifyListeners();
+      return await _tokenService.getUserTokenLogs(userId, limit: limit);
     } catch (e) {
       _setError('토큰 로그를 불러오는데 실패했습니다: $e');
     } finally {
       _setLoading(false);
     }
+
+    return [];
   }
 
   /// 일일 보상 토큰 지급
-  Future<bool> claimDailyReward(String userId, {int rewardAmount = 10}) async {
-    if (!canReceiveDailyReward) {
+  Future<bool> claimDailyReward({int rewardAmount = 10}) async {
+    final user = FirebaseAuth.instance.currentUser;
+    final uid = user?.uid;
+    if (uid == null || uid == '') {
+      return false;
+    }
+    final stateValue = state.value;
+    if (stateValue == null) {
+      return false;
+    }
+    if (stateValue.userToken == null) {
+      return false;
+    }
+    stateValue.userToken!.canReceiveDailyReward();
+    if (!stateValue.userToken!.canReceiveDailyReward()) {
       _setError('오늘은 이미 보상을 받았습니다.');
       return false;
     }
@@ -69,12 +81,12 @@ class TokenViewModel extends ChangeNotifier {
     _clearError();
 
     try {
-      final success = await _tokenService.giveDailyReward(userId,
-          rewardAmount: rewardAmount);
+      final success =
+          await _tokenService.giveDailyReward(uid, rewardAmount: rewardAmount);
 
       if (success) {
-        await loadUserToken(userId);
-        await loadUserTokenLogs(userId);
+        await loadUserToken(uid);
+        await loadUserTokenLogs(uid);
         return true;
       } else {
         _setError('일일 보상을 받을 수 없습니다.');
@@ -89,10 +101,20 @@ class TokenViewModel extends ChangeNotifier {
   }
 
   /// 토큰 사용
-  Future<bool> spendTokens(String userId, int amount,
-      {String? description}) async {
-    if (currentTokens < amount) {
-      _setError('토큰이 부족합니다. 현재 보유: $currentTokens, 필요: $amount');
+  Future<bool> spendTokens(int amount, {String? description}) async {
+    final TokenStateModel state = await ref.read(tokenViewModelProvider.future);
+    if (state.userToken == null) {
+      return false;
+    }
+    final user = FirebaseAuth.instance.currentUser;
+    final uid = user?.uid;
+    if (uid == null || uid == '') {
+      return false;
+    }
+
+    if (state.userToken!.currentTokens < amount) {
+      _setError(
+          '토큰이 부족합니다. 현재 보유: ${state.userToken!.currentTokens}, 필요: $amount');
       return false;
     }
 
@@ -100,12 +122,12 @@ class TokenViewModel extends ChangeNotifier {
     _clearError();
 
     try {
-      final success = await _tokenService.spendTokens(userId, amount,
+      final success = await _tokenService.spendTokens(uid, amount,
           description: description);
 
       if (success) {
-        await loadUserToken(userId);
-        await loadUserTokenLogs(userId);
+        await loadUserToken(uid);
+        await loadUserTokenLogs(uid);
         return true;
       } else {
         _setError('토큰 사용에 실패했습니다.');
@@ -171,20 +193,25 @@ class TokenViewModel extends ChangeNotifier {
   }
 
   /// 특정 타입의 로그만 필터링
-  List<TokenLogModel> getLogsByType(TokenLogType type) {
-    return _tokenLogs.where((log) => log.type == type).toList();
+  Future<List<TokenLogModel>> getLogsByType(TokenLogType type) async {
+    final state = await ref.read(tokenViewModelProvider.future);
+
+    return state.tokenLogs.where((log) => log.type == type).toList();
   }
 
   /// 최근 N일간의 로그만 필터링
-  List<TokenLogModel> getLogsByDays(int days) {
+  Future<List<TokenLogModel>> getLogsByDays(int days) async {
+    final state = await ref.read(tokenViewModelProvider.future);
     final cutoffDate = DateTime.now().subtract(Duration(days: days));
-    return _tokenLogs
+    return state.tokenLogs
         .where((log) => log.createdAt.isAfter(cutoffDate))
         .toList();
   }
 
   /// 토큰 사용 통계 계산
-  Map<String, int> getTokenStatistics() {
+  Future<Map<String, int>> getTokenStatistics() async {
+    final state = await ref.read(tokenViewModelProvider.future);
+    final tokenLogs = state.tokenLogs;
     final now = DateTime.now();
     final thisMonth = DateTime(now.year, now.month);
     final lastMonth = DateTime(now.year, now.month - 1);
@@ -194,7 +221,7 @@ class TokenViewModel extends ChangeNotifier {
     int lastMonthEarned = 0;
     int lastMonthSpent = 0;
 
-    for (final log in _tokenLogs) {
+    for (final log in tokenLogs) {
       if (log.amount > 0) {
         if (log.createdAt.isAfter(thisMonth)) {
           thisMonthEarned += log.amount;
@@ -220,26 +247,23 @@ class TokenViewModel extends ChangeNotifier {
 
   /// 에러 초기화
   void _clearError() {
-    if (_error != null) {
-      _error = null;
-      notifyListeners();
-    }
+    update((state) {
+      if (state.error != null) {
+        return state.copyWith(error: null);
+      }
+      return state;
+    });
   }
 
   /// 에러 설정
   void _setError(String error) {
-    _error = error;
-    notifyListeners();
+    update(
+      (state) => state.copyWith(error: error),
+    );
   }
 
   /// 로딩 상태 설정
   void _setLoading(bool loading) {
-    _isLoading = loading;
-    notifyListeners();
-  }
-
-  /// 뷰모델 초기화
-  void dispose() {
-    super.dispose();
+    update((state) => state.copyWith(isLoading: loading));
   }
 }

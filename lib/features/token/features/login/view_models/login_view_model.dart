@@ -3,7 +3,7 @@ import 'package:machat/features/token/features/commons/providers/loading_state_p
 import 'package:machat/features/token/features/commons/snack_bar_manager/lib.dart';
 import 'package:machat/features/token/features/login/models/login_model.dart';
 import 'package:machat/features/token/features/login/repository/login_repository.dart';
-import 'package:machat/router/lib.dart';
+import 'package:machat/features/token/router/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'login_view_model.g.dart';
@@ -35,7 +35,7 @@ class LoginViewModel extends _$LoginViewModel {
       if (isLogined) {
         // 페이지 이동
         final router = ref.read(goRouterProvider);
-        router.goNamed(RouterPath.home.name);
+        router.goNamed(TokenRouterPath.token.name);
       } else {
         state = state.copyWith(
             emailErrorText: '이메일 확인',
@@ -50,8 +50,8 @@ class LoginViewModel extends _$LoginViewModel {
     }
   }
 
-  void goRegister() {
-    final router = ref.read(goRouterProvider);
-    router.goNamed(RouterPath.register.name);
-  }
+  // void goRegister() {
+  //   final router = ref.read(goRouterProvider);
+  //   router.goNamed(TokenRouterPath.register.name);
+  // }
 }

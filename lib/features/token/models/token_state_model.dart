@@ -10,6 +10,6 @@ class TokenStateModel with _$TokenStateModel {
     TokenModel? userToken,
     @Default([]) List<TokenLogModel> tokenLogs,
     @Default(false) bool isLoading,
-    @Default('') String error,
+    String? error,
   }) = _TokenStateModel;
 }

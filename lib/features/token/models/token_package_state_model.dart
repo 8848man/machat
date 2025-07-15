@@ -8,6 +8,7 @@ class TokenPackageStateModel with _$TokenPackageStateModel {
   const factory TokenPackageStateModel({
     @Default([]) List<TokenPackageModel> activePackages,
     @Default([]) List<TokenPackageModel> popularPackages,
+    @Default([]) List<TokenPackageModel> filteredPackages,
     TokenPackageModel? selectedPackage,
     @Default(false) bool isLoading,
     String? error,
