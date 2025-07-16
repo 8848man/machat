@@ -32,6 +32,16 @@ class MockTokenService extends _i1.Mock implements _i2.TokenService {
   }
 
   @override
+  _i3.Stream<_i4.TokenModel> watchUserToken(String? userId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #watchUserToken,
+          [userId],
+        ),
+        returnValue: _i3.Stream<_i4.TokenModel>.empty(),
+      ) as _i3.Stream<_i4.TokenModel>);
+
+  @override
   _i3.Future<_i4.TokenModel?> getUserToken(String? userId) =>
       (super.noSuchMethod(
         Invocation.method(

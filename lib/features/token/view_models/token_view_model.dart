@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:machat/features/token/models/token_state_model.dart';
 import 'package:machat/features/token/repositories/token_repository.dart';
+import 'package:machat/features/token/view_models/token_stream.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/token_model.dart';
 import '../models/token_log_model.dart';
@@ -10,14 +11,14 @@ part 'token_view_model.g.dart';
 
 @riverpod
 class TokenViewModel extends _$TokenViewModel {
-  late final TokenService _tokenService;
+  TokenService get _tokenService => ref.read(tokenServiceProvider);
   @override
   Future<TokenStateModel> build() async {
     final user = FirebaseAuth.instance.currentUser;
     final uid = user?.uid;
-    _tokenService = FirebaseTokenService();
-    final userToken = await loadUserToken(uid ?? '');
-    final tokenLogs = await loadUserTokenLogs(uid ?? '');
+    final TokenModel userToken =
+        await ref.watch(tokenStreamProvider(uid ?? '').future);
+    final List<TokenLogModel> tokenLogs = await loadUserTokenLogs(uid ?? '');
     return TokenStateModel(
       userToken: userToken,
       tokenLogs: tokenLogs,

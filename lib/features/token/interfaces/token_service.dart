@@ -5,6 +5,8 @@ import '../models/token_package_model.dart';
 /// 토큰 서비스 인터페이스
 /// 이 인터페이스를 구현하여 다양한 토큰 관리 시스템을 지원할 수 있습니다.
 abstract class TokenService {
+  Stream<TokenModel> watchUserToken(String userId);
+
   /// 사용자의 토큰 정보를 가져옴
   Future<TokenModel?> getUserToken(String userId);
 
@@ -21,7 +23,8 @@ abstract class TokenService {
   Future<bool> giveDailyReward(String userId, {int rewardAmount = 10});
 
   /// 토큰 구매 처리
-  Future<void> purchaseTokens(String userId, int amount, double price, {String? transactionId});
+  Future<void> purchaseTokens(String userId, int amount, double price,
+      {String? transactionId});
 
   /// 사용자의 토큰 로그를 가져옴
   Future<List<TokenLogModel>> getUserTokenLogs(String userId, {int limit = 50});
@@ -69,7 +72,8 @@ abstract class TokenStatisticsService {
   Future<Map<String, int>> getUserTokenStatistics(String userId);
 
   /// 월별 토큰 사용 통계
-  Future<Map<String, int>> getMonthlyTokenStatistics(String userId, int year, int month);
+  Future<Map<String, int>> getMonthlyTokenStatistics(
+      String userId, int year, int month);
 
   /// 토큰 사용 패턴 분석
   Future<Map<String, dynamic>> analyzeTokenUsagePattern(String userId);
@@ -84,26 +88,39 @@ abstract class TokenRewardService {
   Future<bool> giveAttendanceReward(String userId, {int rewardAmount = 5});
 
   /// 미션 완료 보상
-  Future<bool> giveMissionReward(String userId, String missionId, {int rewardAmount = 20});
+  Future<bool> giveMissionReward(String userId, String missionId,
+      {int rewardAmount = 20});
 
   /// 레벨업 보상
-  Future<bool> giveLevelUpReward(String userId, int level, {int rewardAmount = 50});
+  Future<bool> giveLevelUpReward(String userId, int level,
+      {int rewardAmount = 50});
 
   /// 특별 이벤트 보상
-  Future<bool> giveEventReward(String userId, String eventId, {int rewardAmount = 100});
+  Future<bool> giveEventReward(String userId, String eventId,
+      {int rewardAmount = 100});
 }
 
 /// 토큰 결제 서비스 인터페이스
 abstract class TokenPaymentService {
   /// 토큰 패키지 구매
-  Future<bool> purchaseTokenPackage(String userId, String packageId, String paymentMethod);
+  Future<bool> purchaseTokenPackage(
+      String userId, String packageId, String paymentMethod);
 
   /// 결제 검증
   Future<bool> verifyPayment(String transactionId);
 
   /// 환불 처리
-  Future<bool> refundTokens(String userId, String transactionId, {String? reason});
+  Future<bool> refundTokens(String userId, String transactionId,
+      {String? reason});
 
   /// 결제 내역 조회
   Future<List<Map<String, dynamic>>> getPaymentHistory(String userId);
-} 
+}
+
+/// 패키지 등록 인터페이스
+abstract class TokenRegisterService {
+  Future<bool> registPackage();
+  Future<bool> updatePacakge();
+  Future<bool> deletePacakge();
+  Future<TokenPackageModel> fetchPackageById(String id);
+}

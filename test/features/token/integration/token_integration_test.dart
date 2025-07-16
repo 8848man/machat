@@ -19,8 +19,8 @@ void main() {
       // 실제 환경에서는 Firebase Test SDK를 사용해야 함
       tokenService = FirebaseTokenService();
       packageService = FirebaseTokenPackageService();
-      tokenViewModel = TokenViewModel(tokenService: tokenService);
-      packageViewModel = TokenPackageViewModel(packageService: packageService);
+      tokenViewModel = TokenViewModel();
+      packageViewModel = TokenPackageViewModel();
     });
 
     group('Token Management Flow', () {

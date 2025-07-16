@@ -44,6 +44,17 @@ final goRouterProvider = Provider<GoRouter>(
             transitionsBuilder: fadeTransition,
           ),
         ),
+
+        GoRoute(
+          path: TokenRouterPath.packageRegister.path,
+          name: TokenRouterPath.packageRegister.name,
+          // builder: (context, state) => const SplashPage(),
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: const PackageRegister(),
+            transitionsBuilder: fadeTransition,
+          ),
+        ),
       ],
     );
   },

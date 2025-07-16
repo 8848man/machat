@@ -35,7 +35,7 @@ class LoginViewModel extends _$LoginViewModel {
       if (isLogined) {
         // 페이지 이동
         final router = ref.read(goRouterProvider);
-        router.goNamed(TokenRouterPath.token.name);
+        router.replaceNamed(TokenRouterPath.token.name);
       } else {
         state = state.copyWith(
             emailErrorText: '이메일 확인',

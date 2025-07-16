@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/features/token/models/token_log_model.dart';
 import 'package:machat/features/token/models/token_model.dart';
 import 'package:machat/features/token/models/token_package_model.dart';
+import 'package:machat/features/token/router/lib.dart';
 import 'package:machat/features/token/view_models/token_package_view_model.dart';
 import 'package:machat/features/token/view_models/token_view_model.dart';
 
@@ -210,9 +211,26 @@ class TokenPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    '토큰 패키지',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  Row(
+                    children: [
+                      const Text(
+                        '토큰 패키지',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      const Spacer(),
+                      TextButton(
+                        child: const Text(
+                          '패키지 등록하기',
+                          style: TextStyle(
+                              fontSize: 8, fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: () {
+                          final router = ref.read(goRouterProvider);
+                          router.goNamed(TokenRouterPath.packageRegister.name);
+                        },
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 8),
                   if (data.isLoading)
