@@ -9,7 +9,7 @@ class TokenPackageStateModel with _$TokenPackageStateModel {
     @Default([]) List<TokenPackageModel> activePackages,
     @Default([]) List<TokenPackageModel> popularPackages,
     @Default([]) List<TokenPackageModel> filteredPackages,
-    TokenPackageModel? selectedPackage,
+    // TokenPackageModel? selectedPackage,
     @Default(false) bool isLoading,
     String? error,
   }) = _TokenPackageStateModel;

@@ -143,17 +143,23 @@ class TokenViewModel extends _$TokenViewModel {
   }
 
   /// 토큰 구매 처리
-  Future<bool> purchaseTokens(String userId, int amount, double price,
+  Future<bool> purchaseTokens(int amount, double price,
       {String? transactionId}) async {
     _setLoading(true);
     _clearError();
 
+    final user = FirebaseAuth.instance.currentUser;
+    final uid = user?.uid;
+    if (uid == null || uid == '') {
+      return false;
+    }
+
     try {
-      await _tokenService.purchaseTokens(userId, amount, price,
+      await _tokenService.purchaseTokens(uid, amount, price,
           transactionId: transactionId);
 
-      await loadUserToken(userId);
-      await loadUserTokenLogs(userId);
+      await loadUserToken(uid);
+      await loadUserTokenLogs(uid);
       return true;
     } catch (e) {
       _setError('토큰 구매에 실패했습니다: $e');

@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:machat/features/token/utils/parse_date.dart';
 
 part 'token_package_model.freezed.dart';
 part 'token_package_model.g.dart';
@@ -22,7 +23,8 @@ class TokenPackageModel with _$TokenPackageModel {
     required DateTime updatedAt,
   }) = _TokenPackageModel;
 
-  factory TokenPackageModel.fromJson(Map<String, dynamic> json) => _$TokenPackageModelFromJson(json);
+  factory TokenPackageModel.fromJson(Map<String, dynamic> json) =>
+      _$TokenPackageModelFromJson(json);
 
   factory TokenPackageModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
@@ -37,9 +39,13 @@ class TokenPackageModel with _$TokenPackageModel {
       isPopular: data['isPopular'] ?? false,
       bonusTokens: data['bonusTokens'],
       imageUrl: data['imageUrl'],
-      metadata: data['metadata'] != null ? Map<String, dynamic>.from(data['metadata']) : null,
-      createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      updatedAt: (data['updatedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      metadata: data['metadata'] != null
+          ? Map<String, dynamic>.from(data['metadata'])
+          : null,
+      // createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      // updatedAt: (data['updatedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      createdAt: parseDate(data['createdAt']),
+      updatedAt: parseDate(data['updatedAt']),
     );
   }
 }
@@ -84,4 +90,4 @@ extension TokenPackageModelExtension on TokenPackageModel {
     if (bonusTokens == null || bonusTokens == 0) return null;
     return '+$bonusTokens 보너스';
   }
-} 
+}

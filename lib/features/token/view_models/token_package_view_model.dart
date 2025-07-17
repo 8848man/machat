@@ -1,4 +1,5 @@
 import 'package:machat/features/token/models/token_package_state_model.dart';
+import 'package:machat/features/token/providers/selected_package_provider.dart';
 import 'package:machat/features/token/repositories/token_package_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/token_package_model.dart';
@@ -55,29 +56,25 @@ class TokenPackageViewModel extends _$TokenPackageViewModel {
   }
 
   /// 특정 토큰 패키지를 로드
-  Future<void> loadPackageById(String packageId) async {
-    _setLoading(true);
-    _clearError();
+  // Future<void> loadPackageById(String packageId) async {
+  //   _setLoading(true);
+  //   _clearError();
 
-    try {
-      final TokenPackageModel? selectedPackage =
-          await _packageService.getPackageById(packageId);
-      update((state) => state.copyWith(selectedPackage: selectedPackage));
-    } catch (e) {
-      _setError('토큰 패키지 정보를 불러오는데 실패했습니다: $e');
-    } finally {
-      _setLoading(false);
-    }
-  }
+  //   try {
+  //     final TokenPackageModel? selectedPackage =
+  //         await _packageService.getPackageById(packageId);
+  //     update((state) => state.copyWith(selectedPackage: selectedPackage));
+  //   } catch (e) {
+  //     _setError('토큰 패키지 정보를 불러오는데 실패했습니다: $e');
+  //   } finally {
+  //     _setLoading(false);
+  //   }
+  // }
 
   /// 패키지 선택
   void selectPackage(TokenPackageModel package) {
-    update((state) => state.copyWith(selectedPackage: package));
-  }
-
-  /// 선택된 패키지 해제
-  void clearSelectedPackage() {
-    update((state) => state.copyWith(selectedPackage: null));
+    ref.read(selectedPackageProvider.notifier).update((state) => package);
+    // update((state) => state.copyWith(selectedPackage: package));
   }
 
   /// 패키지 필터링 (가격순)

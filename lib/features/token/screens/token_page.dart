@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/features/token/models/token_log_model.dart';
 import 'package:machat/features/token/models/token_model.dart';
 import 'package:machat/features/token/models/token_package_model.dart';
+import 'package:machat/features/token/providers/selected_package_provider.dart';
 import 'package:machat/features/token/router/lib.dart';
 import 'package:machat/features/token/view_models/token_package_view_model.dart';
 import 'package:machat/features/token/view_models/token_view_model.dart';
@@ -246,7 +247,10 @@ class TokenPage extends ConsumerWidget {
                                 ? Chip(
                                     label: Text('+${package.bonusTokens} 보너스'))
                                 : null,
-                            onTap: () => notifier.selectPackage(package),
+                            onTap: () {
+                              notifier.selectPackage(package);
+                              showTokenPurchaseDialog(context, ref);
+                            },
                           ),
                         ),
                 ],
@@ -259,44 +263,6 @@ class TokenPage extends ConsumerWidget {
       },
     );
   }
-
-  // Widget _buildTokenLogsSection() {
-  //   return Consumer(
-  //     builder: (context, ref, child) {
-  //       ref.watch();
-  //       return Card(
-  //         child: Padding(
-  //           padding: const EdgeInsets.all(16.0),
-  //           child: Column(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: [
-  //               const Text(
-  //                 '토큰 사용 내역',
-  //                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-  //               ),
-  //               const SizedBox(height: 8),
-  //               if (tokenVM.tokenLogs.isEmpty)
-  //                 const Text('사용 내역이 없습니다.')
-  //               else
-  //                 ...tokenVM.tokenLogs.take(5).map((log) => ListTile(
-  //                       title: Text(log.displayDescription),
-  //                       subtitle:
-  //                           Text(log.createdAt.toString().substring(0, 16)),
-  //                       trailing: Text(
-  //                         log.displayAmount,
-  //                         style: TextStyle(
-  //                           color: log.amount > 0 ? Colors.green : Colors.red,
-  //                           fontWeight: FontWeight.bold,
-  //                         ),
-  //                       ),
-  //                     )),
-  //             ],
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
 
   Widget _buildTokenLogsSection() {
     return Consumer(
@@ -342,12 +308,92 @@ class TokenPage extends ConsumerWidget {
       },
     );
   }
-}
 
-/// 토큰 기능 초기화 예시
-class TokenFeatureInitializer {
-  static void initialize() {
-    // 필요한 경우 여기서 토큰 관련 전역 설정을 초기화할 수 있습니다.
-    // 예: 기본 토큰 패키지 생성, 설정 로드 등
+  void showTokenPurchaseDialog(BuildContext context, WidgetRef ref) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Consumer(builder: (context, ref, child) {
+          final package = ref.watch(selectedPackageProvider);
+          final notifier = ref.read(tokenViewModelProvider.notifier);
+          if (package == null) {
+            return const Center(
+              child: Text("선택된 패키지가 없습니다!"),
+            );
+          }
+          return Container(
+            height: 300,
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                const Expanded(
+                  flex: 4,
+                  child: Card(
+                    child: Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: SizedBox(
+                          height: double.infinity, child: Text('패키지 이미지')),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 6,
+                  child: SizedBox(
+                    height: double.infinity,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('패키지 이름 : ${package.name}'),
+                                    Text('패키지 설명 : ${package.description}'),
+                                    Text('토큰 갯수 : ${package.tokenAmount}'),
+                                    Text('패키지 원가 : ${package.price}'),
+                                    // Text('패키지 할인가 : ${package.}'),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    notifier.purchaseTokens(
+                                        package.tokenAmount, package.price);
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('구매하기')),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('뒤로가기')),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+      },
+    );
   }
 }

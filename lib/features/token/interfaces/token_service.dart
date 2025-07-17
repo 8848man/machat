@@ -118,9 +118,9 @@ abstract class TokenPaymentService {
 }
 
 /// 패키지 등록 인터페이스
-abstract class TokenRegisterService {
-  Future<bool> registPackage();
-  Future<bool> updatePacakge();
-  Future<bool> deletePacakge();
+abstract class TokenPackageRegisterService {
+  Future<bool> registPackage(TokenPackageModel data);
+  Future<bool> updatePacakge(TokenPackageModel data);
+  Future<bool> deletePacakge(String id);
   Future<TokenPackageModel> fetchPackageById(String id);
 }
