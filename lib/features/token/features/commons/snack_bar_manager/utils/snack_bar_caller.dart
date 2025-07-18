@@ -1,7 +1,5 @@
 part of '../lib.dart';
 
-// 앱에서 사용할 스낵바 호출 함수
-// WidgetRef나 Ref가 있는 어디에서든 스낵바 상태를 변경할 수 있습니다.
 class SnackBarCaller {
   void callSnackBar(
     dynamic ref,
