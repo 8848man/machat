@@ -45,7 +45,7 @@ class LoginViewModel extends _$LoginViewModel {
       SnackBarCaller()
           .callSnackBar(ref, '알 수 없는 이유로 로그인에 실패했습니다. 개발자에게 문의해주세요.');
     } finally {
-      // 로딩 상태 true로 변경
+      // 로딩 상태 flase로 변경
       ref.read(loadingStateProvider.notifier).update((state) => false);
     }
   }

@@ -25,6 +25,7 @@ mixin _$UserData {
   String? get email => throw _privateConstructorUsedError;
   String? get profileUrl => throw _privateConstructorUsedError;
   String? get nationId => throw _privateConstructorUsedError;
+  String? get role => throw _privateConstructorUsedError;
 
   /// Serializes this UserData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -46,7 +47,8 @@ abstract class $UserDataCopyWith<$Res> {
       String? id,
       String? email,
       String? profileUrl,
-      String? nationId});
+      String? nationId,
+      String? role});
 }
 
 /// @nodoc
@@ -69,6 +71,7 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
     Object? email = freezed,
     Object? profileUrl = freezed,
     Object? nationId = freezed,
+    Object? role = freezed,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -91,6 +94,10 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
           ? _value.nationId
           : nationId // ignore: cast_nullable_to_non_nullable
               as String?,
+      role: freezed == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -108,7 +115,8 @@ abstract class _$$UserDataImplCopyWith<$Res>
       String? id,
       String? email,
       String? profileUrl,
-      String? nationId});
+      String? nationId,
+      String? role});
 }
 
 /// @nodoc
@@ -129,6 +137,7 @@ class __$$UserDataImplCopyWithImpl<$Res>
     Object? email = freezed,
     Object? profileUrl = freezed,
     Object? nationId = freezed,
+    Object? role = freezed,
   }) {
     return _then(_$UserDataImpl(
       name: null == name
@@ -151,6 +160,10 @@ class __$$UserDataImplCopyWithImpl<$Res>
           ? _value.nationId
           : nationId // ignore: cast_nullable_to_non_nullable
               as String?,
+      role: freezed == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -163,7 +176,8 @@ class _$UserDataImpl implements _UserData {
       this.id,
       this.email,
       this.profileUrl,
-      this.nationId});
+      this.nationId,
+      this.role});
 
   factory _$UserDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserDataImplFromJson(json);
@@ -178,10 +192,12 @@ class _$UserDataImpl implements _UserData {
   final String? profileUrl;
   @override
   final String? nationId;
+  @override
+  final String? role;
 
   @override
   String toString() {
-    return 'UserData(name: $name, id: $id, email: $email, profileUrl: $profileUrl, nationId: $nationId)';
+    return 'UserData(name: $name, id: $id, email: $email, profileUrl: $profileUrl, nationId: $nationId, role: $role)';
   }
 
   @override
@@ -195,13 +211,14 @@ class _$UserDataImpl implements _UserData {
             (identical(other.profileUrl, profileUrl) ||
                 other.profileUrl == profileUrl) &&
             (identical(other.nationId, nationId) ||
-                other.nationId == nationId));
+                other.nationId == nationId) &&
+            (identical(other.role, role) || other.role == role));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, name, id, email, profileUrl, nationId);
+      Object.hash(runtimeType, name, id, email, profileUrl, nationId, role);
 
   /// Create a copy of UserData
   /// with the given fields replaced by the non-null parameter values.
@@ -225,7 +242,8 @@ abstract class _UserData implements UserData {
       final String? id,
       final String? email,
       final String? profileUrl,
-      final String? nationId}) = _$UserDataImpl;
+      final String? nationId,
+      final String? role}) = _$UserDataImpl;
 
   factory _UserData.fromJson(Map<String, dynamic> json) =
       _$UserDataImpl.fromJson;
@@ -240,6 +258,8 @@ abstract class _UserData implements UserData {
   String? get profileUrl;
   @override
   String? get nationId;
+  @override
+  String? get role;
 
   /// Create a copy of UserData
   /// with the given fields replaced by the non-null parameter values.

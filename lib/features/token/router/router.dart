@@ -29,6 +29,17 @@ final goRouterProvider = Provider<GoRouter>(
           // builder: (context, state) => const SplashPage(),
           pageBuilder: (context, state) => CustomTransitionPage<void>(
             key: state.pageKey,
+            child: const TokenSplash(),
+            transitionsBuilder: fadeTransition,
+          ),
+        ),
+
+        GoRoute(
+          path: TokenRouterPath.login.path,
+          name: TokenRouterPath.login.name,
+          // builder: (context, state) => const SplashPage(),
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
             child: const TokenLoginPage(),
             transitionsBuilder: fadeTransition,
           ),
