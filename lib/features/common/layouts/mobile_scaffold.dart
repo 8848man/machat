@@ -23,16 +23,16 @@ class MobileScaffold extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        leading: Navigator.canPop(context)
-            ? IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  if (Navigator.canPop(context)) {
-                    Navigator.pop(context);
-                  }
-                },
-              )
-            : null, // 뒤로 갈 페이지가 없으면 leading 제거,
+        // leading: Navigator.canPop(context)
+        //     ? IconButton(
+        //         icon: const Icon(Icons.arrow_back),
+        //         onPressed: () {
+        //           if (Navigator.canPop(context)) {
+        //             Navigator.pop(context);
+        //           }
+        //         },
+        //       )
+        //     : null, // 뒤로 갈 페이지가 없으면 leading 제거,
         title: Text(title ?? 'MaChat Mobile'),
         actions: actions ?? [],
       ),

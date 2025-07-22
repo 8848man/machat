@@ -12,6 +12,7 @@ class UserData with _$UserData {
     String? email,
     String? profileUrl,
     String? nationId,
+    String? role,
   }) = _UserData;
 
   factory UserData.fromJson(Map<String, dynamic> json) =>

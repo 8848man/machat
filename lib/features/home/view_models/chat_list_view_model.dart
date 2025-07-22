@@ -107,7 +107,7 @@ class ChatListViewModel extends _$ChatListViewModel {
     // 방 이름이 null인 경우 기본값으로 '채팅방' 사용
     ref.read(chatRoomNameProvider.notifier).state = roomName ?? '채팅방';
     final router = ref.read(goRouterProvider);
-    router.goNamed(RouterPath.chat.name);
+    router.pushNamed(RouterPath.chat.name);
   }
 
   void goLogin() {
