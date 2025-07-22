@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:machat/features/token/features/commons/enums/user_roles.dart';
+import 'package:machat/features/token/features/commons/providers/user_state_provider.dart';
 import 'package:machat/features/token/features/commons/widgets/lib.dart';
 import 'package:machat/features/token/features/package/lib.dart';
 import 'package:machat/features/token/features/package/utils/lib.dart';
@@ -12,6 +14,7 @@ class PackageScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(tokenPackageViewModelProvider);
     final notifier = ref.read(tokenPackageViewModelProvider.notifier);
+    final userProfile = ref.watch(userStateProvider);
     return CardFrame(
       child: state.when(
         error: (error, stackTrace) => const Text('error!'),
@@ -26,16 +29,18 @@ class PackageScreen extends ConsumerWidget {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
-                TextButton(
-                  child: const Text(
-                    '패키지 등록하기',
-                    style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold),
+                if (userProfile.role == UserRole.admin.toString())
+                  TextButton(
+                    child: Text(
+                      '패키지 등록하기 ${userProfile.role}',
+                      style: const TextStyle(
+                          fontSize: 8, fontWeight: FontWeight.bold),
+                    ),
+                    onPressed: () {
+                      final router = ref.read(goRouterProvider);
+                      router.goNamed(TokenRouterPath.packageRegister.name);
+                    },
                   ),
-                  onPressed: () {
-                    final router = ref.read(goRouterProvider);
-                    router.goNamed(TokenRouterPath.packageRegister.name);
-                  },
-                ),
               ],
             ),
             const SizedBox(height: 8),

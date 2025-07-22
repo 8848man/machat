@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/design_system/lib.dart';
+import 'package:machat/features/token/features/commons/enums/user_roles.dart';
+import 'package:machat/features/token/features/commons/providers/user_state_provider.dart';
+import 'package:machat/features/token/features/commons/snack_bar_manager/lib.dart';
 import 'package:machat/features/token/router/lib.dart';
 import 'package:machat/features/token/features/package/features/package_register/view_models/package_register_view_model.dart';
 
@@ -32,6 +35,15 @@ class _PackageRegisterState extends ConsumerState<PackageRegister> {
 
   @override
   Widget build(BuildContext context) {
+    final userProfile = ref.watch(userStateProvider);
+
+    if (userProfile.role != UserRole.admin.toString()) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final router = ref.read(goRouterProvider);
+        SnackBarCaller().callSnackBar(ref, '관리자만 접근할 수 있습니다.');
+        router.pushReplacementNamed(TokenRouterPath.token.name);
+      });
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('토큰 관리 예시'),

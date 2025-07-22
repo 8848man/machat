@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:machat/features/token/features/commons/providers/loading_state_provider.dart';
+import 'package:machat/features/token/features/commons/providers/user_state_provider.dart';
+import 'package:machat/features/token/features/commons/repositories/profile_repository.dart';
 import 'package:machat/features/token/features/commons/snack_bar_manager/lib.dart';
 import 'package:machat/features/token/features/login/models/login_model.dart';
 import 'package:machat/features/token/features/login/repository/login_repository.dart';
@@ -33,8 +36,9 @@ class LoginViewModel extends _$LoginViewModel {
 
       // 로그인 성공 로직
       if (isLogined) {
-        // 페이지 이동
+        await setProfile();
         final router = ref.read(goRouterProvider);
+        // 페이지 이동
         router.replaceNamed(TokenRouterPath.token.name);
       } else {
         state = state.copyWith(
@@ -48,6 +52,16 @@ class LoginViewModel extends _$LoginViewModel {
       // 로딩 상태 flase로 변경
       ref.read(loadingStateProvider.notifier).update((state) => false);
     }
+  }
+
+  Future<void> setProfile() async {
+    final userRepository = ref.read(tokenProfileRepositoryProvider);
+    final auth = FirebaseAuth.instance;
+    final user = auth.currentUser;
+    final userData = await userRepository.getProfile(user?.uid ?? '');
+    ref.read(userStateProvider.notifier).update((state) {
+      return userData;
+    });
   }
 
   // void goRegister() {
