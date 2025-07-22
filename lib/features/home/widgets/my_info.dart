@@ -8,10 +8,12 @@ class MyInfo extends ConsumerWidget {
     final AsyncValue<UserData> userState = ref.watch(userViewModelProvider);
     return userState.when(
       data: (data) {
-        return buildInfo(
-          user: data,
-          ref: ref,
-          context: context,
+        return McAppear(
+          child: buildInfo(
+            user: data,
+            ref: ref,
+            context: context,
+          ),
         );
       },
       error: (error, stackTrace) {
@@ -19,9 +21,7 @@ class MyInfo extends ConsumerWidget {
         return const Text('사용자 정보를 가져오는데 실패했습니다.');
       },
       loading: () {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
+        return Container();
       },
     );
   }

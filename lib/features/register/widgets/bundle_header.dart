@@ -5,6 +5,30 @@ class RegisterBundleHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text('회원가입');
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        McAppear(
+          child: Text(
+            '우리의 멤버가',
+            style: TextStyle(
+                color: MCColors.$color_blue_70,
+                fontSize: 24,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+        McAppear(
+          delayMs: 400,
+          child: Text(
+            '되어주세요',
+            style: TextStyle(
+                color: MCColors.$color_blue_70,
+                fontSize: 24,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+      ],
+    );
   }
 }

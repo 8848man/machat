@@ -3,19 +3,21 @@ part of '../lib.dart';
 class ChatBubble extends StatelessWidget {
   final bool isMine;
   final String message;
-  final double size;
+  final double width;
+  final double height;
   const ChatBubble({
     super.key,
     required this.isMine,
     required this.message,
-    required this.size,
+    required this.width,
+    required this.height,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: size,
-      width: size,
+      height: height,
+      width: width,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
@@ -26,7 +28,9 @@ class ChatBubble extends StatelessWidget {
                 ? Radius.zero
                 : const Radius.circular(8), // 우측 하단은 제외
           ),
-          color: Colors.amber,
+          color: isMine == true
+              ? MCColors.$color_orange_20
+              : MCColors.$color_orange_10,
         ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
