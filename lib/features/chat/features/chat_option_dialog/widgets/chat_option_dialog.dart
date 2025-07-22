@@ -99,6 +99,16 @@ class ChatOptionDialog extends ConsumerWidget {
               ],
             ),
           ).expand(),
+          const Align(
+            alignment: Alignment.bottomRight,
+            child: Padding(
+              padding: EdgeInsets.all(4.0),
+              child: Text(
+                'TTS 기능의 경우, 수퍼톤 api를 통해 제공됩니다.',
+                style: TextStyle(fontSize: 8, color: Colors.grey),
+              ),
+            ),
+          ),
         ],
       ),
     );

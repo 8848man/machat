@@ -5,6 +5,7 @@ class McAppear extends StatefulWidget {
   final int delayMs;
   final Duration duration;
   final Curve curve;
+  final bool activeAnimation;
 
   const McAppear({
     super.key,
@@ -12,6 +13,7 @@ class McAppear extends StatefulWidget {
     this.delayMs = 0,
     this.duration = const Duration(milliseconds: 500),
     this.curve = Curves.easeOut,
+    this.activeAnimation = true,
   });
 
   @override
@@ -61,6 +63,10 @@ class _McAppearState extends State<McAppear>
 
   @override
   Widget build(BuildContext context) {
+    if (!widget.activeAnimation) {
+      // 애니메이션 비활성화 시 바로 child 리턴
+      return widget.child;
+    }
     return SlideTransition(
       position: _offset,
       child: FadeTransition(

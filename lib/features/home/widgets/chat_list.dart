@@ -35,7 +35,7 @@ class HomeChatList extends ConsumerWidget {
       children: [
         ...List<Widget>.generate(data.roomList.length, (i) {
           return McAppear(
-            delayMs: i * 300,
+            delayMs: i * 150,
             child: buildChatRoomListTile(context, data.roomList[i], notifier),
           );
         }),

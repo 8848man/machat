@@ -172,8 +172,14 @@ class _ChatContentsState extends ConsumerState<ChatContents>
             return const SizedBox.shrink();
           }
 
+          final bool isLastMessage = reverseIndex == combinedValue.length - 1;
+
           return McAppear(
+            key: isLastMessage
+                ? ValueKey(combinedValue[reverseIndex]['id'])
+                : null,
             delayMs: 100,
+            activeAnimation: isLastMessage,
             child: ChatOptionGestureDetector(
               chatValue: combinedValue[reverseIndex],
               child: buildMessageWidget(

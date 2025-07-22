@@ -9,7 +9,7 @@ class SplashPage extends ConsumerWidget {
 
     //TODO 로그인 토큰 여부로 화면 분기처리
 
-    Future.delayed(const Duration(seconds: 2)).then((_) {
+    Future.delayed(const Duration(seconds: 4)).then((_) {
       route.goNamed(RouterPath.home.name);
       // MaterialPageRoute(builder: ((context) => LoginPage()));
     });
