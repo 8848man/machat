@@ -172,16 +172,19 @@ class _ChatContentsState extends ConsumerState<ChatContents>
             return const SizedBox.shrink();
           }
 
-          return ChatOptionGestureDetector(
-            chatValue: combinedValue[reverseIndex],
-            child: buildMessageWidget(
-              combinedValue: combinedValue,
-              reverseIndex: reverseIndex,
-              isContinue: isContinue,
-              isHideProfile: isHideProfile,
-              data: data,
-              user: user,
-              sender: sender,
+          return McAppear(
+            delayMs: 100,
+            child: ChatOptionGestureDetector(
+              chatValue: combinedValue[reverseIndex],
+              child: buildMessageWidget(
+                combinedValue: combinedValue,
+                reverseIndex: reverseIndex,
+                isContinue: isContinue,
+                isHideProfile: isHideProfile,
+                data: data,
+                user: user,
+                sender: sender,
+              ),
             ),
           );
         },
@@ -263,7 +266,11 @@ class _ChatContentsState extends ConsumerState<ChatContents>
                   MCSpace().horizontalHalfSpace(),
                   if (type == ChatContentsType.chat)
                     ChatBubble(
-                        isMine: true, message: strValue, size: textWidth),
+                      isMine: true,
+                      message: strValue,
+                      width: textWidth,
+                      height: textHeight,
+                    ),
                   if (type == ChatContentsType.image) ChatImage(url: strValue),
                   MCSpace().horizontalHalfSpace(),
                 ],
@@ -309,7 +316,10 @@ class _ChatContentsState extends ConsumerState<ChatContents>
                   MCSpace().horizontalHalfSpace(),
                   if (type == ChatContentsType.chat)
                     ChatBubble(
-                        isMine: false, message: strValue, size: textWidth),
+                        isMine: false,
+                        message: strValue,
+                        width: textWidth,
+                        height: textHeight),
                   if (type == ChatContentsType.image) ChatImage(url: strValue),
                   MCSpace().horizontalHalfSpace(),
                   buildChatInfo(false, createdAt, isContinue),

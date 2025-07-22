@@ -70,7 +70,7 @@ class _ChatExpandState extends ConsumerState<ChatExpand>
             child: SlideTransition(
               position: _slideAnimation,
               child: Container(
-                height: 400,
+                height: 340,
                 width: double.infinity,
                 color: MCColors.$color_grey_00,
                 child: const ChatExpandBrancher(),

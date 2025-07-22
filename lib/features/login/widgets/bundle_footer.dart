@@ -13,11 +13,13 @@ class LoginBundleFooter extends ConsumerWidget {
           title: '로그인',
           onTap: () => notifier.login(),
           isLoading: loadingState,
+          width: double.infinity,
         ),
         MCSpace().verticalSpace(),
         MCButtons().getNegativeButton(
           title: '회원가입',
           onTap: () => notifier.goRegister(),
+          width: double.infinity,
         ),
       ],
     );

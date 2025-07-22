@@ -20,7 +20,8 @@ class HomeChatList extends ConsumerWidget {
     return state.when(
       data: (ChatListModel data) => buildChatRoom(context, data, notifier),
       error: (error, stackTrace) => Container(),
-      loading: () => const Center(child: CircularProgressIndicator()),
+      // loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const SizedBox.shrink(), // Placeholder for loading state
     );
   }
 
@@ -33,7 +34,10 @@ class HomeChatList extends ConsumerWidget {
     return Column(
       children: [
         ...List<Widget>.generate(data.roomList.length, (i) {
-          return buildChatRoomListTile(context, data.roomList[i], notifier);
+          return McAppear(
+            delayMs: i * 300,
+            child: buildChatRoomListTile(context, data.roomList[i], notifier),
+          );
         }),
       ],
     );

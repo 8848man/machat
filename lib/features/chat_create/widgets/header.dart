@@ -5,6 +5,30 @@ class ChatCreateHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text('채팅방 생성을 위해 정보를 입력해주세요.');
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        McAppear(
+          child: Text(
+            '채팅방을',
+            style: TextStyle(
+                color: MCColors.$color_blue_70,
+                fontSize: 24,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+        McAppear(
+          delayMs: 400,
+          child: Text(
+            '만들어볼까요?',
+            style: TextStyle(
+                color: MCColors.$color_blue_70,
+                fontSize: 24,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+      ],
+    );
   }
 }

@@ -14,7 +14,10 @@ class FriendListWidget extends ConsumerWidget {
           itemCount: data.friends.length,
           itemBuilder: (context, index) {
             final UserData friend = data.friends[index];
-            return buildInfo(user: friend, ref: ref, context: context);
+            return McAppear(
+              delayMs: index * 300,
+              child: buildInfo(user: friend, ref: ref, context: context),
+            );
           },
         );
       },
@@ -24,9 +27,10 @@ class FriendListWidget extends ConsumerWidget {
         );
       },
       loading: () {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
+        // return const Center(
+        //   child: CircularProgressIndicator(),
+        // );
+        return const SizedBox.shrink(); // Placeholder for loading state
       },
     );
   }

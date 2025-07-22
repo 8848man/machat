@@ -11,14 +11,15 @@ class RegisterBundleFooter extends ConsumerWidget {
     return Column(
       children: [
         MCButtons().getPositiveButton(
-          title: '회원가입',
-          onTap: () => notifier.registUser(),
-          isLoading: loadingState,
-        ),
+            title: '회원가입',
+            onTap: () => notifier.registUser(),
+            isLoading: loadingState,
+            width: double.infinity),
         MCSpace().verticalSpace(),
         MCButtons().getNegativeButton(
           title: '뒤로가기',
           onTap: () => notifier.goLogin(),
+          width: double.infinity,
         ),
       ],
     );

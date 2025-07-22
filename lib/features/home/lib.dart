@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/design_system/lib.dart';
 import 'package:machat/extensions.dart';
+import 'package:machat/features/common/animated_widgets/mc_appear.dart';
 import 'package:machat/features/common/layouts/lib.dart';
 import 'package:machat/features/common/models/chat_list_model.dart';
 import 'package:machat/features/common/models/chat_room_data.dart';
