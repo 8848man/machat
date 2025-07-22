@@ -33,6 +33,8 @@ class MobileScaffold extends ConsumerWidget {
         //         },
         //       )
         //     : null, // 뒤로 갈 페이지가 없으면 leading 제거,
+        leading: const SizedBox(),
+        leadingWidth: 0,
         title: Text(title ?? 'MaChat Mobile'),
         actions: actions ?? [],
       ),

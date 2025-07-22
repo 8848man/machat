@@ -10,6 +10,7 @@ class LoginBundleHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         McAppear(
+          delayMs: 200,
           child: Text(
             '마챗에 오신걸',
             style: TextStyle(
@@ -19,7 +20,7 @@ class LoginBundleHeader extends StatelessWidget {
           ),
         ),
         McAppear(
-          delayMs: 400,
+          delayMs: 600,
           child: Text(
             '환영합니다',
             style: TextStyle(

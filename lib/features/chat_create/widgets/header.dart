@@ -10,6 +10,7 @@ class ChatCreateHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         McAppear(
+          delayMs: 200,
           child: Text(
             '채팅방을',
             style: TextStyle(
@@ -19,7 +20,7 @@ class ChatCreateHeader extends StatelessWidget {
           ),
         ),
         McAppear(
-          delayMs: 400,
+          delayMs: 600,
           child: Text(
             '만들어볼까요?',
             style: TextStyle(

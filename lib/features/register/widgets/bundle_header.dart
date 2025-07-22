@@ -10,6 +10,7 @@ class RegisterBundleHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         McAppear(
+          delayMs: 200,
           child: Text(
             '우리의 멤버가',
             style: TextStyle(
@@ -19,7 +20,7 @@ class RegisterBundleHeader extends StatelessWidget {
           ),
         ),
         McAppear(
-          delayMs: 400,
+          delayMs: 600,
           child: Text(
             '되어주세요',
             style: TextStyle(

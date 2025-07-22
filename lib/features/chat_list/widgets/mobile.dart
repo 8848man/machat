@@ -16,18 +16,21 @@ class ChatListMobile extends ConsumerWidget {
       data: (ChatListModel data) =>
           buildChatRoom(context, data, notifier, user!),
       error: (error, stackTrace) => Container(),
-      loading: () => const Center(child: CircularProgressIndicator()),
+      // loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const SizedBox.shrink(), // Placeholder for loading state
     );
   } // 데이터 갯수만큼 채팅방 리스트타일 생성
 
   Widget buildChatRoom(BuildContext context, ChatListModel data,
       ChatListViewModel notifier, User user) {
-    
     return Column(
       children: [
         ...List<Widget>.generate(data.roomList.length, (i) {
-          return buildChatRoomListTile(
-              context, data.roomList[i], notifier, user);
+          return McAppear(
+            delayMs: i * 150,
+            child: buildChatRoomListTile(
+                context, data.roomList[i], notifier, user),
+          );
         }),
       ],
     );
@@ -41,7 +44,7 @@ class ChatListMobile extends ConsumerWidget {
     final bool isOwner = user.uid == data.createdBy;
 
     return ListTile(
-      tileColor: GetColor().getPositiveColor(isBelong),
+      // tileColor: GetColor().getPositiveColor(isBelong),
       title: Row(
         children: [
           const Icon(IconData(0xe153, fontFamily: 'MaterialIcons')),
@@ -50,11 +53,27 @@ class ChatListMobile extends ConsumerWidget {
           // 방 소유자일 경우 왕관 출력
           if (isOwner) MCSpace().horizontalHalfSpace(),
           if (isOwner) Image.asset('lib/assets/icons/crown.png', scale: 16),
+          MCSpace().horizontalHalfSpace(),
+          if (isBelong) buildIsMember(context, isBelong),
           const Spacer(),
           Text('인원 수 : ${data.members.length}'),
         ],
       ),
       onTap: () => notifier.enterChat(data),
+    );
+  }
+
+  Widget buildIsMember(BuildContext context, bool isBelong) {
+    return Container(
+      padding: const EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        color: MCColors.$color_blue_20,
+        borderRadius: BorderRadius.circular(100),
+      ),
+      child: const Text(
+        'member',
+        style: TextStyle(color: Colors.white, fontSize: 8),
+      ),
     );
   }
 }
