@@ -1,28 +1,32 @@
 part of '../lib.dart';
 
 class SearchedFriends extends ConsumerWidget {
-  final VoidCallback onToggleOverlay;
-  const SearchedFriends({super.key, required this.onToggleOverlay});
+  final VoidCallback onPopOverlay;
+  const SearchedFriends({super.key, required this.onPopOverlay});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AddFriendModel userList = ref.watch(addFriendViewModelProvider);
-    return Container(
-      color: Colors.white.withOpacity(0.8),
-      alignment: Alignment.center,
-      child: Column(
-        children: [
-          buildOverlayTitle(),
-          MCSpace().verticalSpace(),
-          buildUser(ref, userList.users).expand(),
-          MCSpace().verticalSpace(),
-          ElevatedButton(
-            onPressed: () {
-              onToggleOverlay();
-            },
-            child: const Text('뒤로가기'),
-          ),
-        ],
+    return mcPopScope(
+      context: context,
+      onPopInvoked: (didPop) => onPopOverlay(),
+      child: Container(
+        color: Colors.white.withOpacity(0.8),
+        alignment: Alignment.center,
+        child: Column(
+          children: [
+            buildOverlayTitle(),
+            MCSpace().verticalSpace(),
+            buildUser(ref, userList.users).expand(),
+            MCSpace().verticalSpace(),
+            ElevatedButton(
+              onPressed: () {
+                onPopOverlay();
+              },
+              child: const Text('뒤로가기'),
+            ),
+          ],
+        ),
       ),
     );
   }
