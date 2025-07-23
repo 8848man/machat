@@ -6,9 +6,7 @@ class RegisterPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return const DefaultLayout(
-      child: Center(
-        child: RegisterBundle(),
-      ),
+      child: RegisterBundle(),
     );
   }
 }

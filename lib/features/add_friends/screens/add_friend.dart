@@ -67,8 +67,8 @@ class _AddFriendState extends ConsumerState<AddFriend>
     return TabBarView(
       controller: _tabController,
       children: const [
-        SearchByEmail(),
-        SearchByName(),
+        SearchFriend(searchBy: FriendSearchBy.email),
+        SearchFriend(searchBy: FriendSearchBy.name),
       ],
     );
   }
