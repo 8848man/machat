@@ -6,6 +6,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
+      actions: const [MCToken()],
       title: '홈',
       // floatingActionButton: AnimatedFAB(),
       floatingActionButton: Transform.translate(
