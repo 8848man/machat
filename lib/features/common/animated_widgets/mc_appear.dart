@@ -6,6 +6,7 @@ class McAppear extends StatefulWidget {
   final Duration duration;
   final Curve curve;
   final bool activeAnimation;
+  final bool isAppear;
 
   const McAppear({
     super.key,
@@ -14,6 +15,7 @@ class McAppear extends StatefulWidget {
     this.duration = const Duration(milliseconds: 500),
     this.curve = Curves.easeOut,
     this.activeAnimation = true,
+    this.isAppear = true,
   });
 
   @override
@@ -51,7 +53,29 @@ class _McAppearState extends State<McAppear>
 
     // Delay 후 애니메이션 시작
     Future.delayed(Duration(milliseconds: widget.delayMs), () {
-      if (mounted) _controller.forward();
+      if (mounted) {
+        widget.isAppear ? _controller.forward() : _controller.reverse();
+      }
+    });
+  }
+
+  @override
+  void didUpdateWidget(covariant McAppear oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!widget.activeAnimation) return;
+
+    if (widget.isAppear != oldWidget.isAppear) {
+      Future.delayed(Duration(milliseconds: widget.delayMs), () {
+        if (mounted) {
+          widget.isAppear ? _controller.forward() : _controller.reverse();
+        }
+      });
+    }
+  }
+
+  void disappear() {
+    Future.delayed(Duration(milliseconds: widget.delayMs), () {
+      if (mounted) _controller.reverse();
     });
   }
 
