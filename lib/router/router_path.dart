@@ -14,6 +14,7 @@ enum RouterPath {
   chatImage('/chat_image', 'chat_image'),
   profile('/profile', 'profile'),
   addFriend('/add_friend', 'add_friend'),
+  token('/token', 'token'),
   // newHome('/newHome', 'newHome'),
   // example('/example', 'example'),
   // registerTemp('/registerTemp', 'registerTemp'),

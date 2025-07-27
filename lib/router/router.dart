@@ -159,6 +159,17 @@ final goRouterProvider = Provider<GoRouter>(
           ],
         ),
 
+        GoRoute(
+          path: RouterPath.token.path,
+          name: RouterPath.token.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            transitionDuration: const Duration(milliseconds: 500),
+            key: state.pageKey,
+            child: const MCTokenScreen(),
+            transitionsBuilder: slideTransition,
+          ),
+        ),
+
         // GoRoute(
         //   path: RouterPath.addFriend.path,
         //   name: RouterPath.addFriend.name,
