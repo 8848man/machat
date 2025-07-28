@@ -33,9 +33,14 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  machat_token_service:
-    path: C:/Users/8848m/flutter/machat_token_service
+  # machat_token_service:
+  #   path: C:/Users/8848m/flutter/machat_token_service
     
+  machat_token_service:
+    git:
+      url: https://github.com/8848man/machat_token_service.git
+      ref: version/1.0.0
+
   # tts package
   rwkim_tts:
     git:

@@ -16,7 +16,9 @@ class MCToken extends ConsumerWidget {
 
     return state.when(
       loading: () => const SizedBox.shrink(),
-      error: (error, stackTrace) => Text('Error: $error'),
+      error: (error, stackTrace) {
+        return Text('Error: $error');
+      },
       data: (data) {
         return _buildTokenWidget(context, router, data);
       },

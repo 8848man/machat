@@ -37,7 +37,10 @@ class WebScaffold extends ConsumerWidget {
         leading: const SizedBox(),
         leadingWidth: 0,
         title: Text(title ?? 'MaChat Web'),
-        actions: actions ?? [],
+        actions: <Widget>[
+          ...?actions,
+          const MCToken(),
+        ],
       ),
       drawer: drawer,
       endDrawer: endDrawer,

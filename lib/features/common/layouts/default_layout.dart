@@ -34,7 +34,10 @@ class DefaultLayout extends StatelessWidget {
         ? MobileScaffold(
             floatingActionButton: floatingActionButton,
             title: title,
-            actions: [...actions ?? []],
+            actions: <Widget>[
+              const MCToken(),
+              ...?actions,
+            ],
             drawer: drawer,
             endDrawer: endDrawer,
             child: child,
@@ -42,7 +45,10 @@ class DefaultLayout extends StatelessWidget {
         : WebScaffold(
             floatingActionButton: floatingActionButton,
             title: title,
-            actions: [...actions ?? []],
+            actions: <Widget>[
+              const MCToken(),
+              ...?actions,
+            ],
             drawer: drawer,
             endDrawer: endDrawer,
             child: child,

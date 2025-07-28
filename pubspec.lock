@@ -773,9 +773,11 @@ packages:
   machat_token_service:
     dependency: "direct main"
     description:
-      path: "C:\\Users\\8848m\\flutter\\machat_token_service"
-      relative: false
-    source: path
+      path: "."
+      ref: "version/1.0.0"
+      resolved-ref: "0cdbf5d2048ffebe082fcc4c9218e91d7408c552"
+      url: "https://github.com/8848man/machat_token_service.git"
+    source: git
     version: "1.0.0+1"
   macros:
     dependency: transitive
