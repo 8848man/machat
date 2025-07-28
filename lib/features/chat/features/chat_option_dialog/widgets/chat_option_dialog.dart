@@ -104,7 +104,7 @@ class ChatOptionDialog extends ConsumerWidget {
             child: Padding(
               padding: EdgeInsets.all(4.0),
               child: Text(
-                'TTS 기능의 경우, 수퍼톤 api를 통해 제공됩니다.',
+                'TTS 기능의 경우, 수퍼톤 api를 통해 제공됩니다.\n10 포인트가 차감됩니다.',
                 style: TextStyle(fontSize: 8, color: Colors.grey),
               ),
             ),

@@ -36,7 +36,9 @@ class MobileScaffold extends ConsumerWidget {
         leading: const SizedBox(),
         leadingWidth: 0,
         title: Text(title ?? 'MaChat Mobile'),
-        actions: actions ?? [],
+        actions: <Widget>[
+          ...?actions,
+        ],
       ),
       drawer: drawer,
       endDrawer: endDrawer,

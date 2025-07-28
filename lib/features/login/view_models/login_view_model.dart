@@ -4,6 +4,7 @@ import 'package:machat/features/login/models/login_model.dart';
 import 'package:machat/features/login/repository/login_repository.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:machat/router/lib.dart';
+import 'package:machat_token_service/features/token/view_models/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'login_view_model.g.dart';
@@ -34,6 +35,11 @@ class LoginViewModel extends _$LoginViewModel {
       // 로그인 성공 로직
       if (isLogined) {
         // 페이지 이동
+        // 로그인 정보에 따라
+        // 데이터를 가져오기 위해
+        // 토큰 상태 초기화
+        ref.invalidate(tokenViewModelProvider);
+
         final router = ref.read(goRouterProvider);
         router.goNamed(RouterPath.home.name);
       } else {

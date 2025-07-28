@@ -4,24 +4,16 @@ import 'package:machat/features/chat/features/chat_option_dialog/providers/sound
 import 'package:machat/features/chat/providers/chat_dialog_state_provider.dart';
 import 'package:machat/features/chat/providers/chat_tts_provider.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
+import 'package:machat_token_service/features/token/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rwkim_tts/features/tts_service/enums/lib.dart';
-import 'package:rwkim_tts/features/tts_service/services/tts_service.dart';
 // import 'package:rwkim_tts/simple_tts.dart';
 part 'chat_option_dialog_view_model.g.dart';
 
 @riverpod
 class ChatOptionDialogViewModel extends _$ChatOptionDialogViewModel {
-  late final TTSService _tts;
   @override
   bool build() {
-    _tts = ref.watch(chatTTSProvider);
-    // _tts.init(); // 명시적 초기화
-    // 캐릭터 선택 상태 초기화
-    // ref.read(chatDialogValueProvider.notifier).update((state) => false);
-    ref.onDispose(() {
-      _tts.dispose();
-    });
     return false;
   }
 
@@ -48,12 +40,27 @@ class ChatOptionDialogViewModel extends _$ChatOptionDialogViewModel {
       return;
     }
 
+    final tokenState = await ref.watch(tokenViewModelProvider.future);
+    final tokenNotifier = ref.read(tokenViewModelProvider.notifier);
+
+    if (tokenState.userToken == null ||
+        tokenState.userToken!.currentTokens < 10) {
+      SnackBarCaller().callSnackBar(
+        ref,
+        '토큰이 부족합니다. TTS 기능을 사용하려면 10 토큰이 필요합니다.',
+      );
+      return;
+    }
+    ;
+
     try {
-      await _tts.speak({
+      final tts = ref.read(chatTTSProvider);
+      await tts.speak({
         'text': message,
         'voiceId': nowCharacter.id,
         'language': 'ko',
       });
+      await tokenNotifier.spendTokens(10, description: 'TTS 기능 사용');
     } catch (e) {
       print('TTS Error: $e');
       SnackBarCaller().callSnackBar(ref, '음성 재생 중 에러가 발생했습니다.');
