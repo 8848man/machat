@@ -33,6 +33,9 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  machat_token_service:
+    path: C:/Users/8848m/flutter/machat_token_service
+    
   # tts package
   rwkim_tts:
     git:
@@ -91,7 +94,6 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
   mockito: ^5.4.4
-  build_runner: ^2.4.8
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

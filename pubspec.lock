@@ -770,6 +770,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.0"
+  machat_token_service:
+    dependency: "direct main"
+    description:
+      path: "C:\\Users\\8848m\\flutter\\machat_token_service"
+      relative: false
+    source: path
+    version: "1.0.0+1"
   macros:
     dependency: transitive
     description:

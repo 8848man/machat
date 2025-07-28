@@ -7,6 +7,7 @@ class McAppear extends StatefulWidget {
   final Curve curve;
   final bool activeAnimation;
   final bool isAppear;
+  final bool isSlideUp;
 
   const McAppear({
     super.key,
@@ -16,6 +17,7 @@ class McAppear extends StatefulWidget {
     this.curve = Curves.easeOut,
     this.activeAnimation = true,
     this.isAppear = true,
+    this.isSlideUp = true,
   });
 
   @override

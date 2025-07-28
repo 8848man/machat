@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -8,13 +10,22 @@ import 'package:machat/config/firebase_config.dart';
 import 'package:machat/design_system/lib.dart';
 import 'package:machat/router/lib.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:machat_token_service/firebase_instances/firebase_instance_provider.dart';
 
 void main() async {
   await init();
 
+  final firestore = FirebaseFirestore.instance;
+  final firebaseAuth = FirebaseAuth.instance;
+
   runApp(
-    const ProviderScope(
-      child: MyApp(),
+    ProviderScope(
+      overrides: [
+        // 토큰 서비스의 firebase 인스턴스를 오버라이드
+        firebaseFirestoreProvider.overrideWithValue(firestore),
+        firebaseAuthProvider.overrideWithValue(firebaseAuth),
+      ],
+      child: const MyApp(),
     ),
   );
 }
@@ -36,7 +47,6 @@ Future<void> init() async {
     print("Firebase 초기화 실패: $e");
     print(stack);
   }
-
   ErrorWidget.builder = (FlutterErrorDetails details) {
     return Center(
       child: Text(
