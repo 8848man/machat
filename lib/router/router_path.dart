@@ -15,6 +15,8 @@ enum RouterPath {
   profile('/profile', 'profile'),
   addFriend('/add_friend', 'add_friend'),
   token('/token', 'token'),
+  study('/study', 'study'),
+  studySubject('/study_subject', 'study_subject'),
   // newHome('/newHome', 'newHome'),
   // example('/example', 'example'),
   // registerTemp('/registerTemp', 'registerTemp'),

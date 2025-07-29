@@ -170,6 +170,17 @@ final goRouterProvider = Provider<GoRouter>(
           ),
         ),
 
+        /// profile
+        GoRoute(
+          path: RouterPath.studySubject.path,
+          name: RouterPath.studySubject.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: const StudySubjectScreen(),
+            transitionsBuilder: slideTransition,
+          ),
+        ),
+
         // GoRoute(
         //   path: RouterPath.addFriend.path,
         //   name: RouterPath.addFriend.name,

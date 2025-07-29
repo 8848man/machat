@@ -17,6 +17,7 @@ import 'package:machat/features/home/view_models/chat_list_view_model.dart';
 import 'package:machat/features/home/view_models/friends_view_model.dart';
 import 'package:machat/features/home/widgets/delete_chat_room_dialog.dart';
 import 'package:machat/features/home/widgets/empty_chat_room_indicator.dart';
+import 'package:machat/features/home/widgets/study_bundle.dart';
 import 'package:machat/features/profile/utils/call_profile.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
 part './screens/home_page.dart';

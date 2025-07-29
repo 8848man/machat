@@ -29,9 +29,9 @@ class _HomeBundleState extends ConsumerState<HomeBundle>
         TabBarView(
           controller: _tabController,
           children: const <Widget>[
-            Firends(),
+            Friends(),
             HomeChatList(),
-            Center(child: Text("해당 기능은 준비중입니다.")),
+            StudyBundle(),
           ],
         ).expand(),
         TabBar(

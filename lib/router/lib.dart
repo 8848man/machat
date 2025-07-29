@@ -15,6 +15,7 @@ import 'package:machat/features/profile/screens/my_profile.dart';
 import 'package:machat/features/profile/screens/other_profile.dart';
 import 'package:machat/features/register/lib.dart';
 import 'package:machat/features/splash/lib.dart';
+import 'package:machat/features/study/screens/study_subject_screen.dart';
 
 part './router.dart';
 part './router_path.dart';

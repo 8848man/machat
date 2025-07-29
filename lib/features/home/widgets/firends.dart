@@ -1,7 +1,7 @@
 part of '../lib.dart';
 
-class Firends extends ConsumerWidget {
-  const Firends({super.key});
+class Friends extends ConsumerWidget {
+  const Friends({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
