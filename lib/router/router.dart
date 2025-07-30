@@ -170,13 +170,34 @@ final goRouterProvider = Provider<GoRouter>(
           ),
         ),
 
+        GoRoute(
+          path: RouterPath.earnPoint.path,
+          name: RouterPath.earnPoint.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            transitionDuration: const Duration(milliseconds: 500),
+            key: state.pageKey,
+            child: const EarnPointBundle(),
+            transitionsBuilder: slideTransition,
+          ),
+        ),
+
         /// profile
         GoRoute(
-          path: RouterPath.studySubject.path,
-          name: RouterPath.studySubject.name,
+          path: RouterPath.study.path,
+          name: RouterPath.study.name,
           pageBuilder: (context, state) => CustomTransitionPage<void>(
             key: state.pageKey,
             child: const StudySubjectScreen(),
+            transitionsBuilder: slideTransition,
+          ),
+        ),
+
+        GoRoute(
+          path: RouterPath.studyEnglish.path,
+          name: RouterPath.studyEnglish.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: const StudyEnglish(),
             transitionsBuilder: slideTransition,
           ),
         ),

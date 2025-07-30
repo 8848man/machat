@@ -52,7 +52,8 @@ class _HoverClickAnimatedBoxState extends State<HoverClickAnimatedBox> {
             curve: Curves.easeInOut,
             child: Center(
               child: Text(
-                _isClicked ? "화이팅!" : (_isHovered ? "공부하기" : "공부하기"),
+                // _isClicked ? "화이팅!" : (_isHovered ? "공부하기" : "공부하기"),
+                _isHovered ? "화이팅!" : "공부하기",
                 style: const TextStyle(color: Colors.white),
               ),
             ),

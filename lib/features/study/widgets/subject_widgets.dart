@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/design_system/lib.dart';
 import 'package:machat/features/common/animated_widgets/hover_click_animation_box.dart';
-import 'package:machat/features/home/enums/subject_enum.dart';
-import 'package:machat/features/study/view_models/subject_bundle_view_model.dart';
+import 'package:machat/features/study/models/subject.dart';
+import 'package:machat/features/study/view_models/study_view_model.dart';
 
 class SubjectBundle extends ConsumerWidget {
   final double boxHeight = 80;
@@ -11,16 +11,22 @@ class SubjectBundle extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      children: [
-        buildHeader(),
-        MCSpace().verticalSpace(),
-        buildRecentStudy(),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            buildHeader(ref),
+            MCSpace().verticalSpace(),
+            // buildRecentStudy(),
+          ],
+        ),
+      ),
     );
   }
 
-  Widget buildHeader() {
+  Widget buildHeader(WidgetRef ref) {
+    final state = ref.read(studyViewModelProvider);
     return Column(
       children: [
         Row(
@@ -31,14 +37,21 @@ class SubjectBundle extends ConsumerWidget {
           ],
         ),
         MCSpace().verticalHalfSpace(),
-        buildFrameBox(),
-        MCSpace().verticalHalfSpace(),
-        buildFrameBox(),
+        state.when(
+          loading: () => const CircularProgressIndicator(),
+          error: (error, stackTrace) => Text('error is $error!'),
+          data: (data) => Column(
+            children: List.generate(
+              data.subjectList?.subjectList.length ?? 0,
+              (index) => buildFrameBox(index: index),
+            ),
+          ),
+        ),
       ],
     );
   }
 
-  Widget buildFrameBox({double width = 500}) {
+  Widget buildFrameBox({double width = 500, required int index}) {
     return Container(
       constraints: const BoxConstraints(minWidth: 200, maxWidth: 500),
       width: width,
@@ -47,42 +60,53 @@ class SubjectBundle extends ConsumerWidget {
         borderRadius: BorderRadius.circular(8.0),
         border: Border.all(color: Colors.blueAccent, width: 1.0),
       ),
-      child: buildRow(),
+      child: buildSubject(index),
     );
   }
 
-  Widget buildRow() {
+  Widget buildSubject(int index) {
     return Consumer(builder: (context, ref, child) {
-      final notifier = ref.read(subjectBundleViewModelProvider.notifier);
-      return Stack(
-        children: [
-          SizedBox(
-            height: boxHeight,
-            child: Row(
-              children: [
-                buildIcon(),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      final state = ref.watch(studyViewModelProvider);
+      final notifier = ref.read(studyViewModelProvider.notifier);
+
+      return state.when(
+        error: (error, stackTrace) => Text("error! $error"),
+        loading: () => const Center(
+          child: CircularProgressIndicator(),
+        ),
+        data: (data) {
+          final SubjectModel subjectData = data.subjectList!.subjectList[index];
+          return Stack(
+            children: [
+              SizedBox(
+                height: boxHeight,
+                child: Row(
                   children: [
-                    buildTitle(),
-                    MCSpace().verticalHalfSpace(),
-                    buildProgressBar(),
+                    buildIcon(),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        buildTitle(subjectData.title),
+                        MCSpace().verticalHalfSpace(),
+                        buildProgressBar(subjectData.progressRate),
+                      ],
+                    ),
+                    const Spacer(),
+                    // buildHover(),
                   ],
                 ),
-                const Spacer(),
-                // buildHover(),
-              ],
-            ),
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: HoverClickAnimatedBox(
-              boxHeight: boxHeight,
-              onTap: () => notifier.goStudyPageByEnum(SubjectEnum.english),
-            ),
-          ),
-        ],
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: HoverClickAnimatedBox(
+                  boxHeight: boxHeight,
+                  onTap: () => notifier.goEnglishPage(),
+                ),
+              ),
+            ],
+          );
+        },
       );
     });
   }
@@ -94,15 +118,15 @@ class SubjectBundle extends ConsumerWidget {
     );
   }
 
-  Widget buildTitle() {
-    return const Text(
-      'Subject Title',
-      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  Widget buildTitle(String? title) {
+    return Text(
+      title ?? '제목 없음!',
+      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
     );
   }
 
-  Widget buildProgressBar() {
-    const double progress = 1; // 예시로 50% 진행된 상태
+  Widget buildProgressBar(double progress) {
+    // const double progress = 1; // 예시로 50% 진행된 상태
     return Row(
       children: [
         TweenAnimationBuilder<double>(
@@ -128,23 +152,23 @@ class SubjectBundle extends ConsumerWidget {
     );
   }
 
-  Widget buildRecentStudy() {
-    return Column(
-      children: [
-        Row(
-          children: [
-            buildTitleText('최근 공부한 항목'),
-            const Spacer(),
-            const Text('항목 관리하기'),
-          ],
-        ),
-        MCSpace().verticalHalfSpace(),
-        buildFrameBox(),
-        MCSpace().verticalHalfSpace(),
-        buildFrameBox(),
-      ],
-    );
-  }
+  // Widget buildRecentStudy() {
+  //   return Column(
+  //     children: [
+  //       Row(
+  //         children: [
+  //           buildTitleText('최근 공부한 항목'),
+  //           const Spacer(),
+  //           const Text('항목 관리하기'),
+  //         ],
+  //       ),
+  //       MCSpace().verticalHalfSpace(),
+  //       buildFrameBox(),
+  //       MCSpace().verticalHalfSpace(),
+  //       buildFrameBox(),
+  //     ],
+  //   );
+  // }
 
   Widget buildTitleText(String text) {
     return Text(text);

@@ -14,6 +14,9 @@ class _HomeBundleState extends ConsumerState<HomeBundle>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(() {
+      ref.read(tabIndexProvider.notifier).state = _tabController.index;
+    });
   }
 
   @override
@@ -24,6 +27,9 @@ class _HomeBundleState extends ConsumerState<HomeBundle>
 
   @override
   Widget build(BuildContext context) {
+    final index = ref.watch(tabIndexProvider);
+
+    _tabController.animateTo(index);
     return Column(
       children: [
         TabBarView(
@@ -31,7 +37,7 @@ class _HomeBundleState extends ConsumerState<HomeBundle>
           children: const <Widget>[
             Friends(),
             HomeChatList(),
-            StudyBundle(),
+            EarnPointBundle(),
           ],
         ).expand(),
         TabBar(
