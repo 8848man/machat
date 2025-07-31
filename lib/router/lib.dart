@@ -17,6 +17,8 @@ import 'package:machat/features/profile/screens/other_profile.dart';
 import 'package:machat/features/register/lib.dart';
 import 'package:machat/features/splash/lib.dart';
 import 'package:machat/features/study/features/english/screens/study_english.dart';
+import 'package:machat/features/study/features/subject_manage/features/add_voca_list/screens/add_vocabulary.dart';
+import 'package:machat/features/study/features/subject_manage/screens/subject_manage.dart';
 import 'package:machat/features/study/screens/study_subject_screen.dart';
 
 part './router.dart';

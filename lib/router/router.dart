@@ -202,6 +202,26 @@ final goRouterProvider = Provider<GoRouter>(
           ),
         ),
 
+        GoRoute(
+          path: RouterPath.subjectManage.path,
+          name: RouterPath.subjectManage.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: const SubjectManage(),
+            transitionsBuilder: slideTransition,
+          ),
+        ),
+
+        GoRoute(
+          path: RouterPath.addVoca.path,
+          name: RouterPath.addVoca.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: const AddVocabulary(),
+            transitionsBuilder: slideTransition,
+          ),
+        ),
+
         // GoRoute(
         //   path: RouterPath.addFriend.path,
         //   name: RouterPath.addFriend.name,

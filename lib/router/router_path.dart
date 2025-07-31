@@ -18,6 +18,8 @@ enum RouterPath {
   study('/study', 'study'),
   earnPoint('/earn_point', 'earn_point'),
   studyEnglish('/study/study_english', 'study_english'),
+  subjectManage('/study/subject_manage', 'subject_manage'),
+  addVoca('/study/subject_manage/add_voca', 'add_voca'),
   // newHome('/newHome', 'newHome'),
   // example('/example', 'example'),
   // registerTemp('/registerTemp', 'registerTemp'),

@@ -12,8 +12,10 @@ class SubjectList with _$SubjectList {
 @freezed
 class SubjectModel with _$SubjectModel {
   const factory SubjectModel({
+    @Default('') String id,
     @Default('') String title,
     @Default(0) double progressRate,
+    @Default('none') String type,
     DateTime? lastVisit,
   }) = _SubjectModel;
 
