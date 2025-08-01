@@ -5,6 +5,7 @@ import 'package:machat/extensions.dart';
 import 'package:machat/features/common/animated_widgets/mc_appear.dart';
 import 'package:machat/features/common/layouts/bundle_layout.dart';
 import 'package:machat/features/common/layouts/lib.dart';
+import 'package:machat/features/study/features/add_vocabulary/view_models/add_vocabulary_view_model.dart';
 
 class AddVocabulary extends ConsumerWidget {
   const AddVocabulary({super.key});
@@ -17,19 +18,14 @@ class AddVocabulary extends ConsumerWidget {
     return DefaultLayout(
       child: BundleLayout(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             buildHeader(),
             const SizedBox(height: 50),
             buildBody(titleEditor, memoEditor),
             const SizedBox(height: 50),
-            Row(
-              children: [
-                MCButtons().getNegativeButton(title: '뒤로 가기').expand(),
-                MCSpace().horizontalSpace(),
-                MCButtons().getPositiveButton(title: '만들기').expand(),
-              ],
-            ),
+            buildFooter(titleEditor, memoEditor),
           ],
         ),
       ),
@@ -81,50 +77,24 @@ class AddVocabulary extends ConsumerWidget {
     );
   }
 
-  Widget buildFooter() {
+  Widget buildFooter(
+      TextEditingController titleEditor, TextEditingController memoEditor) {
     return Consumer(builder: (context, ref, child) {
+      final notifier = ref.read(addVocabularyViewModelProvider.notifier);
+
       return Row(
         children: [
-          MCButtons().getNegativeButton(title: '뒤로 가기').expand(),
-          MCSpace().horizontalSpace(),
-          MCButtons().getPositiveButton(title: '만들기').expand(),
+          MCButtons()
+              .getPositiveButton(
+                onTap: () => notifier.saveVocabulary(
+                  title: titleEditor.text,
+                  memo: memoEditor.text,
+                ),
+                title: '만들기',
+              )
+              .expand(),
         ],
       );
     });
   }
 }
-
-// class AddVoca extends ConsumerWidget {
-//   const AddVoca({super.key});
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     final wordTextEditor = TextEditingController();
-//     final meaningTextEditor = TextEditingController();
-//     final explainTextEditor = TextEditingController();
-
-//     return DefaultLayout(
-//       child: SingleChildScrollView(
-//         child: Padding(
-//           padding: const EdgeInsets.all(8),
-//           child: Column(
-//             children: [
-//               MCTextInput(
-//                 controller: wordTextEditor,
-//                 labelText: '단어',
-//               ),
-//               MCTextInput(
-//                 controller: meaningTextEditor,
-//                 labelText: '뜻',
-//               ),
-//               MCTextInput(
-//                 controller: explainTextEditor,
-//                 labelText: '설명',
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

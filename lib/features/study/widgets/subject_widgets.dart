@@ -1,11 +1,15 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/design_system/lib.dart';
+import 'package:machat/extensions.dart';
 import 'package:machat/features/common/animated_widgets/hover_click_animation_box.dart';
 import 'package:machat/features/common/animated_widgets/mc_appear.dart';
-import 'package:machat/features/study/models/subject.dart';
+import 'package:machat/features/study/models/vocabulary_model.dart';
 import 'package:machat/features/study/providers/subject_list_length.dart';
 import 'package:machat/features/study/view_models/study_view_model.dart';
+import 'package:machat/router/lib.dart';
 
 class SubjectBundle extends ConsumerWidget {
   final double boxHeight = 80;
@@ -18,12 +22,16 @@ class SubjectBundle extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
       child: SingleChildScrollView(
-        child: Column(
-          children: [
-            buildHeader(ref),
-            MCSpace().verticalSpace(),
-            // buildRecentStudy(),
-          ],
+        child: SizedBox(
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              buildHeader(ref),
+              MCSpace().verticalSpace(),
+              // buildRecentStudy(),
+            ],
+          ),
         ),
       ),
     );
@@ -31,22 +39,46 @@ class SubjectBundle extends ConsumerWidget {
 
   Widget buildHeader(WidgetRef ref) {
     return Consumer(builder: (context, ref, child) {
-      final int? subjectListLength = ref.watch(subjectListLengthProvider);
-      final notifier = ref.read(studyViewModelProvider.notifier);
-      return Column(
-        children: [
-          Row(
-            children: [
-              buildTitleText('공부하기'),
-              const Spacer(),
-              buildTitleText('항목 관리',
-                  onTap: () => notifier.goSubjectManagePage()),
-            ],
-          ),
-          MCSpace().verticalHalfSpace(),
-          // 수업 과목 리스트 생성
-          ...subjectGenerator(subjectListLength),
-        ],
+      final int? vocabListLength = ref.watch(vocabularyListLengthProvider);
+      final StudyViewModel notifier = ref.read(studyViewModelProvider.notifier);
+      return ConstrainedBox(
+        constraints: const BoxConstraints(maxHeight: 250, maxWidth: 500),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                buildTitleText('단어 외우기'),
+                const Spacer(),
+                buildTitleText('항목 관리',
+                    onTap: () => notifier.goSubjectManagePage()),
+              ],
+            ),
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  MCSpace().verticalHalfSpace(),
+                  // 수업 과목 리스트 생성
+                  ...subjectGenerator(vocabListLength),
+                  const SizedBox(height: 8), // 간격 조절
+                  McAppear(
+                    delayMs: 300,
+                    child: GestureDetector(
+                      onTap: () {
+                        final router = ref.read(goRouterProvider);
+                        router.pushNamed(RouterPath.addVocabulary.name);
+                      },
+                      child: buildFrameBox(
+                        child: const Center(
+                          child: Text("단어장 새로 등록하기!"),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ).expand(),
+          ],
+        ),
       );
     });
   }
@@ -62,8 +94,11 @@ class SubjectBundle extends ConsumerWidget {
           if (index.isOdd) {
             return const SizedBox(height: 8); // 간격 조절
           } else {
-            final realIndex = index ~/ 2;
-            return buildFrameBox(index: realIndex, isValid: false);
+            return buildFrameBox(
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
           }
         },
       );
@@ -77,7 +112,9 @@ class SubjectBundle extends ConsumerWidget {
           final realIndex = index ~/ 2;
           return McAppear(
             delayMs: index * 100,
-            child: buildFrameBox(index: realIndex),
+            child: buildFrameBox(
+              child: buildSubject(realIndex),
+            ),
           );
         }
       },
@@ -86,8 +123,7 @@ class SubjectBundle extends ConsumerWidget {
 
   Widget buildFrameBox({
     double width = 500,
-    required int index,
-    isValid = true,
+    Widget? child,
   }) {
     return Container(
       constraints: const BoxConstraints(minWidth: 200, maxWidth: 500),
@@ -97,11 +133,7 @@ class SubjectBundle extends ConsumerWidget {
         borderRadius: BorderRadius.circular(8.0),
         border: Border.all(color: Colors.blueAccent, width: 1.0),
       ),
-      child: isValid == true
-          ? buildSubject(index)
-          : const Center(
-              child: CircularProgressIndicator(),
-            ),
+      child: child,
     );
   }
 
@@ -116,7 +148,8 @@ class SubjectBundle extends ConsumerWidget {
           child: CircularProgressIndicator(),
         ),
         data: (data) {
-          final SubjectModel subjectData = data.subjectList!.subjectList[index];
+          final VocabularyModel vocabData =
+              data.vocabularyModelList!.vocabularyList[index];
           return Stack(
             children: [
               SizedBox(
@@ -128,9 +161,9 @@ class SubjectBundle extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        buildTitle(subjectData.title),
+                        buildTitle(vocabData.title),
                         MCSpace().verticalHalfSpace(),
-                        buildProgressBar(subjectData.progressRate),
+                        buildProgressBar(vocabData.progressRate),
                       ],
                     ),
                     const Spacer(),
@@ -142,7 +175,7 @@ class SubjectBundle extends ConsumerWidget {
                 alignment: Alignment.centerRight,
                 child: HoverClickAnimatedBox(
                   boxHeight: boxHeight,
-                  onTap: () => notifier.goEnglishPage(),
+                  onTap: () => notifier.goEnglishVocaPage(),
                 ),
               ),
             ],

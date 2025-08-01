@@ -4,8 +4,8 @@ import 'package:machat/design_system/lib.dart';
 
 final checkboxStateProvider = AutoDisposeStateProvider<bool>((ref) => false);
 
-class MyCheckboxView extends ConsumerWidget {
-  const MyCheckboxView({super.key});
+class MCCheckBoxView extends ConsumerWidget {
+  const MCCheckBoxView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

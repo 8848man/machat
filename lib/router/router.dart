@@ -193,11 +193,11 @@ final goRouterProvider = Provider<GoRouter>(
         ),
 
         GoRoute(
-          path: RouterPath.studyEnglish.path,
-          name: RouterPath.studyEnglish.name,
+          path: RouterPath.englishVoca.path,
+          name: RouterPath.englishVoca.name,
           pageBuilder: (context, state) => CustomTransitionPage<void>(
             key: state.pageKey,
-            child: const StudyEnglish(),
+            child: const EnglishVoca(),
             transitionsBuilder: slideTransition,
           ),
         ),
@@ -213,8 +213,8 @@ final goRouterProvider = Provider<GoRouter>(
         ),
 
         GoRoute(
-          path: RouterPath.addVoca.path,
-          name: RouterPath.addVoca.name,
+          path: RouterPath.addVocabulary.path,
+          name: RouterPath.addVocabulary.name,
           pageBuilder: (context, state) => CustomTransitionPage<void>(
             key: state.pageKey,
             child: const AddVocabulary(),

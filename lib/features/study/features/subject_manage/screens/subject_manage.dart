@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/features/common/animated_widgets/mc_appear.dart';
+import 'package:machat/features/common/layouts/bundle_layout.dart';
 import 'package:machat/features/common/layouts/lib.dart';
 import 'package:machat/router/lib.dart';
 
@@ -10,13 +11,10 @@ class SubjectManage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return DefaultLayout(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: buildWrapper(ref),
-        ),
-      ),
-    );
+        child: BundleLayout(
+      isIntrinsicHeight: false,
+      child: buildWrapper(ref),
+    ));
   }
 
   Widget buildWrapper(WidgetRef ref) {
@@ -49,7 +47,7 @@ class SubjectManage extends ConsumerWidget {
       return GestureDetector(
         onTap: () {
           final router = ref.read(goRouterProvider);
-          router.goNamed(RouterPath.addVoca.name);
+          router.goNamed(RouterPath.addVocabulary.name);
         },
         child: Container(
           alignment: Alignment.center,
