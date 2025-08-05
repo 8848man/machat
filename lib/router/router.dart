@@ -208,7 +208,7 @@ final goRouterProvider = Provider<GoRouter>(
           pageBuilder: (context, state) => CustomTransitionPage<void>(
             transitionDuration: const Duration(milliseconds: 500),
             key: state.pageKey,
-            child: const VocaAdd(),
+            child: const AddVoca(),
             transitionsBuilder: slideTransition,
           ),
         ),
