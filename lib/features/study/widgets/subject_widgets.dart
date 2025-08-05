@@ -125,15 +125,41 @@ class SubjectBundle extends ConsumerWidget {
     double width = 500,
     Widget? child,
   }) {
-    return Container(
-      constraints: const BoxConstraints(minWidth: 200, maxWidth: 500),
-      width: width,
-      height: boxHeight,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.0),
-        border: Border.all(color: Colors.blueAccent, width: 1.0),
+    // return Container(
+    //   constraints: const BoxConstraints(minWidth: 200, maxWidth: 500),
+    //   width: width,
+    //   height: boxHeight,
+    //   decoration: BoxDecoration(
+    //     color: MCColors.$color_grey_00,
+    //     borderRadius: BorderRadius.circular(8.0),
+    //     border: Border.all(color: Colors.blueAccent, width: 1.0),
+    //     boxShadow: [
+    //       BoxShadow(
+    //         color: Colors.black.withOpacity(0.1), // 그림자 색상
+    //         spreadRadius: 2,
+    //         blurRadius: 10,
+    //         offset: const Offset(0, 4), // x:0, y:4 → 아래 방향으로 그림자
+    //       ),
+    //     ],
+    //   ),
+    //   child: child,
+    // );
+    return Material(
+      elevation: 4,
+      borderRadius: BorderRadius.circular(8),
+      color: Colors.transparent, // 배경색 제거 (중첩을 위해)
+      shadowColor: Colors.black.withOpacity(0.6), // 연한 그림자
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.grey, width: 0.1),
+          color: Colors.white, // 내부 배경색
+        ),
+        constraints: const BoxConstraints(minWidth: 200, maxWidth: 500),
+        width: width,
+        height: boxHeight,
+        child: child,
       ),
-      child: child,
     );
   }
 
@@ -175,7 +201,7 @@ class SubjectBundle extends ConsumerWidget {
                 alignment: Alignment.centerRight,
                 child: HoverClickAnimatedBox(
                   boxHeight: boxHeight,
-                  onTap: () => notifier.goEnglishVocaPage(),
+                  onTap: () => notifier.goEnglishVocaPage(vocabData),
                 ),
               ),
             ],

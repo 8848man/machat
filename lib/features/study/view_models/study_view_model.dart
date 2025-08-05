@@ -4,6 +4,7 @@ import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:machat/features/study/models/study.dart';
 import 'package:machat/features/study/models/vocabulary_model.dart';
 import 'package:machat/features/study/providers/subject_list_length.dart';
+import 'package:machat/features/study/providers/voca_info_provider.dart';
 import 'package:machat/features/study/repositories/vocabulary_repository.dart';
 import 'package:machat/router/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -72,9 +73,13 @@ class StudyViewModel extends _$StudyViewModel {
     print('Navigating to detail page for subject: $subject');
   }
 
-  Future<void> goEnglishVocaPage() async {
+  Future<void> goEnglishVocaPage(VocabularyModel vocaData) async {
     // 애니메이션 딜레이
     Future.delayed(const Duration(milliseconds: 150), () async {
+      // 현재 Voca 데이터 갱신
+      ref.read(nowVocaProvider.notifier).update((state) => vocaData);
+
+      // 라우팅
       final router = ref.read(goRouterProvider);
       router.goNamed(RouterPath.englishVoca.name);
     });

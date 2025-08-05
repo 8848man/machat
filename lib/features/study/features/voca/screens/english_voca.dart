@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:machat/extensions.dart';
 import 'package:machat/features/common/layouts/lib.dart';
+import 'package:machat/features/study/common/layouts/draggable_fab_layout.dart';
+import 'package:machat/features/study/features/voca/animated_widgets/voca_create_button.dart';
 import 'package:machat/features/study/features/voca/providers/voca_tab_provider.dart';
 import 'package:machat/features/study/features/voca/widgets/card.dart';
 import 'package:machat/features/study/features/voca/widgets/memo_list.dart';
@@ -21,7 +23,7 @@ class _EnglishVocaState extends ConsumerState<EnglishVoca>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
       ref.read(vocaTabIndexProvider.notifier).state = _tabController.index;
     });
@@ -38,33 +40,42 @@ class _EnglishVocaState extends ConsumerState<EnglishVoca>
     final index = ref.watch(vocaTabIndexProvider);
 
     _tabController.animateTo(index);
-    return DefaultLayout(
-      needLogin: true,
-      child: Column(
-        children: [
-          TabBarView(
-            controller: _tabController,
-            children: const <Widget>[
-              VocaMemoList(),
-              VocaCard(),
-            ],
-          ).expand(),
-          TabBar(
-            indicatorWeight: 3,
-            controller: _tabController,
-            tabs: <Widget>[
-              const Tab(icon: Icon(Icons.book)),
-              Tab(
-                icon: SvgPicture.asset(
-                  'lib/assets/icons/voca_card.svg',
-                  height: 24,
-                  width: 24,
+    return DraggableFabLayout(
+      fab: const AnimatedFabButton(),
+      child: DefaultLayout(
+        needLogin: true,
+        child: Column(
+          children: [
+            TabBarView(
+              controller: _tabController,
+              children: const <Widget>[
+                VocaMemoList(),
+                VocaCard(),
+              ],
+            ).expand(),
+            TabBar(
+              indicatorWeight: 2,
+              controller: _tabController,
+              tabs: <Widget>[
+                // const Tab(icon: Icon(Icons.book)),
+                Tab(
+                  icon: SvgPicture.asset(
+                    'lib/assets/icons/voca_flash_card.svg',
+                    height: 32,
+                    width: 32,
+                  ),
                 ),
-              ),
-              //lib/assets/icons/voca_card.svg
-            ],
-          ),
-        ],
+                Tab(
+                  icon: SvgPicture.asset(
+                    'lib/assets/icons/voca_card.svg',
+                    height: 32,
+                    width: 32,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

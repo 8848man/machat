@@ -203,6 +203,17 @@ final goRouterProvider = Provider<GoRouter>(
         ),
 
         GoRoute(
+          path: RouterPath.englishAddVoca.path,
+          name: RouterPath.englishAddVoca.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            transitionDuration: const Duration(milliseconds: 500),
+            key: state.pageKey,
+            child: const VocaAdd(),
+            transitionsBuilder: slideTransition,
+          ),
+        ),
+
+        GoRoute(
           path: RouterPath.subjectManage.path,
           name: RouterPath.subjectManage.name,
           pageBuilder: (context, state) => CustomTransitionPage<void>(
