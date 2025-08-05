@@ -33,7 +33,7 @@ class ChatCreateBody extends ConsumerWidget {
     return GestureDetector(
       child: const Row(
         children: [
-          MyCheckboxView(),
+          MCCheckBoxView(),
           Text(
             '채팅방을 공개합니다',
             style: TextStyle(

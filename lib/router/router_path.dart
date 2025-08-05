@@ -15,6 +15,13 @@ enum RouterPath {
   profile('/profile', 'profile'),
   addFriend('/add_friend', 'add_friend'),
   token('/token', 'token'),
+  study('/study', 'study'),
+  earnPoint('/earn_point', 'earn_point'),
+  englishVoca('/study/english_voca', 'english_voca'),
+  englishAddVoca('/study/english_voca/add_voca', 'add_voca'),
+  subjectManage('/study/subject_manage', 'subject_manage'),
+  addVocabulary('/study/add_vocabulary', 'add_vocabulary'),
+  // addWord('/')
   // newHome('/newHome', 'newHome'),
   // example('/example', 'example'),
   // registerTemp('/registerTemp', 'registerTemp'),

@@ -46,6 +46,7 @@ class _AnimatedFABState extends ConsumerState<AnimatedFAB>
           bottom: 16.0,
           right: 16.0,
           child: FloatingActionButton(
+            heroTag: null,
             onPressed: _toggleButtons,
             child: RotationTransition(
               turns: Tween<double>(begin: 0, end: 0.125)
@@ -112,6 +113,7 @@ class SmallButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final notifier = ref.read(floatingButtonViewModelProvider.notifier);
     return FloatingActionButton(
+      heroTag: null,
       mini: true,
       onPressed: () => notifier.functionBrancher(index),
       backgroundColor: MCColors.$color_blue_40,

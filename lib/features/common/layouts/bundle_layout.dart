@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 
 class BundleLayout extends StatelessWidget {
   final Widget child;
-  const BundleLayout({super.key, required this.child});
+  final bool isIntrinsicHeight;
+  const BundleLayout({
+    super.key,
+    required this.child,
+    this.isIntrinsicHeight = true,
+  });
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -16,15 +21,21 @@ class BundleLayout extends StatelessWidget {
                   minHeight: constraints.maxHeight,
                   maxWidth: 400,
                 ),
-                child: IntrinsicHeight(
-                  // 자식 Column이 최소 높이를 기준으로 꽉 차도록
-                  child: child,
-                ),
+                child: getChildByIsIntrinsicHeight(isIntrinsicHeight),
               ),
             );
           },
         ),
       ),
     );
+  }
+
+  Widget getChildByIsIntrinsicHeight(bool isIntrinsicHeight) {
+    return isIntrinsicHeight == true
+        ? IntrinsicHeight(
+            // 자식 Column이 최소 높이를 기준으로 꽉 차도록
+            child: child,
+          )
+        : child;
   }
 }

@@ -170,6 +170,69 @@ final goRouterProvider = Provider<GoRouter>(
           ),
         ),
 
+        GoRoute(
+          path: RouterPath.earnPoint.path,
+          name: RouterPath.earnPoint.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            transitionDuration: const Duration(milliseconds: 500),
+            key: state.pageKey,
+            child: const EarnPointBundle(),
+            transitionsBuilder: slideTransition,
+          ),
+        ),
+
+        /// profile
+        GoRoute(
+          path: RouterPath.study.path,
+          name: RouterPath.study.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: const StudySubjectScreen(),
+            transitionsBuilder: slideTransition,
+          ),
+        ),
+
+        GoRoute(
+          path: RouterPath.englishVoca.path,
+          name: RouterPath.englishVoca.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: const EnglishVoca(),
+            transitionsBuilder: slideTransition,
+          ),
+        ),
+
+        GoRoute(
+          path: RouterPath.englishAddVoca.path,
+          name: RouterPath.englishAddVoca.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            transitionDuration: const Duration(milliseconds: 500),
+            key: state.pageKey,
+            child: const AddVoca(),
+            transitionsBuilder: slideTransition,
+          ),
+        ),
+
+        GoRoute(
+          path: RouterPath.subjectManage.path,
+          name: RouterPath.subjectManage.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: const SubjectManage(),
+            transitionsBuilder: slideTransition,
+          ),
+        ),
+
+        GoRoute(
+          path: RouterPath.addVocabulary.path,
+          name: RouterPath.addVocabulary.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: const AddVocabulary(),
+            transitionsBuilder: slideTransition,
+          ),
+        ),
+
         // GoRoute(
         //   path: RouterPath.addFriend.path,
         //   name: RouterPath.addFriend.name,
