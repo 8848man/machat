@@ -6,13 +6,13 @@ part 'word_model.g.dart';
 @freezed
 class WordModel with _$WordModel {
   const factory WordModel({
-    required String id,
-    required String word,
-    required String meaning,
+    @Default('') String id,
+    @Default('') String word,
+    @Default('') String meaning,
     String? partOfSpeech,
-    List<String>? examples,
+    @Default([]) List<String> examples,
     String? pronunciation,
-    List<String>? tags,
+    @Default([]) List<String> tags,
     @Default(false) bool isGeneratedByAI,
     double? confidenceScore,
     bool? isManuallyReviewed,

@@ -83,7 +83,7 @@ class SubjectBundle extends ConsumerWidget {
     });
   }
 
-  // 과목 위젯 생성
+  // 단어장 위젯 생성
   List<Widget> subjectGenerator(int? subjectListLength) {
     // subject가 초기화되지 않았을 경우, 3개의 더미 데이터 보여주기
     if (subjectListLength == null) {
@@ -125,25 +125,6 @@ class SubjectBundle extends ConsumerWidget {
     double width = 500,
     Widget? child,
   }) {
-    // return Container(
-    //   constraints: const BoxConstraints(minWidth: 200, maxWidth: 500),
-    //   width: width,
-    //   height: boxHeight,
-    //   decoration: BoxDecoration(
-    //     color: MCColors.$color_grey_00,
-    //     borderRadius: BorderRadius.circular(8.0),
-    //     border: Border.all(color: Colors.blueAccent, width: 1.0),
-    //     boxShadow: [
-    //       BoxShadow(
-    //         color: Colors.black.withOpacity(0.1), // 그림자 색상
-    //         spreadRadius: 2,
-    //         blurRadius: 10,
-    //         offset: const Offset(0, 4), // x:0, y:4 → 아래 방향으로 그림자
-    //       ),
-    //     ],
-    //   ),
-    //   child: child,
-    // );
     return Material(
       elevation: 4,
       borderRadius: BorderRadius.circular(8),

@@ -4,6 +4,8 @@ import 'package:machat/design_system/lib.dart';
 import 'package:machat/features/common/animated_widgets/mc_appear.dart';
 import 'package:machat/features/common/layouts/bundle_layout.dart';
 import 'package:machat/features/common/layouts/lib.dart';
+import 'package:machat/features/snack_bar_manager/lib.dart';
+import 'package:machat/features/study/features/voca/models/word_model.dart';
 import 'package:machat/features/study/features/voca/view_models/add_voca_view_model.dart';
 
 class AddVoca extends ConsumerWidget {
@@ -11,24 +13,49 @@ class AddVoca extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    TextEditingController wordController = TextEditingController();
     FocusNode wordFocusNode = FocusNode();
+    TextEditingController wordController = TextEditingController();
     TextEditingController meaningController = TextEditingController();
     TextEditingController tagController = TextEditingController();
     TextEditingController enExController = TextEditingController();
     TextEditingController koExController = TextEditingController();
-    final notifier = ref.read(addVocaViewModelProvider.notifier);
+    final AddVocaViewModel notifier =
+        ref.read(addVocaViewModelProvider.notifier);
     // 단어 검색 이벤트 추가
-    wordFocusNode.addListener(() {
+    wordFocusNode.addListener(() async {
       if (!wordFocusNode.hasFocus) {
-        notifier.getWordInFirebase(wordController.text);
+        final WordModel? getWord =
+            await notifier.getWordInFirebase(wordController.text);
+        if (getWord != null) {
+          meaningController.text = getWord.meaning;
+          tagController.text = getWord.tags.join(', ');
+          enExController.text = getWord.examples.join(', ');
+          koExController.text = getWord.examples.join(', ');
+        } else {
+          SnackBarCaller().callSnackBar(ref, '해당 단어는 등록되어있지 않아요!');
+        }
       }
     });
 
+    WordModel getNowWordModel() {
+      return WordModel(
+        id: '',
+        word: wordController.text,
+        meaning: meaningController.text,
+        tags: tagController.text
+            .split(',')
+            .map((e) => e.trim())
+            .where((e) => e.isNotEmpty)
+            .toList(),
+      );
+    }
+
     return DefaultLayout(
+      needLogin: true,
       child: BundleLayout(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             McAppear(
               delayMs: 300,
@@ -40,7 +67,7 @@ class AddVoca extends ConsumerWidget {
                     fontWeight: FontWeight.bold),
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 10),
             MCTextInput(
               labelText: '단어',
               controller: wordController,
@@ -65,6 +92,11 @@ class AddVoca extends ConsumerWidget {
             MCTextInput(
               labelText: "예문(뜻)",
               controller: koExController,
+            ),
+            const SizedBox(height: 10),
+            MCButtons().getPositiveButton(
+              title: '등록하기',
+              onTap: () => notifier.registerWord(getNowWordModel()),
             ),
           ],
         ),

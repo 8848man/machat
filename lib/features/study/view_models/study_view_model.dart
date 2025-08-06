@@ -16,11 +16,11 @@ class StudyViewModel extends _$StudyViewModel {
   @override
   Future<StudyModel> build() async {
     // VocabularyModelList dummyVocabularyList = await getDummyVocabularyList();
-    VocabularyModelList dummyVocabularyList = await getVocabList();
+    VocabularyModelList vocabList = await getVocabList();
 
-    setVocabListLength(vocabList: dummyVocabularyList);
+    setVocabListLength(vocabList: vocabList);
 
-    return StudyModel(vocabularyModelList: dummyVocabularyList);
+    return StudyModel(vocabularyModelList: vocabList);
   }
 
   void setVocabListLength({required VocabularyModelList vocabList}) {
@@ -78,7 +78,6 @@ class StudyViewModel extends _$StudyViewModel {
     Future.delayed(const Duration(milliseconds: 150), () async {
       // 현재 Voca 데이터 갱신
       ref.read(nowVocaProvider.notifier).update((state) => vocaData);
-
       // 라우팅
       final router = ref.read(goRouterProvider);
       router.goNamed(RouterPath.englishVoca.name);

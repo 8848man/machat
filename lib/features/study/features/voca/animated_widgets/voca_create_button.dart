@@ -30,7 +30,7 @@ class _AnimatedFabButtonState extends ConsumerState<AnimatedFabButton> {
             onPressed: () {
               ref
                   .read(goRouterProvider)
-                  .goNamed(RouterPath.englishAddVoca.name);
+                  .pushNamed(RouterPath.englishAddVoca.name);
             },
             icon: const Icon(Icons.add),
             label: const Text("단어 만들기!"),
