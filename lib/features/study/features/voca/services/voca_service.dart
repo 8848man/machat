@@ -129,6 +129,13 @@ class VocaService {
     required VocabularyModel vocabData,
     required WordModel word,
   }) async {
+    final userVocaRef = firestore
+        .collection('users')
+        .doc(userId)
+        .collection('user_vocabulary')
+        .doc(vocabData.id)
+        .collection('wordList');
+
     try {
       final wordListRef = firestore
           .collection('users')
