@@ -14,6 +14,18 @@ class LoginRepository {
       final auth = FirebaseAuth.instance;
       await auth.signInWithEmailAndPassword(
           email: username, password: password);
+
+      // 현재 로그인한 사용자
+      User? user = auth.currentUser;
+      if (user != null) {
+        // ID 토큰 가져오기 (forceRefresh: false 기본값)
+        String? idToken = await user.getIdToken();
+
+        print('Firebase ID Token: $idToken');
+      } else {
+        print('No user is currently signed in.');
+      }
+
       return true;
     } catch (e) {
       print('exception occured $e');

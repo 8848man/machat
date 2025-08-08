@@ -1,5 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:machat/config/url_config.dart';
+import 'package:machat/features/common/providers/loading_state_provider.dart';
+import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:machat/features/study/features/voca/models/word_model.dart';
 import 'package:machat/networks/firestore_provider.dart';
 
@@ -17,21 +24,43 @@ class VocaRepository {
   });
 
   Future<WordModel?> getWord(String wordText) async {
-    final querySnapshot = await firestore
-        .collection('master_voca')
-        .where('word', isEqualTo: wordText)
-        .limit(1)
-        .get();
+    try {
+      ref.read(loadingStateProvider.notifier).update((state) => true);
+      final uri = Uri.parse('$GEMINI_API_DICTIONARY_URL$wordText');
+      final token = await FirebaseAuth.instance.currentUser!.getIdToken();
 
-    if (querySnapshot.docs.isEmpty) return null;
+      final response = await http.get(
+        uri,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
 
-    final doc = querySnapshot.docs.first;
-    final data = doc.data();
+      if (response.statusCode == 200) {
+        // UTF8로 명시적 디코딩
+        final decodedString = utf8.decode(response.bodyBytes);
 
-    return WordModel.fromJson({
-      ...data,
-      'id': doc.id, // 문서 ID를 수동으로 넣어줌
-    });
+        final Map<String, dynamic> jsonResp = json.decode(decodedString);
+        final data = jsonResp['data'];
+        if (data != null) {
+          return WordModel.fromJson({
+            ...data,
+            'id': wordText,
+          });
+        }
+      }
+
+      // 서버 응답이 실패거나 data가 없으면 null 반환
+      return null;
+    } catch (e) {
+      SnackBarCaller().callSnackBar(ref, '해당 단어는 사전에 없는거같아요!');
+      print('getWord error occured! $e');
+
+      rethrow;
+    } finally {
+      ref.read(loadingStateProvider.notifier).update((state) => false);
+    }
   }
 
   Future<void> saveWordToMasterVoca(WordModel word) async {

@@ -8,16 +8,20 @@ class WordModel with _$WordModel {
   const factory WordModel({
     @Default('') String id,
     @Default('') String word,
-    @Default('') String meaning,
-    String? partOfSpeech,
-    @Default([]) List<String> examples,
-    String? pronunciation,
+    @Default([]) List<String> meanings,
+    @Default('') String level,
     @Default([]) List<String> tags,
+    @Default([]) List<String> synonyms,
+    @Default([]) List<String> antonyms,
+    @JsonKey(name: 'example_sentence') String? exampleSentence,
+    @JsonKey(name: 'example_translation') String? exampleTranslation,
+    @JsonKey(name: 'confidence_score') double? confidenceScore,
+    String? pronunciation,
+    @JsonKey(name: 'part_of_speech') String? partOfSpeech,
     @Default(false) bool isGeneratedByAI,
-    double? confidenceScore,
     bool? isManuallyReviewed,
-    @Default(null) DateTime? createdAt,
-    @Default(null) DateTime? updatedAt,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) = _WordModel;
 
   factory WordModel.fromJson(Map<String, dynamic> json) =>

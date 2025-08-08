@@ -30,7 +30,7 @@ class _MemoCardState extends State<MemoCard> {
   String getWord() {
     if (!isTranslated) return widget.data.word;
 
-    return widget.data.meaning;
+    return widget.data.meanings.join(', ');
   }
 
   @override

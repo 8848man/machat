@@ -13,7 +13,7 @@ class MemoListViewModel extends _$MemoListViewModel {
   @override
   Future<MemoListModel> build() async {
     final VocabularyModel nowVocabulary = ref.watch(nowVocaProvider);
-    final data = await getData(nowVocabulary.id ?? '');
+    final MemoListModel data = await getData(nowVocabulary.id ?? '');
 
     return data;
   }

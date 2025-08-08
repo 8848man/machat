@@ -4,6 +4,8 @@ import 'package:machat/design_system/lib.dart';
 import 'package:machat/features/common/animated_widgets/mc_appear.dart';
 import 'package:machat/features/common/layouts/bundle_layout.dart';
 import 'package:machat/features/common/layouts/lib.dart';
+import 'package:machat/features/common/providers/loading_state_provider.dart';
+import 'package:machat/features/common/utils/comma_seperator.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:machat/features/study/features/voca/models/word_model.dart';
 import 'package:machat/features/study/features/voca/view_models/add_voca_view_model.dart';
@@ -27,12 +29,10 @@ class AddVoca extends ConsumerWidget {
         final WordModel? getWord =
             await notifier.getWordInFirebase(wordController.text);
         if (getWord != null) {
-          meaningController.text = getWord.meaning;
+          meaningController.text = getWord.meanings.join(', ');
           tagController.text = getWord.tags.join(', ');
-          enExController.text = getWord.examples.join(', ');
-          koExController.text = getWord.examples.join(', ');
-        } else {
-          SnackBarCaller().callSnackBar(ref, '해당 단어는 등록되어있지 않아요!');
+          enExController.text = getWord.exampleSentence ?? '';
+          koExController.text = getWord.exampleTranslation ?? '';
         }
       }
     });
@@ -41,12 +41,8 @@ class AddVoca extends ConsumerWidget {
       return WordModel(
         id: '',
         word: wordController.text,
-        meaning: meaningController.text,
-        tags: tagController.text
-            .split(',')
-            .map((e) => e.trim())
-            .where((e) => e.isNotEmpty)
-            .toList(),
+        meanings: getCommaSeperatedList(meaningController.text),
+        tags: getCommaSeperatedList(tagController.text),
       );
     }
 
@@ -94,10 +90,14 @@ class AddVoca extends ConsumerWidget {
               controller: koExController,
             ),
             const SizedBox(height: 10),
-            MCButtons().getPositiveButton(
-              title: '등록하기',
-              onTap: () => notifier.registerWord(getNowWordModel()),
-            ),
+            Consumer(builder: (context, ref, child) {
+              final bool loadingState = ref.watch(loadingStateProvider);
+              return MCButtons().getPositiveButton(
+                title: '등록하기',
+                isLoading: loadingState,
+                onTap: () => notifier.registerWord(getNowWordModel()),
+              );
+            }),
           ],
         ),
       ),

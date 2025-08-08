@@ -8,6 +8,7 @@ import 'package:machat/features/study/features/voca/animated_widgets/voca_create
 import 'package:machat/features/study/features/voca/providers/voca_tab_provider.dart';
 import 'package:machat/features/study/features/voca/widgets/card.dart';
 import 'package:machat/features/study/features/voca/widgets/memo_list.dart';
+import 'package:machat/features/study/providers/voca_info_provider.dart';
 
 class EnglishVoca extends ConsumerStatefulWidget {
   const EnglishVoca({super.key});
@@ -37,6 +38,7 @@ class _EnglishVocaState extends ConsumerState<EnglishVoca>
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(nowVocaProvider);
     final index = ref.watch(vocaTabIndexProvider);
 
     _tabController.animateTo(index);
