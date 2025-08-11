@@ -6,7 +6,6 @@ import 'package:machat/features/common/layouts/bundle_layout.dart';
 import 'package:machat/features/common/layouts/lib.dart';
 import 'package:machat/features/common/providers/loading_state_provider.dart';
 import 'package:machat/features/common/utils/comma_seperator.dart';
-import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:machat/features/study/features/voca/models/word_model.dart';
 import 'package:machat/features/study/features/voca/view_models/add_voca_view_model.dart';
 
@@ -43,6 +42,7 @@ class AddVoca extends ConsumerWidget {
         word: wordController.text,
         meanings: getCommaSeperatedList(meaningController.text),
         tags: getCommaSeperatedList(tagController.text),
+        createdAt: DateTime.now(),
       );
     }
 

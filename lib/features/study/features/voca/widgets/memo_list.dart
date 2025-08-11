@@ -12,6 +12,8 @@ class VocaMemoList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<MemoListModel> state =
         ref.watch(memoListViewModelProvider);
+    final MemoListViewModel notifier =
+        ref.read(memoListViewModelProvider.notifier);
     return state.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, stackTrace) {
@@ -32,6 +34,7 @@ class VocaMemoList extends ConsumerWidget {
             onTap: goToIndex, // 누르면 바로 이동
           );
         },
+        onFetchMore: notifier.fetchMoreWordDatas,
       ),
     );
   }

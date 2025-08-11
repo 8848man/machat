@@ -9,6 +9,7 @@ import 'package:machat/features/study/features/voca/providers/voca_tab_provider.
 import 'package:machat/features/study/features/voca/widgets/card.dart';
 import 'package:machat/features/study/features/voca/widgets/memo_list.dart';
 import 'package:machat/features/study/providers/voca_info_provider.dart';
+import 'package:machat/router/lib.dart';
 
 class EnglishVoca extends ConsumerStatefulWidget {
   const EnglishVoca({super.key});
@@ -43,7 +44,12 @@ class _EnglishVocaState extends ConsumerState<EnglishVoca>
 
     _tabController.animateTo(index);
     return DraggableFabLayout(
-      fab: const AnimatedFabButton(),
+      fab: MouseHoverAnimationButton(
+        onPressed: () {
+          ref.read(goRouterProvider).pushNamed(RouterPath.englishAddVoca.name);
+        },
+        child: buildVocaActionButton(),
+      ),
       child: DefaultLayout(
         needLogin: true,
         child: Column(
@@ -79,6 +85,16 @@ class _EnglishVocaState extends ConsumerState<EnglishVoca>
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildVocaActionButton() {
+    return const Row(
+      children: [
+        Icon(Icons.add),
+        SizedBox(width: 8),
+        Text("단어 만들기!"),
+      ],
     );
   }
 }

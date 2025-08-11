@@ -5,12 +5,15 @@ class AnimatedWheelCardView extends StatefulWidget {
   final int length;
   final Widget Function(BuildContext, int, bool, bool Function()?) itemBuilder;
   final double itemExtent;
+  // 여기에 fetchMore 콜백 추가
+  final Future<void> Function()? onFetchMore;
 
   const AnimatedWheelCardView({
     super.key,
     required this.length,
     required this.itemBuilder,
     this.itemExtent = 150.0,
+    this.onFetchMore,
   });
 
   @override
@@ -20,6 +23,9 @@ class AnimatedWheelCardView extends StatefulWidget {
 class _AnimatedWheelCardViewState extends State<AnimatedWheelCardView> {
   late FixedExtentScrollController _controller;
   int _selectedIndex = 0;
+
+  // 중복 호출 방지용 플래그
+  bool _isFetchingMore = false;
 
   @override
   void initState() {
@@ -33,6 +39,22 @@ class _AnimatedWheelCardViewState extends State<AnimatedWheelCardView> {
     if (_selectedIndex != newIndex) {
       setState(() {
         _selectedIndex = newIndex;
+      });
+    }
+
+    // 위젯 총 길이 - 10일 때 데이터를 더 가져올 수 있도록
+    if (!_isFetchingMore &&
+        widget.length > 0 &&
+        newIndex >= widget.length - 2 &&
+        widget.onFetchMore != null) {
+      _isFetchingMore = true;
+
+      widget.onFetchMore!().whenComplete(() {
+        if (mounted) {
+          setState(() {
+            _isFetchingMore = false;
+          });
+        }
       });
     }
   }

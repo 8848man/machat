@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/config/url_config.dart';
 import 'package:machat/features/common/providers/loading_state_provider.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
+import 'package:machat/features/study/features/voca/models/memo_list_model.dart';
 import 'package:machat/features/study/features/voca/models/word_model.dart';
 import 'package:machat/networks/firestore_provider.dart';
 
@@ -80,9 +81,56 @@ class VocaRepository {
     await vocabWordRef.set(word.toJson());
   }
 
-  Future<List<WordModel>> getWordList({
+  // Future<List<WordModel>> getWordList({
+  //   required String userId,
+  //   required String vocabId,
+  // }) async {
+  //   try {
+  //     final querySnapshot = await firestore
+  //         .collection('users')
+  //         .doc(userId)
+  //         .collection('user_vocabulary')
+  //         .doc(vocabId)
+  //         .collection('wordList')
+  //         .get();
+
+  //     // 각 문서를 WordModel로 변환 후 리스트로 반환
+  //     return querySnapshot.docs
+  //         .map((doc) => WordModel.fromJson(doc.data()))
+  //         .toList();
+  //   } catch (e) {
+  //     print('getWordList error! $e');
+  //     rethrow;
+  //   }
+  // }
+
+  // Future<List<WordModel>> fetchMoreWord({
+  //   required String userId,
+  //   required String vocabId,
+  // }) async {
+  //   try {
+  //     final querySnapshot = await firestore
+  //         .collection('users')
+  //         .doc(userId)
+  //         .collection('user_vocabulary')
+  //         .doc(vocabId)
+  //         .collection('wordList')
+  //         .get();
+
+  //     // 각 문서를 WordModel로 변환 후 리스트로 반환
+  //     return querySnapshot.docs
+  //         .map((doc) => WordModel.fromJson(doc.data()))
+  //         .toList();
+  //   } catch (e) {
+  //     print('getWordList error! $e');
+  //     rethrow;
+  //   }
+  // }
+  Future<MemoListModel> getWordList({
     required String userId,
     required String vocabId,
+    String sortedBy = 'createdAt',
+    int limitCount = 5,
   }) async {
     try {
       final querySnapshot = await firestore
@@ -91,14 +139,51 @@ class VocaRepository {
           .collection('user_vocabulary')
           .doc(vocabId)
           .collection('wordList')
+          .orderBy(sortedBy, descending: true)
+          .limit(limitCount)
           .get();
 
-      // 각 문서를 WordModel로 변환 후 리스트로 반환
-      return querySnapshot.docs
-          .map((doc) => WordModel.fromJson(doc.data()))
-          .toList();
+      return MemoListModel(
+        wordList: querySnapshot.docs
+            .map((doc) => WordModel.fromJson(doc.data()))
+            .toList(),
+        lastDoc: querySnapshot.docs.isNotEmpty ? querySnapshot.docs.last : null,
+        hasMore: querySnapshot.docs.length == limitCount,
+      );
     } catch (e) {
       print('getWordList error! $e');
+      rethrow;
+    }
+  }
+
+  Future<MemoListModel> fetchMoreWord({
+    required String userId,
+    required String vocabId,
+    required DocumentSnapshot lastDoc, // 마지막 문서 snapshot
+    String sortedBy = 'createdAt',
+    int limitCount = 20,
+  }) async {
+    try {
+      final querySnapshot = await firestore
+          .collection('users')
+          .doc(userId)
+          .collection('user_vocabulary')
+          .doc(vocabId)
+          .collection('wordList')
+          .orderBy(sortedBy, descending: true)
+          .startAfterDocument(lastDoc) // 마지막 문서 이후부터
+          .limit(limitCount)
+          .get();
+
+      return MemoListModel(
+        wordList: querySnapshot.docs
+            .map((doc) => WordModel.fromJson(doc.data()))
+            .toList(),
+        lastDoc: querySnapshot.docs.isNotEmpty ? querySnapshot.docs.last : null,
+        hasMore: querySnapshot.docs.length == limitCount,
+      );
+    } catch (e) {
+      print('fetchMoreWord error! $e');
       rethrow;
     }
   }
