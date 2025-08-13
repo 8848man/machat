@@ -54,9 +54,9 @@ graph TB
     FB_Auth[(Firebase Auth)]
 
     %% --- 스타일링 ---
-    classDef service fill=#fce5cd,stroke=#d35400,stroke-width=1px
-    classDef storage fill=#d9ead3,stroke=#6aa84f,stroke-width=1px
-    classDef api fill=#c9daf8,stroke=#3d85c6,stroke-width=1px
+    classDef service fill="#fce5cd",stroke="#d35400",stroke-width=1px
+    classDef storage fill="#d9ead3",stroke="#6aa84f",stroke-width=1px
+    classDef api fill="#c9daf8",stroke="#3d85c6",stroke-width=1px
 
     class TTS_Service,TTS_Proxy,Supertone,Gemini_Server,Gemini_API service
     class FS_DB,FS_Storage,FB_Auth storage
