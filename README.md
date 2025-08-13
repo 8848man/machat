@@ -58,6 +58,13 @@ graph TB
     FS_DB[(Firebase Firestore)]
     FB_Auth[(Firebase Auth)]
 ```
+
+
+
+
+
+
+
 ## 주요 기능
  - 실시간 채팅(유저간) 기능
  - 채팅 AI 캐릭터 보이스 기능
