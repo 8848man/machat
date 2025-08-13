@@ -43,6 +43,7 @@ graph TB
     VocabUI --> Gemini_Server[Gemini API Server]
     Gemini_Server --> Gemini_API[Google Gemini API]
     VocabUI --> FS_DB
+    Gemini_Server --> FS_DB
 
     %% --- 친구 초대 ---
     InviteUI --> FS_DB
