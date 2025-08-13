@@ -20,7 +20,6 @@
 ```mermaid
 graph TB
 
-    %% --- 클라이언트 ---
     subgraph Client[Flutter Client]
         ChatUI[실시간 채팅 UI]
         VoiceUI[AI 캐릭터 보이스 UI]
@@ -52,14 +51,6 @@ graph TB
     FS_DB[(Firebase Firestore)]
     FS_Storage[(Firebase Storage)]
     FB_Auth[(Firebase Auth)]
-
-    %% --- 스타일링 ---
-    classDef service fill="#fce5cd",stroke="#d35400",stroke-width=1px
-    classDef storage fill="#d9ead3",stroke="#6aa84f",stroke-width=1px
-    classDef api fill="#c9daf8",stroke="#3d85c6",stroke-width=1px
-
-    class TTS_Service,TTS_Proxy,Supertone,Gemini_Server,Gemini_API service
-    class FS_DB,FS_Storage,FB_Auth storage
 ```
 ## 주요 기능
  - 실시간 채팅(유저간) 기능
