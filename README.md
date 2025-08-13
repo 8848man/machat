@@ -20,17 +20,19 @@
 ```mermaid
 graph TB
 
+    %% --- 클라이언트 ---
     subgraph Client[Flutter Client]
         ChatUI[실시간 채팅 UI]
         VoiceUI[AI 캐릭터 보이스 UI]
         VocabUI[영단어 단어장 UI]
+        InviteUI[친구 초대 UI]
+        RoomListUI[채팅방 리스트 UI]
         LoginUI[로그인 UI]
     end
 
     %% --- 실시간 채팅 ---
     ChatUI --> FS_Stream[Firestore Stream]
     ChatUI --> FS_DB[Firebase Firestore]
-    ChatUI --> FS_Storage[Firebase Storage]
 
     %% --- AI 캐릭터 보이스 ---
     VoiceUI --> TTS_Service[TTS Service]
@@ -41,21 +43,35 @@ graph TB
     VocabUI --> Gemini_Server[Gemini API Server]
     Gemini_Server --> Gemini_API[Google Gemini API]
     VocabUI --> FS_DB
-    VocabUI --> FB_Auth[Firebase Auth]
+    Gemini_Server --> FS_DB
+
+    %% --- 친구 초대 ---
+    InviteUI --> FS_DB
+
+    %% --- 채팅방 리스트 관리 ---
+    RoomListUI --> FS_DB
 
     %% --- 로그인 기능 ---
-    LoginUI --> FB_Auth
+    LoginUI --> FB_Auth[Firebase Auth]
     LoginUI --> SecureStorage[Secure Storage]
 
     %% --- Firebase 공통 ---
     FS_DB[(Firebase Firestore)]
-    FS_Storage[(Firebase Storage)]
     FB_Auth[(Firebase Auth)]
 ```
+
+
+
+
+
+
+
 ## 주요 기능
  - 실시간 채팅(유저간) 기능
  - 채팅 AI 캐릭터 보이스 기능
  - 영단어 단어장 기능(Gemini AI를 이용해 단어 생성)
+ - 유저간 친구 초대 기능
+ - 채팅방 입장 채팅방 리스트 관리 기능
 
 ## 설계 원칙
 1. Routing :
