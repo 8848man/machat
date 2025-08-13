@@ -54,6 +54,7 @@ graph TB
     %% --- 로그인 기능 ---
     LoginUI --> FB_Auth[Firebase Auth]
     LoginUI --> SecureStorage[Secure Storage]
+    LoginUI -- > FS_DB
 
     %% --- Firebase 공통 ---
     FS_DB[(Firebase Firestore)]
