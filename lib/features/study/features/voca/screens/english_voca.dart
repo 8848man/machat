@@ -7,7 +7,7 @@ import 'package:machat/features/study/common/layouts/draggable_fab_layout.dart';
 import 'package:machat/features/study/features/voca/animated_widgets/voca_create_button.dart';
 import 'package:machat/features/study/features/voca/providers/voca_tab_provider.dart';
 import 'package:machat/features/study/features/voca/widgets/card.dart';
-import 'package:machat/features/study/features/voca/widgets/memo_list.dart';
+import 'package:machat/features/study/features/voca/widgets/voca_flash_card_list.dart';
 import 'package:machat/features/study/providers/voca_info_provider.dart';
 import 'package:machat/router/lib.dart';
 
@@ -57,7 +57,7 @@ class _EnglishVocaState extends ConsumerState<EnglishVoca>
             TabBarView(
               controller: _tabController,
               children: const <Widget>[
-                VocaMemoList(),
+                VocaFlashCardList(),
                 VocaCard(),
               ],
             ).expand(),

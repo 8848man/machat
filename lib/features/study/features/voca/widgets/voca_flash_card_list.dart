@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/features/study/features/voca/animated_widgets/animated_wheel_card.dart';
 import 'package:machat/features/study/features/voca/models/memo_list_model.dart';
 import 'package:machat/features/study/features/voca/view_models/memo_list_view_model.dart';
-import 'package:machat/features/study/features/voca/widgets/memo_card.dart';
+import 'package:machat/features/study/features/voca/widgets/voca_flash_card.dart';
 
-class VocaMemoList extends ConsumerWidget {
-  const VocaMemoList({super.key});
+class VocaFlashCardList extends ConsumerWidget {
+  const VocaFlashCardList({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,9 +27,9 @@ class VocaMemoList extends ConsumerWidget {
       data: (data) => AnimatedWheelCardView(
         length: data.wordList.length,
         itemBuilder: (context, index, isFocused, goToIndex) {
-          return MemoCard(
+          return VocaFlashCard(
             index: index,
-            data: data.wordList[index],
+            wordData: data.wordList[index],
             // isFocused: isFocused,
             onTap: goToIndex, // 누르면 바로 이동
           );

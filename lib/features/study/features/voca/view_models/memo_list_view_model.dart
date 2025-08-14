@@ -5,8 +5,10 @@ import 'package:machat/features/study/features/voca/models/memo_list_model.dart'
 import 'package:machat/features/study/features/voca/models/word_model.dart';
 import 'package:machat/features/study/features/voca/providers/voca_sorted_by_provider.dart';
 import 'package:machat/features/study/features/voca/repositories/voca_repository.dart';
+import 'package:machat/features/study/features/voca/services/voca_service.dart';
 import 'package:machat/features/study/models/vocabulary_model.dart';
 import 'package:machat/features/study/providers/voca_info_provider.dart';
+import 'package:machat_token_service/features/commons/providers/loading_state_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'memo_list_view_model.g.dart';
@@ -18,6 +20,8 @@ class MemoListViewModel extends _$MemoListViewModel {
     ref.watch(vocaSortedByProvider);
     final VocabularyModel nowVocabulary = ref.watch(nowVocaProvider);
     final MemoListModel data = await getWordDatas(nowVocabulary.id ?? '');
+
+    print('test001, data is $data');
 
     return data;
   }
@@ -32,9 +36,6 @@ class MemoListViewModel extends _$MemoListViewModel {
 
       final MemoListModel data = await repo.getWordList(
           userId: userId, vocabId: vocabId, sortedBy: vocaSortedBy.value);
-
-      print('test001, sortedList is ${data.hasMore}');
-
       return data;
     } catch (e) {
       rethrow;
@@ -100,9 +101,8 @@ class MemoListViewModel extends _$MemoListViewModel {
         break;
 
       case 'word':
-        sortedList.sort((a, b) => (a.word ?? '')
-            .toLowerCase()
-            .compareTo((b.word ?? '').toLowerCase()));
+        sortedList.sort(
+            (a, b) => (a.word).toLowerCase().compareTo((b.word).toLowerCase()));
         break;
 
       // 필요하다면 다른 정렬 기준 추가
@@ -122,5 +122,63 @@ class MemoListViewModel extends _$MemoListViewModel {
 
     // 정렬된 리스트를 새로운 MemoListModel에 담아서 반환
     return listModel.copyWith(wordList: sortedList);
+  }
+
+  Future<void> deleteWord(WordModel wordData) async {
+    try {
+      ref.read(loadingStateProvider.notifier).update((state) => true);
+      // loadingState
+      final VocaService vService = ref.read(vocaServiceProvider);
+      final VocabularyModel nowVocabulary = ref.read(nowVocaProvider);
+      final User? nowUser = FirebaseAuth.instance.currentUser;
+      if (nowUser == null) {
+        return;
+      }
+      final nowUserId = nowUser.uid;
+      await vService.deleteFromUserVocabulary(
+        word: wordData,
+        vocabData: nowVocabulary,
+        userId: nowUserId,
+      );
+
+      // 이전 페이지 단어 리스트 새로 받아오기
+      await refreshState();
+    } catch (e) {
+      print('deleteWord faild! error : $e');
+    } finally {
+      ref.read(loadingStateProvider.notifier).update((state) => false);
+    }
+  }
+
+  Future<void> changeMastery(WordModel wordData) async {
+    try {
+      ref.read(loadingStateProvider.notifier).update((state) => true);
+      // loadingState
+      final VocaService vService = ref.read(vocaServiceProvider);
+      final VocabularyModel nowVocabulary = ref.read(nowVocaProvider);
+      final User? nowUser = FirebaseAuth.instance.currentUser;
+      if (nowUser == null) {
+        return;
+      }
+      final nowUserId = nowUser.uid;
+      await vService.changeMastery(
+        word: wordData,
+        vocabData: nowVocabulary,
+        userId: nowUserId,
+      );
+
+      // 이전 페이지 단어 리스트 새로 받아오기
+      await refreshState();
+    } catch (e) {
+      print('deleteWord faild! error : $e');
+    } finally {
+      ref.read(loadingStateProvider.notifier).update((state) => false);
+    }
+  }
+
+  Future<void> refreshState() async {
+    final VocabularyModel nowVocabulary = ref.read(nowVocaProvider);
+    final MemoListModel data = await getWordDatas(nowVocabulary.id ?? '');
+    update((state) => data);
   }
 }

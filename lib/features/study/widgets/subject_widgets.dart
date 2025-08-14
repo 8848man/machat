@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/design_system/lib.dart';
@@ -21,19 +19,20 @@ class SubjectBundle extends ConsumerWidget {
     ref.read(studyViewModelProvider);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
-      child: SingleChildScrollView(
-        child: SizedBox(
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              buildHeader(ref),
-              MCSpace().verticalSpace(),
-              // buildRecentStudy(),
-            ],
-          ),
-        ),
-      ),
+      // child: SingleChildScrollView(
+      //   child: SizedBox(
+      //     width: double.infinity,
+      //     child: Column(
+      //       crossAxisAlignment: CrossAxisAlignment.center,
+      //       children: [
+      //         buildHeader(ref),
+      //         MCSpace().verticalSpace(),
+      //         // buildRecentStudy(),
+      //       ],
+      //     ),
+      //   ),
+      // ),
+      child: buildHeader(ref),
     );
   }
 
@@ -41,52 +40,88 @@ class SubjectBundle extends ConsumerWidget {
     return Consumer(builder: (context, ref, child) {
       final int? vocabListLength = ref.watch(vocabularyListLengthProvider);
       final StudyViewModel notifier = ref.read(studyViewModelProvider.notifier);
-      return ConstrainedBox(
-        constraints: const BoxConstraints(maxHeight: 250, maxWidth: 500),
-        child: Column(
-          children: [
-            Row(
+      // return ConstrainedBox(
+      //   constraints: const BoxConstraints(maxHeight: 250, maxWidth: 500),
+      //   child: Column(
+      //     children: [
+      //       Row(
+      //         children: [
+      //           buildTitleText('단어 외우기'),
+      //           const Spacer(),
+      //           buildTitleText('항목 관리',
+      //               onTap: () => notifier.goSubjectManagePage()),
+      //         ],
+      //       ),
+      //       SingleChildScrollView(
+      //         child: Column(
+      //           children: [
+      //             MCSpace().verticalHalfSpace(),
+      //             // 수업 과목 리스트 생성
+      //             ...subjectGenerator(vocabListLength),
+      //             const SizedBox(height: 8), // 간격 조절
+      //             McAppear(
+      //               delayMs: 300,
+      //               child: GestureDetector(
+      //                 onTap: () {
+      //                   final router = ref.read(goRouterProvider);
+      //                   router.pushNamed(RouterPath.addVocabulary.name);
+      //                 },
+      //                 child: buildFrameBox(
+      //                   child: const Center(
+      //                     child: Text("단어장 새로 등록하기!"),
+      //                   ),
+      //                 ),
+      //               ),
+      //             ),
+      //           ],
+      //         ),
+      //       ).expand(),
+      //     ],
+      //   ),
+      // );
+      return Column(
+        children: [
+          Row(
+            children: [
+              buildTitleText('영단어를 외워봐요'),
+              const Spacer(),
+              // buildTitleText('항목 관리',
+              //     onTap: () => notifier.goSubjectManagePage()),
+            ],
+          ),
+          SingleChildScrollView(
+            child: Column(
               children: [
-                buildTitleText('단어 외우기'),
-                const Spacer(),
-                buildTitleText('항목 관리',
-                    onTap: () => notifier.goSubjectManagePage()),
-              ],
-            ),
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  MCSpace().verticalHalfSpace(),
-                  // 수업 과목 리스트 생성
-                  ...subjectGenerator(vocabListLength),
-                  const SizedBox(height: 8), // 간격 조절
-                  McAppear(
-                    delayMs: 300,
-                    child: GestureDetector(
-                      onTap: () {
-                        final router = ref.read(goRouterProvider);
-                        router.pushNamed(RouterPath.addVocabulary.name);
-                      },
-                      child: buildFrameBox(
-                        child: const Center(
-                          child: Text("단어장 새로 등록하기!"),
-                        ),
+                MCSpace().verticalHalfSpace(),
+                // 수업 과목 리스트 생성
+                ...subjectGenerator(vocabListLength),
+                const SizedBox(height: 8), // 간격 조절
+                McAppear(
+                  delayMs: 300,
+                  child: GestureDetector(
+                    onTap: () {
+                      final router = ref.read(goRouterProvider);
+                      router.pushNamed(RouterPath.addVocabulary.name);
+                    },
+                    child: buildFrameBox(
+                      child: const Center(
+                        child: Text("단어장 새로 등록하기!"),
                       ),
                     ),
                   ),
-                ],
-              ),
-            ).expand(),
-          ],
-        ),
+                ),
+              ],
+            ),
+          ).expand(),
+        ],
       );
     });
   }
 
   // 단어장 위젯 생성
-  List<Widget> subjectGenerator(int? subjectListLength) {
-    // subject가 초기화되지 않았을 경우, 3개의 더미 데이터 보여주기
-    if (subjectListLength == null) {
+  List<Widget> subjectGenerator(int? vocabListLength) {
+    // 단어장 리스트가 초기화되지 않았을 경우, 3개의 더미 데이터 보여주기
+    if (vocabListLength == null) {
       const int initialLength = 3;
       return List.generate(
         (initialLength * 2) - 1,
@@ -103,8 +138,12 @@ class SubjectBundle extends ConsumerWidget {
         },
       );
     }
+    // 단어장이 없을 경우
+    if (vocabListLength == 0) {
+      return [];
+    }
     return List.generate(
-      subjectListLength * 2 - 1,
+      vocabListLength * 2 - 1,
       (index) {
         if (index.isOdd) {
           return const SizedBox(height: 8); // 간격 조절
@@ -252,6 +291,19 @@ class SubjectBundle extends ConsumerWidget {
   // }
 
   Widget buildTitleText(String text, {VoidCallback? onTap}) {
-    return GestureDetector(onTap: onTap, child: Text(text));
+    return GestureDetector(
+      onTap: onTap,
+      // child: Text(text),
+      child: McAppear(
+        delayMs: 0,
+        child: Text(
+          text,
+          style: TextStyle(
+              color: MCColors.$color_blue_70,
+              fontSize: 18,
+              fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
   }
 }

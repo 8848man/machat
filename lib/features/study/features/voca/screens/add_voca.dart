@@ -38,10 +38,12 @@ class AddVoca extends ConsumerWidget {
 
     WordModel getNowWordModel() {
       return WordModel(
-        id: '',
+        id: wordController.text,
         word: wordController.text,
         meanings: getCommaSeperatedList(meaningController.text),
         tags: getCommaSeperatedList(tagController.text),
+        exampleSentence: enExController.text,
+        exampleTranslation: koExController.text,
         createdAt: DateTime.now(),
       );
     }
