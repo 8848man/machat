@@ -111,8 +111,13 @@ class VocaService {
     await firestore.runTransaction((transaction) async {
       final snapshot = await transaction.get(wordListRef);
       if (snapshot.exists) {
-        transaction.delete(wordListRef);
+        final currentWord = WordModel.fromJson(snapshot.data()!);
         transaction.update(vocabRef, {
+          // 현재 단어 상태에 따라 count 변동
+          if (currentWord.masteryLevel == WordMasteryLevel.confused)
+            'confusedWordCount': FieldValue.increment(-1),
+          if (currentWord.masteryLevel == WordMasteryLevel.mastered)
+            'memorizedWordCount': FieldValue.increment(-1),
           'wordCount': FieldValue.increment(-1),
         });
       }
