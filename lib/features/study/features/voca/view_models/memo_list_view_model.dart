@@ -21,6 +21,8 @@ class MemoListViewModel extends _$MemoListViewModel {
     final VocabularyModel nowVocabulary = ref.watch(nowVocaProvider);
     final MemoListModel data = await getWordDatas(nowVocabulary.id ?? '');
 
+    print('test001, data is $data');
+
     return data;
   }
 
