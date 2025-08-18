@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/features/study/features/voca/models/word_model.dart';
+import 'package:machat/features/study/features/voca/utils/get_by_mastery.dart';
 import 'package:machat/features/study/features/voca/utils/get_string.dart';
 import 'package:machat/features/study/features/voca/view_models/memo_list_view_model.dart';
 import 'package:machat_token_service/design_system/lib.dart';
@@ -19,10 +20,10 @@ class VocaFlashCard extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<VocaFlashCard> createState() => _MemoCardState();
+  ConsumerState<VocaFlashCard> createState() => _VocaFlashCardState();
 }
 
-class _MemoCardState extends ConsumerState<VocaFlashCard> {
+class _VocaFlashCardState extends ConsumerState<VocaFlashCard> {
   bool isTranslated = false;
   bool isDeleting = false;
 
@@ -87,10 +88,21 @@ class _MemoCardState extends ConsumerState<VocaFlashCard> {
                     ),
                     const Spacer(),
                     GestureDetector(
-                        onTap: () => ref
-                            .read(memoListViewModelProvider.notifier)
-                            .changeMastery(widget.wordData),
-                        child: buildMastery(widget.wordData.masteryLevel)),
+                      onTap: () => ref
+                          .read(memoListViewModelProvider.notifier)
+                          .changeMastery(widget.wordData),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: getMasteryColor(widget.wordData.masteryLevel),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(4)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(2),
+                          child: buildMastery(widget.wordData.masteryLevel),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

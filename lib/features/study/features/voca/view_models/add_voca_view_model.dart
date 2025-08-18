@@ -44,6 +44,10 @@ class AddVocaViewModel extends _$AddVocaViewModel {
   }
 
   Future<void> registerWord(WordModel wordData) async {
+    if (ref.read(loadingStateProvider)) {
+      SnackBarCaller().callSnackBar(ref, '단어 데이터를 가져오는 중이에요. 잠시만 기다려주세요');
+      return;
+    }
     try {
       ref.read(loadingStateProvider.notifier).update((state) => true);
       // loadingState

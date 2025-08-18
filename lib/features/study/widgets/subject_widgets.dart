@@ -7,6 +7,7 @@ import 'package:machat/features/common/animated_widgets/mc_appear.dart';
 import 'package:machat/features/study/models/vocabulary_model.dart';
 import 'package:machat/features/study/providers/subject_list_length.dart';
 import 'package:machat/features/study/view_models/study_view_model.dart';
+import 'package:machat/features/study/widgets/mastery_progress_bar.dart';
 import 'package:machat/router/lib.dart';
 
 class SubjectBundle extends ConsumerWidget {
@@ -209,7 +210,10 @@ class SubjectBundle extends ConsumerWidget {
                       children: [
                         buildTitle(vocabData.title),
                         MCSpace().verticalHalfSpace(),
-                        buildProgressBar(vocabData.progressRate),
+                        buildProgressBar(
+                          vocabData.progressRate,
+                          vocabData.progressConfusedRate,
+                        ),
                       ],
                     ),
                     const Spacer(),
@@ -245,29 +249,56 @@ class SubjectBundle extends ConsumerWidget {
     );
   }
 
-  Widget buildProgressBar(double progress) {
+  Widget buildProgressBar(double knowRate, double confusedRate) {
     // const double progress = 1; // 예시로 50% 진행된 상태
     return Row(
       children: [
+        // TweenAnimationBuilder<double>(
+        //   tween: Tween<double>(begin: 0.0, end: progress), // 목표 value까지
+        //   duration: const Duration(milliseconds: 600), // 애니메이션 지속 시간
+        //   builder: (context, value, child) {
+        //     return SizedBox(
+        //       width: 200,
+        //       height: 10,
+        //       child: LinearProgressIndicator(
+        //         value: value,
+        //         backgroundColor: Colors.grey[300],
+        //         color: Colors.blueAccent,
+        //       ),
+        //     );
+        //   },
+        // ),
         TweenAnimationBuilder<double>(
-          tween: Tween<double>(begin: 0.0, end: progress), // 목표 value까지
-          duration: const Duration(milliseconds: 600), // 애니메이션 지속 시간
-          builder: (context, value, child) {
-            return SizedBox(
-              width: 200,
-              height: 10,
-              child: LinearProgressIndicator(
-                value: value,
-                backgroundColor: Colors.grey[300],
-                color: Colors.blueAccent,
-              ),
+          tween: Tween<double>(begin: 0, end: knowRate),
+          duration: const Duration(milliseconds: 600),
+          builder: (context, animatedKnow, _) {
+            return TweenAnimationBuilder<double>(
+              tween: Tween<double>(begin: 0, end: confusedRate),
+              duration: const Duration(milliseconds: 600),
+              builder: (context, animatedConfused, _) {
+                // return TweenAnimationBuilder<double>(
+                //   tween: Tween<double>(begin: 0, end: masteredRate),
+                //   duration: const Duration(milliseconds: 600),
+                //   builder: (context, animatedMastered, _) {
+                //     return MasteryProgressBar(
+                //       knowRate: animatedKnow,
+                //       confusedRate: animatedConfused,
+                //       masteredRate: animatedMastered,
+                //     );
+                //   },
+                // );
+                return MasteryProgressBar(
+                  knowRate: animatedKnow,
+                  confusedRate: animatedConfused,
+                );
+              },
             );
           },
         ),
         MCSpace().horizontalHalfSpace(),
-        if (progress < 1.0)
-          Text('${(progress * 100).toStringAsFixed(0)}% 만큼 했어요'),
-        if (progress >= 1.0) const Text('모두 완료!'),
+        if (knowRate < 1.0)
+          Text('${(knowRate * 100).toStringAsFixed(0)}% 만큼 했어요'),
+        if (knowRate >= 1.0) const Text('모두 완료!'),
       ],
     );
   }
