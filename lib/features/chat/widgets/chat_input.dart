@@ -70,7 +70,19 @@ class ChatInput extends ConsumerWidget {
   // 메세지 입력칸
   Widget buildTextInput(BuildContext context, WidgetRef ref) {
     final ChatViewModel notifier = ref.read(chatViewModelProvider.notifier);
-    return MCTextInput(
+    // return MCTextInput(
+    //   controller: notifier.messageController,
+    //   labelText: '메세지를 입력해주세요',
+    //   backgroundColor: MCColors.$color_grey_00,
+    //   onSubmitted: (value) {
+    //     notifier.sendMessageProcess();
+    //     // 메세지 보낸 후에도 focus 유지
+    //     FocusScope.of(context).requestFocus(notifier.focusNode);
+    //   },
+    //   focusNode: notifier.focusNode,
+    // );
+
+    return SlashCommandInput(
       controller: notifier.messageController,
       labelText: '메세지를 입력해주세요',
       backgroundColor: MCColors.$color_grey_00,
