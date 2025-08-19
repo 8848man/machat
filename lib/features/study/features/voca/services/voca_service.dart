@@ -206,8 +206,6 @@ class VocaService {
             break;
         }
 
-        print(
-            'tset001, newLevel is $newLevel, confused : $confusedCount, memorized : $memorizedCount');
         transaction.update(vocabRef, {
           'confusedWordCount': confusedCount,
           'memorizedWordCount': memorizedCount,

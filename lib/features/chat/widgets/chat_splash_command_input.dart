@@ -3,13 +3,13 @@ import 'package:machat/design_system/lib.dart';
 import 'package:machat/features/common/animated_widgets/mc_appear.dart';
 
 class SlashCommandInput extends StatefulWidget {
-  TextEditingController controller;
-  FocusNode focusNode;
-  Color? backgroundColor;
-  String? labelText;
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  final Color? backgroundColor;
+  final String? labelText;
   final void Function(String)? onSubmitted;
 
-  SlashCommandInput({
+  const SlashCommandInput({
     super.key,
     required this.controller,
     required this.focusNode,
@@ -30,12 +30,14 @@ class _SlashCommandInputState extends State<SlashCommandInput> {
   OverlayEntry? _overlayEntry;
 
   final List<String> _commands = [
-    "help",
-    "invite",
-    "new",
-    "settings",
-    "logout",
-    "profile",
+    "character:help",
+    "character:Dustin",
+    "character:Walt",
+    "character:Geomac",
+    "character:Yejin",
+    "character:Mira",
+    "character:Neo",
+    "character:Allen",
   ];
 
   void _showOverlay() {
