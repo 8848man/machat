@@ -87,7 +87,6 @@ class _EnglishVocaState extends ConsumerState<EnglishVoca>
       ),
     );
   }
-
   Widget buildVocaActionButton() {
     return const Row(
       children: [

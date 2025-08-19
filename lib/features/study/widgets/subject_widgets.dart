@@ -125,7 +125,7 @@ class SubjectBundle extends ConsumerWidget {
   Widget buildFrameBox({
     double width = 500,
     Widget? child,
-  }) {
+  }) 
     return Material(
       elevation: 4,
       borderRadius: BorderRadius.circular(8),

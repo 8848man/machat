@@ -21,7 +21,6 @@ class VocabularyRepository {
       await _firestore.runTransaction((transaction) async {
         await _saveToUserVocabulary(transaction, userId, vocabulary);
 
-        // await _saveToPublicVocabulary(transaction, vocabulary);
       });
     } catch (e) {
       print('Error occurred during transaction: $e');
