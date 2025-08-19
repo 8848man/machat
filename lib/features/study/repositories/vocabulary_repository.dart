@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:machat/features/study/models/vocabulary_model.dart';
+import 'package:machat/networks/firestore_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 final vocabularyRepositoryProvider = Provider<VocabularyRepository>((ref) {
-  final firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore firestore = ref.read(firestoreProvider);
   return VocabularyRepository(firestore);
 });
 
@@ -20,7 +21,6 @@ class VocabularyRepository {
       await _firestore.runTransaction((transaction) async {
         await _saveToUserVocabulary(transaction, userId, vocabulary);
 
-        await _saveToPublicVocabulary(transaction, vocabulary);
       });
     } catch (e) {
       print('Error occurred during transaction: $e');

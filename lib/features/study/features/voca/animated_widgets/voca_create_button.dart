@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/design_system/lib.dart';
-import 'package:machat/router/lib.dart';
 
-class AnimatedFabButton extends ConsumerStatefulWidget {
-  const AnimatedFabButton({super.key});
+class MouseHoverAnimationButton extends ConsumerStatefulWidget {
+  final Widget child;
+  final VoidCallback? onPressed;
+
+  const MouseHoverAnimationButton({
+    super.key,
+    required this.child,
+    this.onPressed,
+  });
 
   @override
-  ConsumerState<AnimatedFabButton> createState() => _AnimatedFabButtonState();
+  ConsumerState<MouseHoverAnimationButton> createState() =>
+      _AnimatedFabButtonState();
 }
 
-class _AnimatedFabButtonState extends ConsumerState<AnimatedFabButton> {
+class _AnimatedFabButtonState extends ConsumerState<MouseHoverAnimationButton> {
   bool _hovered = false;
 
   @override
@@ -25,15 +32,20 @@ class _AnimatedFabButtonState extends ConsumerState<AnimatedFabButton> {
         ),
         duration: const Duration(milliseconds: 300),
         builder: (context, color, child) {
+          // return FloatingActionButton.extended(
+          //   backgroundColor: color,
+          //   onPressed: () {
+          //     ref
+          //         .read(goRouterProvider)
+          //         .pushNamed(RouterPath.englishAddVoca.name);
+          //   },
+          //   icon: const Icon(Icons.add),
+          //   label: const Text("단어 만들기!"),
+          // );
           return FloatingActionButton.extended(
             backgroundColor: color,
-            onPressed: () {
-              ref
-                  .read(goRouterProvider)
-                  .goNamed(RouterPath.englishAddVoca.name);
-            },
-            icon: const Icon(Icons.add),
-            label: const Text("단어 만들기!"),
+            onPressed: widget.onPressed,
+            label: widget.child,
           );
         },
       ),

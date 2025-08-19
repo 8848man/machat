@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/design_system/lib.dart';
@@ -9,6 +7,7 @@ import 'package:machat/features/common/animated_widgets/mc_appear.dart';
 import 'package:machat/features/study/models/vocabulary_model.dart';
 import 'package:machat/features/study/providers/subject_list_length.dart';
 import 'package:machat/features/study/view_models/study_view_model.dart';
+import 'package:machat/features/study/widgets/mastery_progress_bar.dart';
 import 'package:machat/router/lib.dart';
 
 class SubjectBundle extends ConsumerWidget {
@@ -21,19 +20,20 @@ class SubjectBundle extends ConsumerWidget {
     ref.read(studyViewModelProvider);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
-      child: SingleChildScrollView(
-        child: SizedBox(
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              buildHeader(ref),
-              MCSpace().verticalSpace(),
-              // buildRecentStudy(),
-            ],
-          ),
-        ),
-      ),
+      // child: SingleChildScrollView(
+      //   child: SizedBox(
+      //     width: double.infinity,
+      //     child: Column(
+      //       crossAxisAlignment: CrossAxisAlignment.center,
+      //       children: [
+      //         buildHeader(ref),
+      //         MCSpace().verticalSpace(),
+      //         // buildRecentStudy(),
+      //       ],
+      //     ),
+      //   ),
+      // ),
+      child: buildHeader(ref),
     );
   }
 
@@ -41,52 +41,49 @@ class SubjectBundle extends ConsumerWidget {
     return Consumer(builder: (context, ref, child) {
       final int? vocabListLength = ref.watch(vocabularyListLengthProvider);
       final StudyViewModel notifier = ref.read(studyViewModelProvider.notifier);
-      return ConstrainedBox(
-        constraints: const BoxConstraints(maxHeight: 250, maxWidth: 500),
-        child: Column(
-          children: [
-            Row(
+      return Column(
+        children: [
+          Row(
+            children: [
+              buildTitleText('영단어를 외워봐요'),
+              const Spacer(),
+              // buildTitleText('항목 관리',
+              //     onTap: () => notifier.goSubjectManagePage()),
+            ],
+          ),
+          SingleChildScrollView(
+            child: Column(
               children: [
-                buildTitleText('단어 외우기'),
-                const Spacer(),
-                buildTitleText('항목 관리',
-                    onTap: () => notifier.goSubjectManagePage()),
-              ],
-            ),
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  MCSpace().verticalHalfSpace(),
-                  // 수업 과목 리스트 생성
-                  ...subjectGenerator(vocabListLength),
-                  const SizedBox(height: 8), // 간격 조절
-                  McAppear(
-                    delayMs: 300,
-                    child: GestureDetector(
-                      onTap: () {
-                        final router = ref.read(goRouterProvider);
-                        router.pushNamed(RouterPath.addVocabulary.name);
-                      },
-                      child: buildFrameBox(
-                        child: const Center(
-                          child: Text("단어장 새로 등록하기!"),
-                        ),
+                MCSpace().verticalHalfSpace(),
+                // 수업 과목 리스트 생성
+                ...subjectGenerator(vocabListLength),
+                const SizedBox(height: 8), // 간격 조절
+                McAppear(
+                  delayMs: 300,
+                  child: GestureDetector(
+                    onTap: () {
+                      final router = ref.read(goRouterProvider);
+                      router.pushNamed(RouterPath.addVocabulary.name);
+                    },
+                    child: buildFrameBox(
+                      child: const Center(
+                        child: Text("단어장 새로 등록하기!"),
                       ),
                     ),
                   ),
-                ],
-              ),
-            ).expand(),
-          ],
-        ),
+                ),
+              ],
+            ),
+          ).expand(),
+        ],
       );
     });
   }
 
-  // 과목 위젯 생성
-  List<Widget> subjectGenerator(int? subjectListLength) {
-    // subject가 초기화되지 않았을 경우, 3개의 더미 데이터 보여주기
-    if (subjectListLength == null) {
+  // 단어장 위젯 생성
+  List<Widget> subjectGenerator(int? vocabListLength) {
+    // 단어장 리스트가 초기화되지 않았을 경우, 3개의 더미 데이터 보여주기
+    if (vocabListLength == null) {
       const int initialLength = 3;
       return List.generate(
         (initialLength * 2) - 1,
@@ -103,8 +100,12 @@ class SubjectBundle extends ConsumerWidget {
         },
       );
     }
+    // 단어장이 없을 경우
+    if (vocabListLength == 0) {
+      return [];
+    }
     return List.generate(
-      subjectListLength * 2 - 1,
+      vocabListLength * 2 - 1,
       (index) {
         if (index.isOdd) {
           return const SizedBox(height: 8); // 간격 조절
@@ -124,26 +125,7 @@ class SubjectBundle extends ConsumerWidget {
   Widget buildFrameBox({
     double width = 500,
     Widget? child,
-  }) {
-    // return Container(
-    //   constraints: const BoxConstraints(minWidth: 200, maxWidth: 500),
-    //   width: width,
-    //   height: boxHeight,
-    //   decoration: BoxDecoration(
-    //     color: MCColors.$color_grey_00,
-    //     borderRadius: BorderRadius.circular(8.0),
-    //     border: Border.all(color: Colors.blueAccent, width: 1.0),
-    //     boxShadow: [
-    //       BoxShadow(
-    //         color: Colors.black.withOpacity(0.1), // 그림자 색상
-    //         spreadRadius: 2,
-    //         blurRadius: 10,
-    //         offset: const Offset(0, 4), // x:0, y:4 → 아래 방향으로 그림자
-    //       ),
-    //     ],
-    //   ),
-    //   child: child,
-    // );
+  }) 
     return Material(
       elevation: 4,
       borderRadius: BorderRadius.circular(8),
@@ -189,7 +171,10 @@ class SubjectBundle extends ConsumerWidget {
                       children: [
                         buildTitle(vocabData.title),
                         MCSpace().verticalHalfSpace(),
-                        buildProgressBar(vocabData.progressRate),
+                        buildProgressBar(
+                          vocabData.progressRate,
+                          vocabData.progressConfusedRate,
+                        ),
                       ],
                     ),
                     const Spacer(),
@@ -225,29 +210,56 @@ class SubjectBundle extends ConsumerWidget {
     );
   }
 
-  Widget buildProgressBar(double progress) {
+  Widget buildProgressBar(double knowRate, double confusedRate) {
     // const double progress = 1; // 예시로 50% 진행된 상태
     return Row(
       children: [
+        // TweenAnimationBuilder<double>(
+        //   tween: Tween<double>(begin: 0.0, end: progress), // 목표 value까지
+        //   duration: const Duration(milliseconds: 600), // 애니메이션 지속 시간
+        //   builder: (context, value, child) {
+        //     return SizedBox(
+        //       width: 200,
+        //       height: 10,
+        //       child: LinearProgressIndicator(
+        //         value: value,
+        //         backgroundColor: Colors.grey[300],
+        //         color: Colors.blueAccent,
+        //       ),
+        //     );
+        //   },
+        // ),
         TweenAnimationBuilder<double>(
-          tween: Tween<double>(begin: 0.0, end: progress), // 목표 value까지
-          duration: const Duration(milliseconds: 600), // 애니메이션 지속 시간
-          builder: (context, value, child) {
-            return SizedBox(
-              width: 200,
-              height: 10,
-              child: LinearProgressIndicator(
-                value: value,
-                backgroundColor: Colors.grey[300],
-                color: Colors.blueAccent,
-              ),
+          tween: Tween<double>(begin: 0, end: knowRate),
+          duration: const Duration(milliseconds: 600),
+          builder: (context, animatedKnow, _) {
+            return TweenAnimationBuilder<double>(
+              tween: Tween<double>(begin: 0, end: confusedRate),
+              duration: const Duration(milliseconds: 600),
+              builder: (context, animatedConfused, _) {
+                // return TweenAnimationBuilder<double>(
+                //   tween: Tween<double>(begin: 0, end: masteredRate),
+                //   duration: const Duration(milliseconds: 600),
+                //   builder: (context, animatedMastered, _) {
+                //     return MasteryProgressBar(
+                //       knowRate: animatedKnow,
+                //       confusedRate: animatedConfused,
+                //       masteredRate: animatedMastered,
+                //     );
+                //   },
+                // );
+                return MasteryProgressBar(
+                  knowRate: animatedKnow,
+                  confusedRate: animatedConfused,
+                );
+              },
             );
           },
         ),
         MCSpace().horizontalHalfSpace(),
-        if (progress < 1.0)
-          Text('${(progress * 100).toStringAsFixed(0)}% 만큼 했어요'),
-        if (progress >= 1.0) const Text('모두 완료!'),
+        if (knowRate < 1.0)
+          Text('${(knowRate * 100).toStringAsFixed(0)}% 만큼 했어요'),
+        if (knowRate >= 1.0) const Text('모두 완료!'),
       ],
     );
   }
@@ -271,6 +283,19 @@ class SubjectBundle extends ConsumerWidget {
   // }
 
   Widget buildTitleText(String text, {VoidCallback? onTap}) {
-    return GestureDetector(onTap: onTap, child: Text(text));
+    return GestureDetector(
+      onTap: onTap,
+      // child: Text(text),
+      child: McAppear(
+        delayMs: 0,
+        child: Text(
+          text,
+          style: TextStyle(
+              color: MCColors.$color_blue_70,
+              fontSize: 18,
+              fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
   }
 }
