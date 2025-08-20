@@ -125,7 +125,7 @@ class SubjectBundle extends ConsumerWidget {
   Widget buildFrameBox({
     double width = 500,
     Widget? child,
-  }) 
+  }) {
     return Material(
       elevation: 4,
       borderRadius: BorderRadius.circular(8),
@@ -195,107 +195,107 @@ class SubjectBundle extends ConsumerWidget {
       );
     });
   }
+}
 
-  Widget buildIcon() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.0),
-      child: Icon(Icons.auto_stories),
-    );
-  }
+Widget buildIcon() {
+  return const Padding(
+    padding: EdgeInsets.symmetric(horizontal: 8.0),
+    child: Icon(Icons.auto_stories),
+  );
+}
 
-  Widget buildTitle(String? title) {
-    return Text(
-      title ?? '제목 없음!',
-      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-    );
-  }
+Widget buildTitle(String? title) {
+  return Text(
+    title ?? '제목 없음!',
+    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  );
+}
 
-  Widget buildProgressBar(double knowRate, double confusedRate) {
-    // const double progress = 1; // 예시로 50% 진행된 상태
-    return Row(
-      children: [
-        // TweenAnimationBuilder<double>(
-        //   tween: Tween<double>(begin: 0.0, end: progress), // 목표 value까지
-        //   duration: const Duration(milliseconds: 600), // 애니메이션 지속 시간
-        //   builder: (context, value, child) {
-        //     return SizedBox(
-        //       width: 200,
-        //       height: 10,
-        //       child: LinearProgressIndicator(
-        //         value: value,
-        //         backgroundColor: Colors.grey[300],
-        //         color: Colors.blueAccent,
-        //       ),
-        //     );
-        //   },
-        // ),
-        TweenAnimationBuilder<double>(
-          tween: Tween<double>(begin: 0, end: knowRate),
-          duration: const Duration(milliseconds: 600),
-          builder: (context, animatedKnow, _) {
-            return TweenAnimationBuilder<double>(
-              tween: Tween<double>(begin: 0, end: confusedRate),
-              duration: const Duration(milliseconds: 600),
-              builder: (context, animatedConfused, _) {
-                // return TweenAnimationBuilder<double>(
-                //   tween: Tween<double>(begin: 0, end: masteredRate),
-                //   duration: const Duration(milliseconds: 600),
-                //   builder: (context, animatedMastered, _) {
-                //     return MasteryProgressBar(
-                //       knowRate: animatedKnow,
-                //       confusedRate: animatedConfused,
-                //       masteredRate: animatedMastered,
-                //     );
-                //   },
-                // );
-                return MasteryProgressBar(
-                  knowRate: animatedKnow,
-                  confusedRate: animatedConfused,
-                );
-              },
-            );
-          },
-        ),
-        MCSpace().horizontalHalfSpace(),
-        if (knowRate < 1.0)
-          Text('${(knowRate * 100).toStringAsFixed(0)}% 만큼 했어요'),
-        if (knowRate >= 1.0) const Text('모두 완료!'),
-      ],
-    );
-  }
-
-  // Widget buildRecentStudy() {
-  //   return Column(
-  //     children: [
-  //       Row(
-  //         children: [
-  //           buildTitleText('최근 공부한 항목'),
-  //           const Spacer(),
-  //           const Text('항목 관리하기'),
-  //         ],
-  //       ),
-  //       MCSpace().verticalHalfSpace(),
-  //       buildFrameBox(),
-  //       MCSpace().verticalHalfSpace(),
-  //       buildFrameBox(),
-  //     ],
-  //   );
-  // }
-
-  Widget buildTitleText(String text, {VoidCallback? onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      // child: Text(text),
-      child: McAppear(
-        delayMs: 0,
-        child: Text(
-          text,
-          style: TextStyle(
-              color: MCColors.$color_blue_70,
-              fontSize: 18,
-              fontWeight: FontWeight.bold),
-        ),
+Widget buildProgressBar(double knowRate, double confusedRate) {
+  // const double progress = 1; // 예시로 50% 진행된 상태
+  return Row(
+    children: [
+      // TweenAnimationBuilder<double>(
+      //   tween: Tween<double>(begin: 0.0, end: progress), // 목표 value까지
+      //   duration: const Duration(milliseconds: 600), // 애니메이션 지속 시간
+      //   builder: (context, value, child) {
+      //     return SizedBox(
+      //       width: 200,
+      //       height: 10,
+      //       child: LinearProgressIndicator(
+      //         value: value,
+      //         backgroundColor: Colors.grey[300],
+      //         color: Colors.blueAccent,
+      //       ),
+      //     );
+      //   },
+      // ),
+      TweenAnimationBuilder<double>(
+        tween: Tween<double>(begin: 0, end: knowRate),
+        duration: const Duration(milliseconds: 600),
+        builder: (context, animatedKnow, _) {
+          return TweenAnimationBuilder<double>(
+            tween: Tween<double>(begin: 0, end: confusedRate),
+            duration: const Duration(milliseconds: 600),
+            builder: (context, animatedConfused, _) {
+              // return TweenAnimationBuilder<double>(
+              //   tween: Tween<double>(begin: 0, end: masteredRate),
+              //   duration: const Duration(milliseconds: 600),
+              //   builder: (context, animatedMastered, _) {
+              //     return MasteryProgressBar(
+              //       knowRate: animatedKnow,
+              //       confusedRate: animatedConfused,
+              //       masteredRate: animatedMastered,
+              //     );
+              //   },
+              // );
+              return MasteryProgressBar(
+                knowRate: animatedKnow,
+                confusedRate: animatedConfused,
+              );
+            },
+          );
+        },
       ),
-    );
-  }
+      MCSpace().horizontalHalfSpace(),
+      if (knowRate < 1.0)
+        Text('${(knowRate * 100).toStringAsFixed(0)}% 만큼 했어요'),
+      if (knowRate >= 1.0) const Text('모두 완료!'),
+    ],
+  );
+}
+
+// Widget buildRecentStudy() {
+//   return Column(
+//     children: [
+//       Row(
+//         children: [
+//           buildTitleText('최근 공부한 항목'),
+//           const Spacer(),
+//           const Text('항목 관리하기'),
+//         ],
+//       ),
+//       MCSpace().verticalHalfSpace(),
+//       buildFrameBox(),
+//       MCSpace().verticalHalfSpace(),
+//       buildFrameBox(),
+//     ],
+//   );
+// }
+
+Widget buildTitleText(String text, {VoidCallback? onTap}) {
+  return GestureDetector(
+    onTap: onTap,
+    // child: Text(text),
+    child: McAppear(
+      delayMs: 0,
+      child: Text(
+        text,
+        style: TextStyle(
+            color: MCColors.$color_blue_70,
+            fontSize: 18,
+            fontWeight: FontWeight.bold),
+      ),
+    ),
+  );
 }
