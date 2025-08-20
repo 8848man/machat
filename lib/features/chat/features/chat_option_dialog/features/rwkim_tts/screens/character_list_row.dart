@@ -1,32 +1,29 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/config/voice_package_config.dart';
-import 'package:machat/features/chat/features/chat_option_dialog/providers/now_character_provider.dart';
-import 'package:machat/features/chat/features/chat_option_dialog/view_models/chat_option_dialog_view_model.dart';
+import 'package:machat/features/chat/features/chat_option_dialog/features/rwkim_tts/providers/now_character_provider.dart';
+import 'package:machat/features/chat/features/chat_option_dialog/features/rwkim_tts/view_models/rwkim_tts_view_model.dart';
 import 'package:rwkim_tts/features/tts_service/enums/lib.dart';
 
 class CharacterListRow extends ConsumerStatefulWidget {
   const CharacterListRow({super.key});
 
   @override
-  ConsumerState<CharacterListRow> createState() =>
-      _AnimatedHorizontalListState();
+  ConsumerState<CharacterListRow> createState() => _CharacterListRowState();
 }
 
-class _AnimatedHorizontalListState extends ConsumerState<CharacterListRow>
+class _CharacterListRowState extends ConsumerState<CharacterListRow>
     with TickerProviderStateMixin {
   late final List<AnimationController> _controllers;
   late final List<Animation<Offset>> _animations;
-  late final ChatOptionDialogViewModel notifier;
+  late final RwkimTtsViewmodel notifier;
   final double charBoxSize = 30;
 
   @override
   void initState() {
     super.initState();
     // 노티파이어 할당
-    notifier = ref.read(chatOptionDialogViewModelProvider.notifier);
+    notifier = ref.read(rwkimTtsViewmodelProvider.notifier);
     // 컨트롤러 생성
     _controllers = List.generate(
       voiceCharacters.length,
