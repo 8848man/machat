@@ -98,6 +98,22 @@ class ChatContentsRepository {
         };
       }).toList();
 
+  // List<Chat> _mapChatsDocs(QuerySnapshot snap) => snap.docs.map((doc) {
+  //       final data = doc.data() as Map<String, dynamic>;
+  //       final ts = data['createdAt'] as Timestamp?;
+  //       return Chat(
+  //         id: data['id'] ?? '',
+  //         createdBy: data['createdBy'] ?? '',
+  //         createdAt: ts?.toDate().toString() ?? DateTime.now().toString(),
+  //         message: data['message'],
+  //         isMine: data['createdBy'] == 'currentUserId',
+  //         type: data['type'] ?? 'chat',
+  //         imageUrl: data['imageUrl'] ?? '',
+  //         deletedTo: data['deletedTo'],
+  //         isDeletedForEveryone: data['isDeletedForEveryone'],
+  //       );
+  //     }).toList();
+
   Stream<List<Map<String, dynamic>>> subscribeToNewChats(
     String roomId,
     DateTime entryTime,

@@ -1,17 +1,19 @@
-import 'package:machat/features/chat/features/chat_option_dialog/providers/now_character_provider.dart';
-import 'package:machat/features/chat/features/chat_option_dialog/providers/selecting_character_state.dart';
-import 'package:machat/features/chat/features/chat_option_dialog/providers/sound_loading_state.dart';
+import 'package:machat/features/chat/features/chat_option_dialog/features/rwkim_tts/providers/now_character_provider.dart';
+import 'package:machat/features/chat/features/chat_option_dialog/features/rwkim_tts/providers/selecting_character_state.dart';
+import 'package:machat/features/chat/features/chat_option_dialog/features/rwkim_tts/providers/sound_loading_state.dart';
+import 'package:machat/features/chat/features/chat_option_dialog/features/rwkim_tts/repository/tts_repository.dart';
+import 'package:machat/features/chat/features/chat_option_dialog/features/rwkim_tts/view_models/tts_player.dart';
 import 'package:machat/features/chat/providers/chat_dialog_state_provider.dart';
-import 'package:machat/features/chat/providers/chat_tts_provider.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:machat_token_service/features/token/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rwkim_tts/features/tts_service/enums/lib.dart';
+import 'package:rwkim_tts/features/tts_service/repositories/supertone_repository.dart';
 // import 'package:rwkim_tts/simple_tts.dart';
-part 'chat_option_dialog_view_model.g.dart';
+part 'rwkim_tts_view_model.g.dart';
 
 @riverpod
-class ChatOptionDialogViewModel extends _$ChatOptionDialogViewModel {
+class RwkimTtsViewmodel extends _$RwkimTtsViewmodel {
   @override
   bool build() {
     return false;
@@ -26,7 +28,7 @@ class ChatOptionDialogViewModel extends _$ChatOptionDialogViewModel {
     );
   }
 
-  Future<void> speakChatMessage() async {
+  Future<void> getAudioData() async {
     // 다이얼로그에 진입할 때 저장된 채팅 밸류 가져오기
     final chatValue = ref.read(chatDialogValueProvider);
     // 음성 로딩 상태 변경
@@ -51,18 +53,20 @@ class ChatOptionDialogViewModel extends _$ChatOptionDialogViewModel {
       );
       return;
     }
-    ;
 
     try {
-      final tts = ref.read(chatTTSProvider);
-      await tts.speak({
+      print('test001, chatValue is $chatValue');
+      final TTSRepository repository = ref.read(ttsRepositoryProvider);
+      final bytes = await repository.fetchTtsAudio({
         'text': message,
         'voiceId': nowCharacter.id,
         'language': 'ko',
       });
+      final player = ref.read(ttsPlayerProvider);
+
+      player.speak(bytes);
       await tokenNotifier.spendTokens(10, description: 'TTS 기능 사용');
     } catch (e) {
-      print('TTS Error: $e');
       SnackBarCaller().callSnackBar(ref, '음성 재생 중 에러가 발생했습니다.');
     } finally {
       // 음성 로딩 상태 초기화
