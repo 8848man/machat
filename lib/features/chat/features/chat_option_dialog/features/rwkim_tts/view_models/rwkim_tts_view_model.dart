@@ -43,12 +43,10 @@ class RwkimTtsViewmodel extends _$RwkimTtsViewmodel {
         messageId: chatValue['id'],
         voiceCharacter: nowCharacter.id,
       );
-      print('test005, cacheKey is $cacheKey');
       final cachedData = chatCacheProvider.get(cacheKey);
 
       if (cachedData != null) {
         // 캐시된 데이터가 있으면 바로 재생
-        print('test001, play cachedData!');
         ref.read(ttsPlayerManagerProvider).speak(cachedData);
         return;
       }

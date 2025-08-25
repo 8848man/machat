@@ -5,6 +5,7 @@ import 'package:machat/features/chat/features/expand/providers/expand_widget_sta
 import 'package:machat/features/chat/interface/chat_view_model_interface.dart';
 import 'package:machat/features/chat/providers/chat_focus_node_provider.dart';
 import 'package:machat/features/chat/repository/chat_repository.dart';
+import 'package:machat/features/chat/widgets/command_protecting_controller.dart';
 import 'package:machat/features/common/interfaces/repository_service.dart';
 import 'package:machat/features/common/models/chat_room_data.dart';
 import 'package:machat/features/common/models/user_data.dart';
@@ -18,7 +19,7 @@ part 'chat_view_model.g.dart';
 
 @riverpod
 class ChatViewModel extends _$ChatViewModel implements ChatViewModelInterface {
-  TextEditingController messageController = TextEditingController();
+  TextEditingController messageController = CommandProtectingController();
   late FocusNode focusNode;
 
   @override

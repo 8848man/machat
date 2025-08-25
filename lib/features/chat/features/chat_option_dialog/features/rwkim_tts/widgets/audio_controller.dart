@@ -32,6 +32,15 @@ class AudioProgressBar extends ConsumerWidget {
     final position = positionAsync.value ?? Duration.zero;
     final duration = durationAsync.value ?? Duration.zero;
 
+    if (duration.inMilliseconds == 0) {
+      return Slider(
+        value: 0,
+        min: 0,
+        max: 1,
+        onChanged: (value) {},
+      ); // 혹은 Loading indicator
+    }
+
     return Slider(
       value: position.inMilliseconds.toDouble(),
       max: duration.inMilliseconds.toDouble(),
