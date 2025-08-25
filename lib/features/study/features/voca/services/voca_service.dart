@@ -94,34 +94,39 @@ class VocaService {
     required VocabularyModel vocabData,
     required WordModel word,
   }) async {
-    final wordListRef = firestore
-        .collection('users')
-        .doc(userId)
-        .collection('user_vocabulary')
-        .doc(vocabData.id)
-        .collection('wordList')
-        .doc(word.word);
+    try {
+      final wordListRef = firestore
+          .collection('users')
+          .doc(userId)
+          .collection('user_vocabulary')
+          .doc(vocabData.id)
+          .collection('wordList')
+          .doc(word.word);
 
-    final vocabRef = firestore
-        .collection('users')
-        .doc(userId)
-        .collection('user_vocabulary')
-        .doc(vocabData.id);
+      final vocabRef = firestore
+          .collection('users')
+          .doc(userId)
+          .collection('user_vocabulary')
+          .doc(vocabData.id);
 
-    await firestore.runTransaction((transaction) async {
-      final snapshot = await transaction.get(wordListRef);
-      if (snapshot.exists) {
-        final currentWord = WordModel.fromJson(snapshot.data()!);
-        transaction.update(vocabRef, {
-          // 현재 단어 상태에 따라 count 변동
-          if (currentWord.masteryLevel == WordMasteryLevel.confused)
-            'confusedWordCount': FieldValue.increment(-1),
-          if (currentWord.masteryLevel == WordMasteryLevel.mastered)
-            'memorizedWordCount': FieldValue.increment(-1),
-          'wordCount': FieldValue.increment(-1),
-        });
-      }
-    });
+      await firestore.runTransaction((transaction) async {
+        final snapshot = await transaction.get(wordListRef);
+        if (snapshot.exists) {
+          final currentWord = WordModel.fromJson(snapshot.data()!);
+          transaction.update(vocabRef, {
+            // 현재 단어 상태에 따라 count 변동
+            if (currentWord.masteryLevel == WordMasteryLevel.confused)
+              'confusedWordCount': FieldValue.increment(-1),
+            if (currentWord.masteryLevel == WordMasteryLevel.mastered)
+              'memorizedWordCount': FieldValue.increment(-1),
+            'wordCount': FieldValue.increment(-1),
+          });
+
+          // wordListRef 문서 삭제
+          transaction.delete(wordListRef);
+        }
+      });
+    } catch (e) {}
   }
 
   Future<void> changeMastery({

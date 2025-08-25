@@ -5,7 +5,7 @@ part 'tts_cache_model.freezed.dart';
 @freezed
 class TtsCacheKey with _$TtsCacheKey {
   const factory TtsCacheKey({
-    required String messageId,
-    required String voiceCharacter,
+    String? messageId,
+    String? voiceCharacter,
   }) = _TtsCacheKey;
 }

@@ -25,16 +25,27 @@ class AudioProgressBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final position = ref.watch(positionProvider).value ?? Duration.zero;
-    final duration = ref.watch(durationProvider).value ?? Duration.zero;
+    final manager = ref.watch(ttsPlayerManagerProvider);
+
+    final positionAsync = ref.watch(ttsPlayerPositionProvider);
+    final durationAsync = ref.watch(ttsPlayerDurationProvider);
+    final position = positionAsync.value ?? Duration.zero;
+    final duration = durationAsync.value ?? Duration.zero;
+
+    if (duration.inMilliseconds == 0) {
+      return Slider(
+        value: 0,
+        min: 0,
+        max: 1,
+        onChanged: (value) {},
+      ); // 혹은 Loading indicator
+    }
 
     return Slider(
       value: position.inMilliseconds.toDouble(),
       max: duration.inMilliseconds.toDouble(),
       onChanged: (value) {
-        ref
-            .read(audioPlayerProvider)
-            .seek(Duration(milliseconds: value.toInt()));
+        manager.seek(Duration(milliseconds: value.toInt()));
       },
     );
   }
@@ -42,28 +53,27 @@ class AudioProgressBar extends ConsumerWidget {
 
 Widget _buildAudioButton() {
   return Consumer(builder: (context, ref, child) {
-    final playerState = ref.watch(playerStateProvider);
-    print('웹에서 해당 audioPlayer 사용시 UnimplementedError 발생. 기능적 문제는 없음');
-    return playerState.when(
-      data: (state) {
-        if (state == PlayerState.playing) {
-          return IconButton(
-            icon: const Icon(Icons.pause),
-            onPressed: () => ref.read(audioPlayerProvider).pause(),
-          );
-        } else {
-          return IconButton(
-            icon: const Icon(Icons.play_arrow),
-            onPressed: () => ref.read(audioPlayerProvider).resume(),
-          );
-        }
-      },
-      loading: () => IconButton(
-        icon: const Icon(Icons.play_arrow),
-        onPressed: () =>
-            ref.read(rwkimTtsViewmodelProvider.notifier).getAudioData(),
-      ),
-      error: (_, __) => const Icon(Icons.error),
-    );
+    final manager = ref.watch(ttsPlayerManagerProvider);
+
+    switch (manager.state) {
+      case PlayerState.playing:
+        return IconButton(
+          icon: const Icon(Icons.pause),
+          onPressed: () => manager.audioPause(),
+        );
+      case PlayerState.paused:
+      case PlayerState.stopped:
+        return IconButton(
+          icon: const Icon(Icons.play_arrow),
+          onPressed: () => manager.audioResume(),
+        );
+      case PlayerState.completed:
+        return IconButton(
+          icon: const Icon(Icons.play_arrow),
+          onPressed: () => manager.audioResume(),
+        );
+      default:
+        return const Icon(Icons.error);
+    }
   });
 }
