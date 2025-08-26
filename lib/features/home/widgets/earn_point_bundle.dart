@@ -10,7 +10,7 @@ class EarnPointBundle extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notiifer = ref.read(earnPointViewModelProvider.notifier);
+    final notfifer = ref.read(earnPointViewModelProvider.notifier);
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -19,7 +19,7 @@ class EarnPointBundle extends ConsumerWidget {
             maxWidth: 500,
           ),
           child: Column(
-            children: [getPointSection(notiifer)],
+            children: [getPointSection(notfifer), createAiSection(notfifer)],
           ),
         ),
       ),
@@ -54,6 +54,38 @@ class EarnPointBundle extends ConsumerWidget {
       onTap: () => notifier.goStudyEnglish(),
       child: const CardFrame(
         child: Text("영어 공부 카드"),
+      ),
+    );
+  }
+
+  Widget createAiSection(EarnPointViewModel notifier) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 16.0),
+          child: McAppear(
+            delayMs: 200,
+            child: Text(
+              'Ai 캐릭터를 생성해요',
+              style: TextStyle(
+                color: MCColors.$color_blue_70,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        createAiCard(notifier),
+      ],
+    );
+  }
+
+  Widget createAiCard(EarnPointViewModel notifier) {
+    return GestureDetector(
+      onTap: () => notifier.goAiCreate(),
+      child: const CardFrame(
+        child: Text("AI 카드"),
       ),
     );
   }

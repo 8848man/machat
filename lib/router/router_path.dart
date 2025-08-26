@@ -21,6 +21,7 @@ enum RouterPath {
   englishAddVoca('/study/english_voca/add_voca', 'add_voca'),
   subjectManage('/study/subject_manage', 'subject_manage'),
   addVocabulary('/study/add_vocabulary', 'add_vocabulary'),
+  ai('/ai', 'ai'),
   // addWord('/')
   // newHome('/newHome', 'newHome'),
   // example('/example', 'example'),
