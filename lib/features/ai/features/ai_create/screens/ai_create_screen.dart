@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:machat/features/ai/widgets/ai_bundle.dart';
+import 'package:machat/features/ai/features/ai_create/widgets/ai_bundle.dart';
 import 'package:machat/features/common/layouts/lib.dart';
 
 class AiManageScreen extends ConsumerWidget {

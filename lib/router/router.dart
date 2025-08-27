@@ -234,11 +234,21 @@ final goRouterProvider = Provider<GoRouter>(
         ),
 
         GoRoute(
-          path: RouterPath.ai.path,
-          name: RouterPath.ai.name,
+          path: RouterPath.aiAdd.path,
+          name: RouterPath.aiAdd.name,
           pageBuilder: (context, state) => CustomTransitionPage<void>(
             key: state.pageKey,
             child: const AiManageScreen(),
+            transitionsBuilder: slideTransition,
+          ),
+        ),
+
+        GoRoute(
+          path: RouterPath.aiHome.path,
+          name: RouterPath.aiHome.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: const AiHomeScreen(),
             transitionsBuilder: slideTransition,
           ),
         ),

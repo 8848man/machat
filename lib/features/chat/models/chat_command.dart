@@ -4,12 +4,11 @@ import 'dart:ui';
 class ChatCommand {
   final String text;
   final Color bgColor;
+  final Map<String, String>? data;
 
   ChatCommand({
     required this.text,
-    this.bgColor = const Color(0xFFD6E8FF), // 기본 연한 파랑
+    this.bgColor = const Color(0xFFD6E8FF),
+    this.data,
   });
-
-  @override
-  String toString() => 'ChatCommand(text: $text, bgColor: $bgColor)';
 }

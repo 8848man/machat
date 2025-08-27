@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/design_system/lib.dart';
 import 'package:machat/features/ai/utils/ai_controller_manager.dart';
-import 'package:machat/features/ai/widgets/ai_body.dart';
-import 'package:machat/features/ai/widgets/ai_footer.dart';
-import 'package:machat/features/ai/widgets/ai_header.dart';
+import 'package:machat/features/ai/features/ai_create/widgets/ai_body.dart';
+import 'package:machat/features/ai/features/ai_create/widgets/ai_footer.dart';
+import 'package:machat/features/ai/features/ai_create/widgets/ai_header.dart';
 import 'package:machat/features/common/layouts/bundle_layout.dart';
 
 class AiBundle extends ConsumerStatefulWidget {

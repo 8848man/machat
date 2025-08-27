@@ -76,14 +76,14 @@ class EarnPointBundle extends ConsumerWidget {
             ),
           ),
         ),
-        createAiCard(notifier),
+        goAiHome(notifier),
       ],
     );
   }
 
-  Widget createAiCard(EarnPointViewModel notifier) {
+  Widget goAiHome(EarnPointViewModel notifier) {
     return GestureDetector(
-      onTap: () => notifier.goAiCreate(),
+      onTap: () => notifier.goAiHome(),
       child: const CardFrame(
         child: Text("AI 카드"),
       ),

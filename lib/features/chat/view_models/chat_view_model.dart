@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
+import 'package:machat/features/chat/enums/commands.dart';
 import 'package:machat/features/chat/features/expand/enums/expand_state.dart';
 import 'package:machat/features/chat/features/expand/providers/expand_widget_state_provider.dart';
 import 'package:machat/features/chat/interface/chat_view_model_interface.dart';
+import 'package:machat/features/chat/models/chat_command.dart';
+import 'package:machat/features/chat/providers/chat_command_provider.dart';
 import 'package:machat/features/chat/providers/chat_focus_node_provider.dart';
 import 'package:machat/features/chat/repository/chat_repository.dart';
 import 'package:machat/features/chat/widgets/command_protecting_controller.dart';
@@ -66,6 +69,7 @@ class ChatViewModel extends _$ChatViewModel implements ChatViewModelInterface {
     if (messageController.text.isEmpty) {
       return;
     }
+    commandChatProcess();
     final String roomId = ref.read(chatRoomIdProvider);
     final User? currentUser = FirebaseAuth.instance.currentUser;
     // 현재 유저 null 체크
@@ -87,6 +91,67 @@ class ChatViewModel extends _$ChatViewModel implements ChatViewModelInterface {
 
     // 텍스트 초기화
     messageController.text = '';
+  }
+
+  void commandChatProcess() {
+    final List<ChatCommand> chatCommands = ref.read(chatCommandsProvider);
+
+    final message = messageController.text.trim();
+
+// command로 시작하는지 체크
+    ChatCommand? matchedCommand;
+    try {
+      matchedCommand = chatCommands.firstWhere(
+        (cmd) => message.startsWith(cmd.text),
+      );
+    } catch (e) {
+      matchedCommand = null;
+    }
+    if (matchedCommand == null) return; // 매칭되는 커맨드가 없으면 종료
+
+    final String matchedCommandText = matchedCommand.text;
+
+    // -------------------
+    // 1️⃣ FixedCommand enum 처리
+    // -------------------
+    for (var fixedCmd in FixedCommand.values) {
+      if (matchedCommandText.startsWith(fixedCmd.commandText)) {
+        switch (fixedCmd) {
+          case FixedCommand.help:
+            runHelpCommand();
+            break;
+          case FixedCommand.settings:
+            runSettingsCommand();
+            break;
+        }
+        return; // 처리했으면 종료
+      }
+    }
+
+    // -------------------
+    // 2️⃣ /character: prefix 처리
+    // -------------------
+    if (matchedCommandText.startsWith('/character:')) {
+      runCharacterCommand(matchedCommand);
+      return;
+    }
+
+    // -------------------
+    // 3️⃣ 그 외 ChatCommand 처리
+    // -------------------
+    // runCustomCommand(matchedCommand, message);
+  }
+
+  void runHelpCommand() {
+    print('help Command');
+  }
+
+  void runSettingsCommand() {
+    print('settings Command');
+  }
+
+  void runCharacterCommand(ChatCommand characterCommandModel) {
+    print(characterCommandModel.text);
   }
 
   void closeExpand() {

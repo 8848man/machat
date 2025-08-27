@@ -1,6 +1,7 @@
-import 'package:machat/features/ai/models/ai_model.dart';
+import 'package:machat/features/common/models/ai_model.dart';
 import 'package:machat/features/ai/providers/ai_orderby_type_provider.dart';
 import 'package:machat/features/ai/repositories/ai_repository.dart';
+import 'package:machat/features/ai/enums/ai_orderby_type.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'ai_character_list_view_model.g.dart';
@@ -20,9 +21,8 @@ class AiCharacterListViewModel extends _$AiCharacterListViewModel {
     final repo = ref.read(aiRepositoryProvider);
     final initialModels = await repo.getAllCharacter(
         limit: 20,
-        orderBy: ref.read(aiOrderByTypeProvider).toString(),
+        orderBy: ref.read(aiOrderByTypeProvider).value,
         startAfterDoc: null);
-
     return initialModels;
   }
 
@@ -37,7 +37,7 @@ class AiCharacterListViewModel extends _$AiCharacterListViewModel {
         final repo = ref.read(aiRepositoryProvider);
         final nextPage = await repo.getAllCharacter(
           limit: 10,
-          orderBy: AiOrderByType.name.toString(),
+          orderBy: AiOrderByType.name.value,
           startAfterDoc: currentState.lastDoc,
         );
 
@@ -56,10 +56,4 @@ class AiCharacterListViewModel extends _$AiCharacterListViewModel {
       }
     });
   }
-}
-
-enum AiOrderByType {
-  name,
-  createdAt,
-  updatedAt,
 }

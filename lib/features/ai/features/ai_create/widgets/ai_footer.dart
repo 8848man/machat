@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/design_system/lib.dart';
 import 'package:machat/features/ai/utils/ai_controller_manager.dart';
-import 'package:machat/features/ai/view_models/ai_create_view_model.dart';
+import 'package:machat/features/ai/features/ai_create/view_models/ai_create_view_model.dart';
 
 class AiFooter extends ConsumerWidget {
   final AiModelControllerManager aiModelManager;

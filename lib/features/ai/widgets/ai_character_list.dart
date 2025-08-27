@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AiCharacterListScreen extends ConsumerWidget {
-  const AiCharacterListScreen({super.key});
+class AiCharacterList extends ConsumerWidget {
+  const AiCharacterList({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

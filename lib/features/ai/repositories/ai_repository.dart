@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:machat/features/ai/models/ai_model.dart';
+import 'package:machat/features/common/models/ai_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 final aiRepositoryProvider = Provider<AiRepository>((ref) {
@@ -56,7 +56,6 @@ class AiRepository {
       if (startAfterDoc != null) {
         query = query.startAfterDocument(startAfterDoc);
       }
-
       final querySnapshot = await query.get();
 
       final models = querySnapshot.docs.map((doc) {
