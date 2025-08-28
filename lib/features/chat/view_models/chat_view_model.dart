@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
+import 'package:machat/features/ai/models/ai_chat_request.dart';
 import 'package:machat/features/chat/enums/commands.dart';
 import 'package:machat/features/chat/features/expand/enums/expand_state.dart';
 import 'package:machat/features/chat/features/expand/providers/expand_widget_state_provider.dart';
@@ -8,7 +9,9 @@ import 'package:machat/features/chat/models/chat_command.dart';
 import 'package:machat/features/chat/providers/chat_command_provider.dart';
 import 'package:machat/features/chat/providers/chat_focus_node_provider.dart';
 import 'package:machat/features/chat/repository/chat_repository.dart';
+import 'package:machat/features/chat/view_models/chat_contents_view_model.dart';
 import 'package:machat/features/chat/widgets/command_protecting_controller.dart';
+import 'package:machat/features/common/facades/ai_repository_facade.dart';
 import 'package:machat/features/common/interfaces/repository_service.dart';
 import 'package:machat/features/common/models/chat_room_data.dart';
 import 'package:machat/features/common/models/user_data.dart';
@@ -142,16 +145,48 @@ class ChatViewModel extends _$ChatViewModel implements ChatViewModelInterface {
     // runCustomCommand(matchedCommand, message);
   }
 
-  void runHelpCommand() {
+  Future<void> runHelpCommand() async {
     print('help Command');
   }
 
-  void runSettingsCommand() {
+  Future<void> runSettingsCommand() async {
     print('settings Command');
   }
 
-  void runCharacterCommand(ChatCommand characterCommandModel) {
-    print(characterCommandModel.text);
+  Future<void> runCharacterCommand(ChatCommand characterCommandModel) async {
+    final charPrompt = characterCommandModel.data != null
+        ? characterCommandModel.data!['character_prompt'].toString()
+        : '친구같은 AI 어시스턴트';
+    // 캐릭터 이름에서 /character: 빼기
+    String rawText = characterCommandModel.text;
+    String charName = rawText.replaceFirst('/character:', '').trim();
+
+    final aiFacade = ref.read(aiFacadeProvider);
+
+    final chatStates = await ref.read(chatContentsViewModelProvider.future);
+
+    final chatContents = chatStates.contents;
+
+    aiFacade.createChatResponse(
+      AiChatRequest(
+        character_prompt: charPrompt,
+        messages: [],
+      ),
+    );
+
+    print(charName);
+    // final String roomId = ref.read(chatRoomIdProvider);
+    // final RepositoryService repository = ref.read(chatRepositoryProvider);
+
+    // // roomId, text, userId 데이터를 Map으로 파싱
+    // final Map<String, String> data = {
+    //   'roomId': roomId,
+    //   'message': messageController.text,
+    //   'userId': characterCommandModel.text,
+    // };
+
+    // // 서버에 데이터 전송
+    // repository.create(data);
   }
 
   void closeExpand() {
