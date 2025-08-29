@@ -23,6 +23,7 @@ import 'package:machat/features/chat/providers/chat_focus_node_provider.dart';
 import 'package:machat/features/chat/providers/chat_message_group_provider.dart';
 import 'package:machat/features/chat/providers/chat_room_name_provider.dart';
 import 'package:machat/features/chat/providers/chat_sending_widget_proivder.dart';
+import 'package:machat/features/chat/utils/character_string_util.dart';
 import 'package:machat/features/chat/view_models/chat_contents_view_model.dart';
 import 'package:machat/features/chat/view_models/chat_view_model.dart';
 import 'package:machat/features/chat/widgets/chat_image.dart';

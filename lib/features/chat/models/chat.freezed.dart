@@ -209,9 +209,9 @@ class __$$ChatImplCopyWithImpl<$Res>
 class _$ChatImpl implements _Chat {
   const _$ChatImpl(
       {this.id = '',
-      required this.message,
-      required this.createdBy,
-      required this.createdAt,
+      this.message = '',
+      this.createdBy = '',
+      this.createdAt = '',
       this.isMine = false,
       this.type = 'chat',
       this.imageUrl = '',
@@ -226,10 +226,13 @@ class _$ChatImpl implements _Chat {
   @JsonKey()
   final String id;
   @override
+  @JsonKey()
   final String message;
   @override
+  @JsonKey()
   final String createdBy;
   @override
+  @JsonKey()
   final String createdAt;
   @override
   @JsonKey()
@@ -312,9 +315,9 @@ class _$ChatImpl implements _Chat {
 abstract class _Chat implements Chat {
   const factory _Chat(
       {final String id,
-      required final String message,
-      required final String createdBy,
-      required final String createdAt,
+      final String message,
+      final String createdBy,
+      final String createdAt,
       final bool isMine,
       final String type,
       final String imageUrl,

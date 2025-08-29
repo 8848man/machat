@@ -36,11 +36,11 @@ class RwkimTtsViewmodel extends _$RwkimTtsViewmodel {
     final chatCacheProvider = ref.read(ttsCacheProvider.notifier);
 
     final VoiceCharacter nowCharacter = ref.read(nowCharacterProvider);
-    final String message = chatValue['message'];
+    final String message = chatValue.message;
 
     try {
       final cacheKey = TtsCacheKey(
-        messageId: chatValue['id'],
+        messageId: chatValue.id,
         voiceCharacter: nowCharacter.id,
       );
       final cachedData = chatCacheProvider.get(cacheKey);
@@ -81,7 +81,7 @@ class RwkimTtsViewmodel extends _$RwkimTtsViewmodel {
 
       chatCacheProvider.put(
         TtsCacheKey(
-          messageId: chatValue['id'],
+          messageId: chatValue.id,
           voiceCharacter: nowCharacter.id,
         ),
         bytes,

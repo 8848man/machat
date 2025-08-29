@@ -82,13 +82,15 @@ class _ChatContentsState extends ConsumerState<ChatContents>
   Widget build(BuildContext context) {
     final ChatViewModel notifier = ref.read(chatViewModelProvider.notifier);
 
+    final List<ChatCommand> commands = ref.watch(chatCommandsProvider);
     // 채팅 컨텐츠 상태 가져오기
     final AsyncValue<ChatContentsModel> chatContentsState =
         ref.watch(chatContentsViewModelProvider);
 
     // 합성된 챗 스트림 프로바이더 가져오기
-    final AsyncValue<List<dynamic>> streamProvider =
-        ref.watch(mergedChatStreamProvider);
+    final AsyncValue<List<Map<String, dynamic>>> streamProvider =
+        ref.watch<AsyncValue<List<Map<String, dynamic>>>>(
+            mergedChatStreamProvider);
 
     final Completer completer = ref.watch(cancelCompleterProvider);
 
@@ -104,6 +106,7 @@ class _ChatContentsState extends ConsumerState<ChatContents>
                   completer: completer,
                   notifier: notifier,
                   context: context,
+                  commands: commands,
                 ),
                 // 채팅방 데이터를 가져오는 도중에는 로딩 위젯 표시
                 if (_isFetching) fetchLoading(),
@@ -128,13 +131,21 @@ class _ChatContentsState extends ConsumerState<ChatContents>
     required ChatRoomData data,
     required ChatViewModel notifier,
     required BuildContext context,
+    required List<ChatCommand> commands,
   }) {
     if (!completer.isCompleted) {
       completer.complete(); // Future.delayed 무효화
     }
 
     final List<dynamic> combinedValue = [...initValue, ...value];
-
+    final List<Chat> chatList = combinedValue.map((e) {
+      if (e is Map<String, dynamic>) {
+        return Chat.fromJson(e);
+      } else {
+        // Map이 아닐 경우, 기본값 Chat 생성
+        return const Chat();
+      }
+    }).toList();
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus(); // 키보드 닫기
@@ -144,44 +155,33 @@ class _ChatContentsState extends ConsumerState<ChatContents>
         // Show messages from bottom to top
         controller: _scrollController,
         reverse: true,
-        itemCount: combinedValue.length,
+        itemCount: chatList.length,
         itemBuilder: (context, index) {
           final user = FirebaseAuth.instance.currentUser;
-          final reverseIndex = combinedValue.length - 1 - index;
+          final reverseIndex = chatList.length - 1 - index;
 
           // 시간 숨김 여부
-          final bool isContinue = shouldHideTime(combinedValue, reverseIndex);
+          final bool isContinue = shouldHideTime(chatList, reverseIndex);
 
-          final List<ChatCommand> commands = ref.read(chatCommandsProvider);
-
-          List<String> matchedCharacterTexts = commands
-              .where((command) {
-                final textWithoutPrefix = command.text.startsWith('/character:')
-                    ? command.text.replaceFirst('/character:', '').trim()
-                    : command.text.trim();
-
-                return textWithoutPrefix ==
-                    combinedValue[reverseIndex]['createdBy'];
-              })
-              .map((command) => command.text.startsWith('/character:')
-                  ? command.text.replaceFirst('/character:', '').trim()
-                  : command.text.trim()) // 여기도 처리
-              .toList();
+          List<String> characterNames = getCharacterString(
+            commands: commands,
+            createdBy: chatList[reverseIndex].createdBy,
+          );
 
           RoomUserData sender = getSender(
-              data: data,
-              value: combinedValue,
-              reverseIndex: reverseIndex,
-              characters: matchedCharacterTexts);
+            data: data,
+            value: chatList[reverseIndex],
+            reverseIndex: reverseIndex,
+            characters: characterNames,
+          );
 
           final User? currentUser = FirebaseAuth.instance.currentUser;
 
           // 프로필 숨김 여부
-          final bool isHideProfile =
-              shouldHideProfile(combinedValue, reverseIndex);
+          final bool isHideProfile = shouldHideProfile(chatList, reverseIndex);
 
           final bool isHidden = isHiddenChat(
-            combinedValue[reverseIndex],
+            chatList[reverseIndex],
             currentUser?.uid ?? '',
             sender.id ?? '',
           );
@@ -191,19 +191,16 @@ class _ChatContentsState extends ConsumerState<ChatContents>
             return const SizedBox.shrink();
           }
 
-          final bool isLastMessage = reverseIndex == combinedValue.length - 1;
+          final bool isLastMessage = reverseIndex == chatList.length - 1;
 
           return McAppear(
-            key: isLastMessage
-                ? ValueKey(combinedValue[reverseIndex]['id'])
-                : null,
+            key: isLastMessage ? ValueKey(chatList[reverseIndex].id) : null,
             delayMs: 100,
             activeAnimation: isLastMessage,
             child: ChatOptionGestureDetector(
-              chatValue: combinedValue[reverseIndex],
+              chatValue: chatList[reverseIndex],
               child: buildMessageWidget(
-                combinedValue: combinedValue,
-                reverseIndex: reverseIndex,
+                chat: chatList[reverseIndex],
                 isContinue: isContinue,
                 isHideProfile: isHideProfile,
                 data: data,
@@ -218,8 +215,7 @@ class _ChatContentsState extends ConsumerState<ChatContents>
   }
 
   Widget buildChat({
-    required List<dynamic> value,
-    required int reverseIndex,
+    required Chat chat,
     required bool isContinue,
     required bool isHideProfile,
     required ChatRoomData data,
@@ -227,13 +223,6 @@ class _ChatContentsState extends ConsumerState<ChatContents>
     User? user,
   }) {
     const ChatContentsType type = ChatContentsType.chat;
-    final Chat chat = Chat(
-      id: value[reverseIndex]['id'],
-      createdAt: value[reverseIndex]['createdAt'],
-      createdBy: value[reverseIndex]['createdBy'],
-      message: value[reverseIndex]['message'],
-      isMine: value[reverseIndex]['isMine'],
-    );
     final String message = chat.message;
 
     // 로그인되어있지 않을 경우
@@ -387,8 +376,7 @@ class _ChatContentsState extends ConsumerState<ChatContents>
   }
 
   Widget buildImage({
-    required List<dynamic> value,
-    required int reverseIndex,
+    required Chat chat,
     required bool isContinue,
     required bool isHideProfile,
     required ChatRoomData data,
@@ -396,20 +384,14 @@ class _ChatContentsState extends ConsumerState<ChatContents>
     User? user,
   }) {
     const ChatContentsType type = ChatContentsType.image;
-    final McImage image = McImage(
-      createdAt: value[reverseIndex]['createdAt'],
-      createdBy: value[reverseIndex]['createdBy'],
-      imageUrl: value[reverseIndex]['imageUrl'],
-      isMine: value[reverseIndex]['isMine'],
-    );
-    final String url = image.imageUrl;
+    final String url = chat.message;
 
     // 로그인되어있지 않을 경우
     // 모든 메세지를 상대방 메세지로
     if (user == null) {
       return buildOtherContents(
         strValue: url,
-        createdAt: image.createdAt,
+        createdAt: chat.createdAt,
         sender: sender,
         isContinue: isContinue,
         isHideProfile: isHideProfile,
@@ -418,10 +400,10 @@ class _ChatContentsState extends ConsumerState<ChatContents>
     }
 
     // 채팅 만든 아이디와 로그인된 아이디가 일치할 경우
-    if (user.uid == image.createdBy) {
+    if (user.uid == chat.createdBy) {
       return buildMyContents(
         strValue: url,
-        createdAt: image.createdAt,
+        createdAt: chat.createdAt,
         isContinue: isContinue,
         type: type,
       );
@@ -431,39 +413,12 @@ class _ChatContentsState extends ConsumerState<ChatContents>
     // 내가 보내지 않은 메세지
     return buildOtherContents(
       strValue: url,
-      createdAt: image.createdAt,
+      createdAt: chat.createdAt,
       sender: sender,
       isContinue: isContinue,
       isHideProfile: isHideProfile,
       type: type,
     );
-  }
-
-  RoomUserData getSender({
-    required ChatRoomData data,
-    required List<dynamic> value,
-    required int reverseIndex,
-    required List<String> characters,
-  }) {
-    // 채팅방 정보와 보낸 사람 id를 비교해 이름을 가져옴
-    for (RoomUserData element in data.membersHistory) {
-      if (element.id == value[reverseIndex]['createdBy']) {
-        return element;
-      }
-    }
-
-    // 캐릭터 이름일 경우 해당 캐릭터 이름 표시
-    for (String character in characters) {
-      print(
-          'test001, characters is $character, createdBy is ${value[reverseIndex]['createdBy']}');
-      if (character == value[reverseIndex]['createdBy']) {
-        return RoomUserData(
-          name: character,
-        );
-      }
-    }
-
-    return const RoomUserData(name: '알 수 없는 사용자');
   }
 
   Widget fetchLoading() {
@@ -484,8 +439,7 @@ class _ChatContentsState extends ConsumerState<ChatContents>
   }
 
   Widget buildMessageWidget({
-    required List<dynamic> combinedValue,
-    required int reverseIndex,
+    required Chat chat,
     required bool isContinue,
     required bool isHideProfile,
     required ChatRoomData data,
@@ -495,11 +449,9 @@ class _ChatContentsState extends ConsumerState<ChatContents>
     // 데이터 타입이 정의되지 않거나 채팅일 경우
     // 정의되지 않았을 때에도 buildChat을 그리는 이유는
     // 이전 데이터 호환성때문
-    if (combinedValue[reverseIndex]['type'] == null ||
-        combinedValue[reverseIndex]['type'] == 'chat') {
+    if (chat.type == 'chat') {
       return buildChat(
-        value: combinedValue,
-        reverseIndex: reverseIndex,
+        chat: chat,
         isContinue: isContinue,
         isHideProfile: isHideProfile,
         data: data,
@@ -508,10 +460,9 @@ class _ChatContentsState extends ConsumerState<ChatContents>
       );
     }
     // 데이터 타입이 이미지일 경우
-    if (combinedValue[reverseIndex]['type'] == 'image') {
+    if (chat.type == 'image') {
       return buildImage(
-        value: combinedValue,
-        reverseIndex: reverseIndex,
+        chat: chat,
         isContinue: isContinue,
         isHideProfile: isHideProfile,
         data: data,

@@ -7,9 +7,9 @@ part 'chat.g.dart';
 class Chat with _$Chat {
   const factory Chat({
     @Default('') String id,
-    required String message,
-    required String createdBy,
-    required String createdAt,
+    @Default('') String message,
+    @Default('') String createdBy,
+    @Default('') String createdAt,
     @Default(false) bool isMine,
     @Default('chat') String type,
     @Default('') String imageUrl,
