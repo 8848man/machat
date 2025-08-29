@@ -1,4 +1,4 @@
-import 'package:machat/features/common/models/ai_model.dart';
+import 'package:machat/features/common/models/ai/ai_model.dart';
 import 'package:machat/features/ai/repositories/ai_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

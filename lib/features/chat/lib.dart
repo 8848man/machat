@@ -15,8 +15,10 @@ import 'package:machat/features/chat/features/expand/view_models/chat_image_view
 import 'package:machat/features/chat/features/expand/widgets/chat_expand_brancher.dart';
 import 'package:machat/features/chat/interface/chat_view_model_interface.dart';
 import 'package:machat/features/chat/models/chat.dart';
+import 'package:machat/features/chat/models/chat_command.dart';
 import 'package:machat/features/chat/models/chat_contents.dart';
 import 'package:machat/features/chat/models/image.dart';
+import 'package:machat/features/chat/providers/chat_command_provider.dart';
 import 'package:machat/features/chat/providers/chat_focus_node_provider.dart';
 import 'package:machat/features/chat/providers/chat_message_group_provider.dart';
 import 'package:machat/features/chat/providers/chat_room_name_provider.dart';
@@ -29,8 +31,8 @@ import 'package:machat/features/chat/features/end_drawer/screens/chat_room_end_d
 import 'package:machat/features/chat/widgets/chat_splash_command_input.dart';
 import 'package:machat/features/common/animated_widgets/mc_appear.dart';
 import 'package:machat/features/common/layouts/lib.dart';
-import 'package:machat/features/common/models/chat_room_data.dart';
-import 'package:machat/features/common/models/user_data.dart';
+import 'package:machat/features/common/models/chat/chat_room_data.dart';
+import 'package:machat/features/common/models/users/user_data.dart';
 import 'package:machat/features/common/utils/completer.dart';
 import 'package:machat/features/common/utils/extractor.dart';
 import 'package:machat/features/common/utils/loading_overtime.dart';

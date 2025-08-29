@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:machat/features/common/models/ai_model.dart';
+import 'package:machat/features/common/models/ai/ai_model.dart';
 
 class AiModelControllerManager {
   final List<TextEditingController> controllers;

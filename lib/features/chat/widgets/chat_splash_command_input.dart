@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/design_system/lib.dart';
 import 'package:machat/features/chat/providers/chat_command_provider.dart';
-import 'package:machat/features/common/models/ai_model.dart';
+import 'package:machat/features/common/models/ai/ai_model.dart';
 import 'package:machat/features/common/animated_widgets/mc_appear.dart';
 
 class SlashCommandInput extends ConsumerStatefulWidget {

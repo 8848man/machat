@@ -10,7 +10,13 @@ class ChatImage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      child: SizedBox(
+      child: Container(
+        constraints: const BoxConstraints(
+          maxHeight: 200,
+          maxWidth: 200,
+          minHeight: 50,
+          minWidth: 50,
+        ),
         child: Image.network(
           url,
           fit: BoxFit.cover, // 이미지 크기 조정

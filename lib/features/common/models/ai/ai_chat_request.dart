@@ -27,3 +27,6 @@ class AiChatMessage with _$AiChatMessage {
   factory AiChatMessage.fromJson(Map<String, dynamic> json) =>
       _$AiChatMessageFromJson(json);
 }
+
+// helper
+DateTime _dateTimeFromString(String date) => DateTime.parse(date);

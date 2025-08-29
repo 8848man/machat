@@ -4,9 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/config/url_config.dart';
-import 'package:machat/features/ai/models/ai_chat_request.dart';
-import 'package:machat/features/ai/models/ai_chat_response.dart';
-import 'package:machat/features/common/models/ai_model.dart';
+import 'package:machat/features/common/models/ai/ai_chat_request.dart';
+import 'package:machat/features/common/models/ai/ai_chat_response.dart';
+import 'package:machat/features/common/models/ai/ai_model.dart';
 import 'package:machat_token_service/features/commons/providers/loading_state_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:http/http.dart' as http;
@@ -162,7 +162,7 @@ class AiRepository {
       final jsonData = json.decode(body);
 
       if (response.statusCode == 200) {
-        return AiChatResponseModel.fromJson(jsonData);
+        return AiChatResponseModel.fromJson(jsonData['data']);
       } else {
         throw Exception('API 호출 실패: ${response.statusCode} $body');
       }
