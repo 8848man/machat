@@ -19,7 +19,10 @@ class EarnPointBundle extends ConsumerWidget {
             maxWidth: 500,
           ),
           child: Column(
-            children: [getPointSection(notfifer), createAiSection(notfifer)],
+            children: [
+              getPointSection(notfifer),
+              // createAiSection(notfifer),
+            ],
           ),
         ),
       ),
