@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:machat/features/chat/providers/chat_room_name_provider.dart';
-import 'package:machat/features/common/models/chat_list_model.dart';
-import 'package:machat/features/common/models/chat_room_data.dart';
+import 'package:machat/features/common/models/chat/chat_list_model.dart';
+import 'package:machat/features/common/models/chat/chat_room_data.dart';
 import 'package:machat/features/common/providers/chat_room_id.dart';
 import 'package:machat/features/common/providers/view_model_disposer.dart';
 import 'package:machat/features/home/repositories/chat_room_repository.dart';

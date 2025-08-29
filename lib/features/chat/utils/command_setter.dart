@@ -1,16 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:machat/features/chat/models/chat_command.dart';
+import 'package:machat/features/common/models/ai/ai_model.dart';
 import 'package:machat/features/chat/enums/commands.dart';
 import 'package:rwkim_tts/features/tts_service/enums/lib.dart';
-
-class ChatCommand {
-  final String text;
-  final Color bgColor;
-
-  ChatCommand({
-    required this.text,
-    this.bgColor = const Color(0xFFD6E8FF),
-  });
-}
 
 class CommandUtils {
   /// 고정 커맨드 변환
@@ -35,6 +27,23 @@ class CommandUtils {
               bgColor: colorMapper?.call(cmd) ?? Colors.blue.withOpacity(0.2),
             ))
         .toList();
+  }
+
+  static List<ChatCommand> fromAiCharacters(
+    List<AiModel> aiModels,
+  ) {
+    List<ChatCommand> commands = [];
+    for (AiModel data in aiModels) {
+      commands.add(ChatCommand(
+        text: '/character:${data.name}',
+        bgColor: Colors.green.withOpacity(0.2),
+        data: {
+          'description': data.description ?? '',
+          'prompt': data.prompt ?? '',
+        },
+      ));
+    }
+    return commands;
   }
 
   /// 고정 커맨드 + 캐릭터 커맨드 합치기

@@ -152,8 +152,27 @@ class _ChatContentsState extends ConsumerState<ChatContents>
           // 시간 숨김 여부
           final bool isContinue = shouldHideTime(combinedValue, reverseIndex);
 
+          final List<ChatCommand> commands = ref.read(chatCommandsProvider);
+
+          List<String> matchedCharacterTexts = commands
+              .where((command) {
+                final textWithoutPrefix = command.text.startsWith('/character:')
+                    ? command.text.replaceFirst('/character:', '').trim()
+                    : command.text.trim();
+
+                return textWithoutPrefix ==
+                    combinedValue[reverseIndex]['createdBy'];
+              })
+              .map((command) => command.text.startsWith('/character:')
+                  ? command.text.replaceFirst('/character:', '').trim()
+                  : command.text.trim()) // 여기도 처리
+              .toList();
+
           RoomUserData sender = getSender(
-              data: data, value: combinedValue, reverseIndex: reverseIndex);
+              data: data,
+              value: combinedValue,
+              reverseIndex: reverseIndex,
+              characters: matchedCharacterTexts);
 
           final User? currentUser = FirebaseAuth.instance.currentUser;
 
@@ -258,35 +277,26 @@ class _ChatContentsState extends ConsumerState<ChatContents>
     required bool isContinue,
     required ChatContentsType type,
   }) {
-    return buildBubbleLayout(
-      message: strValue,
-      child: (textWidth, textHeight) {
-        return Column(
+    return Column(
+      children: [
+        Row(
           children: [
-            SizedBox(
-              width: double.infinity,
-              height: textHeight,
-              child: Row(
-                children: [
-                  const Spacer(),
-                  buildChatInfo(true, createdAt, isContinue),
-                  MCSpace().horizontalHalfSpace(),
-                  if (type == ChatContentsType.chat)
-                    ChatBubble(
-                      isMine: true,
-                      message: strValue,
-                      width: textWidth,
-                      height: textHeight,
-                    ),
-                  if (type == ChatContentsType.image) ChatImage(url: strValue),
-                  MCSpace().horizontalHalfSpace(),
-                ],
+            const Spacer(),
+            buildChatInfo(true, createdAt, isContinue),
+            MCSpace().horizontalHalfSpace(),
+            if (type == ChatContentsType.chat)
+              ChatBubble(
+                isMine: true,
+                message: strValue,
+                // width: textWidth,
+                // height: textHeight,
               ),
-            ),
-            MCSpace().verticalHalfSpace(),
+            if (type == ChatContentsType.image) ChatImage(url: strValue),
+            MCSpace().horizontalHalfSpace(),
           ],
-        );
-      },
+        ),
+        MCSpace().verticalHalfSpace(),
+      ],
     );
   }
 
@@ -299,44 +309,35 @@ class _ChatContentsState extends ConsumerState<ChatContents>
     required bool isHideProfile,
     required ChatContentsType type,
   }) {
-    return buildBubbleLayout(
-      message: strValue,
-      child: (textWidth, textHeight) {
-        return Column(
+    String cleanedStrValue = strValue.replaceAll(RegExp(r'\n{2,}'), '\n');
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (!isHideProfile)
+          Padding(
+            padding: const EdgeInsets.only(left: 8),
+            child: Text(sender.name),
+          ),
+        if (!isHideProfile) MCSpace().verticalHalfSpace(),
+        Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (!isHideProfile)
-              Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: Text(sender.name),
+            MCSpace().horizontalHalfSpace(),
+            if (!isHideProfile) ChatProfileIcon(size: 40.0, userData: sender),
+            if (isHideProfile) const SizedBox(width: 40.0, height: 40.0),
+            MCSpace().horizontalHalfSpace(),
+            if (type == ChatContentsType.chat)
+              ChatBubble(
+                isMine: false,
+                message: cleanedStrValue,
               ),
-            if (!isHideProfile) MCSpace().verticalHalfSpace(),
-            SizedBox(
-              width: double.infinity,
-              height: textHeight,
-              child: Row(
-                children: [
-                  MCSpace().horizontalHalfSpace(),
-                  if (!isHideProfile)
-                    ChatProfileIcon(size: 40.0, userData: sender),
-                  if (isHideProfile) const SizedBox(width: 40.0, height: 40.0),
-                  MCSpace().horizontalHalfSpace(),
-                  if (type == ChatContentsType.chat)
-                    ChatBubble(
-                        isMine: false,
-                        message: strValue,
-                        width: textWidth,
-                        height: textHeight),
-                  if (type == ChatContentsType.image) ChatImage(url: strValue),
-                  MCSpace().horizontalHalfSpace(),
-                  buildChatInfo(false, createdAt, isContinue),
-                ],
-              ),
-            ),
-            MCSpace().verticalHalfSpace(),
+            if (type == ChatContentsType.image) ChatImage(url: strValue),
+            MCSpace().horizontalHalfSpace(),
+            buildChatInfo(false, createdAt, isContinue),
           ],
-        );
-      },
+        ),
+        MCSpace().verticalHalfSpace(),
+      ],
     );
   }
 
@@ -442,11 +443,23 @@ class _ChatContentsState extends ConsumerState<ChatContents>
     required ChatRoomData data,
     required List<dynamic> value,
     required int reverseIndex,
+    required List<String> characters,
   }) {
     // 채팅방 정보와 보낸 사람 id를 비교해 이름을 가져옴
     for (RoomUserData element in data.membersHistory) {
       if (element.id == value[reverseIndex]['createdBy']) {
         return element;
+      }
+    }
+
+    // 캐릭터 이름일 경우 해당 캐릭터 이름 표시
+    for (String character in characters) {
+      print(
+          'test001, characters is $character, createdBy is ${value[reverseIndex]['createdBy']}');
+      if (character == value[reverseIndex]['createdBy']) {
+        return RoomUserData(
+          name: character,
+        );
       }
     }
 

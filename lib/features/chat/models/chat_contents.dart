@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:machat/features/common/models/chat_room_data.dart';
+import 'package:machat/features/common/models/chat/chat_room_data.dart';
 
 part 'chat_contents.freezed.dart';
 // part 'chat_contents.g.dart';

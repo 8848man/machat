@@ -1,5 +1,5 @@
 import 'package:machat/features/common/interfaces/repository_service.dart';
-import 'package:machat/features/common/models/user_data.dart';
+import 'package:machat/features/common/models/users/user_data.dart';
 import 'package:machat/features/common/providers/user_cache_providers.dart';
 import 'package:machat/features/common/repositories/friend_crud_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
