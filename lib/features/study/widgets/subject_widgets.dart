@@ -41,41 +41,46 @@ class SubjectBundle extends ConsumerWidget {
     return Consumer(builder: (context, ref, child) {
       final int? vocabListLength = ref.watch(vocabularyListLengthProvider);
       final StudyViewModel notifier = ref.read(studyViewModelProvider.notifier);
-      return Column(
-        children: [
-          Row(
+      return Center(
+        child: Container(
+          constraints: BoxConstraints(maxWidth: 500),
+          child: Column(
             children: [
-              buildTitleText('영단어를 외워봐요'),
-              const Spacer(),
-              // buildTitleText('항목 관리',
-              //     onTap: () => notifier.goSubjectManagePage()),
-            ],
-          ),
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                MCSpace().verticalHalfSpace(),
-                // 수업 과목 리스트 생성
-                ...subjectGenerator(vocabListLength),
-                const SizedBox(height: 8), // 간격 조절
-                McAppear(
-                  delayMs: 300,
-                  child: GestureDetector(
-                    onTap: () {
-                      final router = ref.read(goRouterProvider);
-                      router.pushNamed(RouterPath.addVocabulary.name);
-                    },
-                    child: buildFrameBox(
-                      child: const Center(
-                        child: Text("단어장 새로 등록하기!"),
+              Row(
+                children: [
+                  buildTitleText('영단어를 외워봐요'),
+                  const Spacer(),
+                  // buildTitleText('항목 관리',
+                  //     onTap: () => notifier.goSubjectManagePage()),
+                ],
+              ),
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    MCSpace().verticalHalfSpace(),
+                    // 수업 과목 리스트 생성
+                    ...subjectGenerator(vocabListLength),
+                    const SizedBox(height: 8), // 간격 조절
+                    McAppear(
+                      delayMs: 300,
+                      child: GestureDetector(
+                        onTap: () {
+                          final router = ref.read(goRouterProvider);
+                          router.pushNamed(RouterPath.addVocabulary.name);
+                        },
+                        child: buildFrameBox(
+                          child: const Center(
+                            child: Text("단어장 새로 등록하기!"),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ).expand(),
-        ],
+              ).expand(),
+            ],
+          ),
+        ),
       );
     });
   }
