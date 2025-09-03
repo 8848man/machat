@@ -22,7 +22,7 @@ class ChatCacheService {
   final List<StorageChat> _messages = [];
 
   // 로컬 저장소
-  late final JsonStorageInterface _storage;
+  late final JsonStorageInterface<List<StorageChat>> _storage;
 
   ChatCacheService({required this.chatRoomId, required this.ref}) {
     _initStorage();
@@ -30,15 +30,24 @@ class ChatCacheService {
 
   Future<void> _initStorage() async {
     _storage = ref.read(chatStorageProvider);
-    await _storage.init();
-    await _loadFromStorage();
+    try {
+      await _storage.init();
+      await _loadFromStorage(); // init 성공시에만 load 호출
+    } catch (e) {
+      print('Failed to initialize storage for $chatRoomId: $e');
+    }
   }
 
   // 메모리 + DB 로드
   Future<void> _loadFromStorage() async {
-    final cached = await _storage.load(chatRoomId) as List<dynamic>?;
-    if (cached != null) {
-      _messages.addAll(cached.map((e) => StorageChat.fromJson(e)));
+    try {
+      final cached = await _storage.load(chatRoomId) as List<dynamic>?;
+      if (cached != null) {
+        _messages.addAll(cached.map((e) => e));
+      }
+    } catch (e, _) {
+      // 로그만 찍고 무시 → 빈 리스트 유지
+      print('Failed to load cache for $chatRoomId: $e');
     }
   }
 
@@ -46,18 +55,24 @@ class ChatCacheService {
 
   // 새로운 메시지 추가
   Future<void> appendMessages(List<StorageChat> newMessages) async {
-    for (var msg in newMessages) {
-      if (!_messages.any((e) => e.id == msg.id)) {
+    final beforeLength = _messages.length;
+
+    for (final msg in newMessages) {
+      if (!_messages.any((m) => m.id == msg.id)) {
         _messages.add(msg);
       }
     }
-    await _saveToStorage();
+
+    // 새로운 메시지가 추가된 경우에만 저장
+    if (_messages.length != beforeLength) {
+      await _storage.save(chatRoomId, _messages);
+    }
   }
 
   Future<void> _saveToStorage() async {
     await _storage.save(
       chatRoomId,
-      _messages.map((e) => e.toJson()).toList(),
+      _messages.map((e) => e).toList(),
     );
   }
 

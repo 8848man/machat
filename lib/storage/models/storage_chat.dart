@@ -9,7 +9,7 @@ class StorageChat with _$StorageChat {
     @Default('') String id,
     @Default('') String message,
     @Default('') String createdBy,
-    DateTime? createdAt,
+    @Default('') String createdAt,
     @Default(false) bool isMine,
     @Default('chat') String type,
     @Default('') String imageUrl,
