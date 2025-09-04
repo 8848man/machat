@@ -1,18 +1,21 @@
 import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:machat/features/chat/interfaces/i_chat_contents_repository.dart';
 import 'package:machat/networks/firestore_provider.dart';
 
-final chatContentsRepositoryProvider = Provider<ChatContentsRepository>((ref) {
+final fbChatContentsRepositoryProvider =
+    Provider<FBChatContentsRepository>((ref) {
   final firestore = ref.watch(firestoreProvider);
-  return ChatContentsRepository(firestore);
+  return FBChatContentsRepository(firestore);
 });
 
-class ChatContentsRepository {
+class FBChatContentsRepository extends IChatContentsRepository {
   final FirebaseFirestore firestore;
 
-  ChatContentsRepository(this.firestore);
+  FBChatContentsRepository(this.firestore);
 
+  @override
   Future<List<Map<String, dynamic>>> getInitialChats(String roomId) async {
     final snapshot = await firestore
         .collection('chat_rooms')
@@ -45,6 +48,7 @@ class ChatContentsRepository {
         .toList(); // 시간순 정렬
   }
 
+  @override
   Future<List<Map<String, dynamic>>> getPreviousChats({
     required String roomId,
     required DateTime lastCreatedAt, // DateTime 기준
@@ -90,6 +94,46 @@ class ChatContentsRepository {
     }
   }
 
+  @override
+  Future<void> deleteChatFromMyself({
+    required String roomId,
+    required String chatId,
+    required String userId,
+  }) async {
+    try {
+      final docRef = FirebaseFirestore.instance
+          .collection('chat_rooms')
+          .doc(roomId)
+          .collection('chat')
+          .doc(chatId);
+      await docRef.update({
+        'deletedTo': FieldValue.arrayUnion([userId]),
+      });
+    } catch (e) {
+      print('error occured when interecting servers!');
+    }
+  }
+
+  @override
+  Future<void> deleteChatFromAll({
+    required String roomId,
+    required String chatId,
+  }) async {
+    try {
+      final docRef = FirebaseFirestore.instance
+          .collection('chat_rooms')
+          .doc(roomId)
+          .collection('chat')
+          .doc(chatId);
+
+      await docRef.update({
+        'isDeletedForEveryone': true,
+      });
+    } catch (e) {
+      print('error occured when interecting servers!');
+    }
+  }
+
   List<Map<String, dynamic>> _mapChatDocs(QuerySnapshot snap) =>
       snap.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;
@@ -130,43 +174,5 @@ class ChatContentsRepository {
       // 여기서는 단순히 합쳐진 리스트를 반환
       return event;
     });
-  }
-
-  Future<void> deleteChatFromMyself({
-    required String roomId,
-    required String chatId,
-    required String userId,
-  }) async {
-    try {
-      final docRef = FirebaseFirestore.instance
-          .collection('chat_rooms')
-          .doc(roomId)
-          .collection('chat')
-          .doc(chatId);
-      await docRef.update({
-        'deletedTo': FieldValue.arrayUnion([userId]),
-      });
-    } catch (e) {
-      print('error occured when interecting servers!');
-    }
-  }
-
-  Future<void> deleteChatFromAll({
-    required String roomId,
-    required String chatId,
-  }) async {
-    try {
-      final docRef = FirebaseFirestore.instance
-          .collection('chat_rooms')
-          .doc(roomId)
-          .collection('chat')
-          .doc(chatId);
-
-      await docRef.update({
-        'isDeletedForEveryone': true,
-      });
-    } catch (e) {
-      print('error occured when interecting servers!');
-    }
   }
 }

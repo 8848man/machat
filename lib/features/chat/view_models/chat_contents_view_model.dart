@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:machat/features/chat/models/chat_contents.dart';
-import 'package:machat/features/chat/repository/chat_contents_repository.dart';
+import 'package:machat/features/chat/repository/fb_chat_contents_repository.dart';
 import 'package:machat/features/chat/view_models/chat_view_model.dart';
 import 'package:machat/features/common/models/chat/chat_room_data.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
@@ -25,7 +25,7 @@ class ChatContentsViewModel extends _$ChatContentsViewModel {
 
   Future<ChatContentsModel> fetchInitialChats(ChatRoomData roomData) async {
     try {
-      final repo = ref.read(chatContentsRepositoryProvider);
+      final repo = ref.read(fbChatContentsRepositoryProvider);
       final initialMessages = await repo.getInitialChats(roomData.roomId);
 
       final ChatContentsModel chatContentsModel = ChatContentsModel(
@@ -49,7 +49,7 @@ class ChatContentsViewModel extends _$ChatContentsViewModel {
     required String roomId,
     required DateTime lastCreatedAt,
   }) async {
-    final repo = ref.read(chatContentsRepositoryProvider);
+    final repo = ref.read(fbChatContentsRepositoryProvider);
     final List<Map<String, dynamic>> previousMessages =
         await repo.getPreviousChats(
       roomId: roomId,
@@ -81,7 +81,7 @@ class ChatContentsViewModel extends _$ChatContentsViewModel {
     required String chatId,
   }) async {
     try {
-      final repository = ref.read(chatContentsRepositoryProvider);
+      final repository = ref.read(fbChatContentsRepositoryProvider);
       final User? currentUser = FirebaseAuth.instance.currentUser;
       final String userId = currentUser != null ? currentUser.uid : '';
 
@@ -101,7 +101,7 @@ class ChatContentsViewModel extends _$ChatContentsViewModel {
     required String chatId,
   }) async {
     try {
-      final repository = ref.read(chatContentsRepositoryProvider);
+      final repository = ref.read(fbChatContentsRepositoryProvider);
 
       await repository.deleteChatFromAll(
         roomId: roomId,
