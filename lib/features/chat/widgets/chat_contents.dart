@@ -384,7 +384,7 @@ class _ChatContentsState extends ConsumerState<ChatContents>
     User? user,
   }) {
     const ChatContentsType type = ChatContentsType.image;
-    final String url = chat.message;
+    final String url = chat.imageUrl;
 
     // 로그인되어있지 않을 경우
     // 모든 메세지를 상대방 메세지로
