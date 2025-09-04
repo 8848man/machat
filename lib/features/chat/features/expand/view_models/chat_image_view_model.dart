@@ -7,7 +7,7 @@ import 'package:machat/features/chat/features/expand/providers/expand_image_stat
 import 'package:machat/features/chat/features/expand/providers/expand_widget_state_provider.dart';
 import 'package:machat/features/chat/features/expand/repositories/chat_image_repository.dart';
 import 'package:machat/features/chat/features/expand/utils/chat_expand_utils.dart';
-import 'package:machat/features/chat/interface/chat_view_model_interface.dart';
+import 'package:machat/features/chat/interfaces/chat_view_model_interface.dart';
 import 'package:machat/features/common/providers/chat_room_id.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

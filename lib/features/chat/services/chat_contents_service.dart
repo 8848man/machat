@@ -1,20 +1,21 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/core/models/chat.dart';
-import 'package:machat/features/chat/interfaces/i_chat_contents_repository.dart';
 import 'package:machat/features/chat/repository/fb_chat_contents_repository.dart';
 import 'package:machat/features/chat/repository/lc_chat_contents_repository.dart';
 import 'package:machat/storage/services/chat_cache_service.dart';
 
 final chatContentsServiceProvider =
     Provider.family<ChatContentsService, String>((ref, chatRoomId) {
-  final fbRepository = ref.read(fbChatContentsRepositoryProvider);
-  final lcRepository = ref.read(lcChatContentsRepositoryProvider(chatRoomId));
+  final FBChatContentsRepository fbRepository =
+      ref.read(fbChatContentsRepositoryProvider);
+  final LcChatContentsRepository lcRepository =
+      ref.read(lcChatContentsRepositoryProvider(chatRoomId));
   return ChatContentsService(fbRepository, lcRepository, ref);
 });
 
 class ChatContentsService {
-  final IChatContentsRepository fbRepository;
-  final IChatContentsRepository lcRepository;
+  final FBChatContentsRepository fbRepository;
+  final LcChatContentsRepository lcRepository;
   final Ref ref;
 
   ChatContentsService(this.fbRepository, this.lcRepository, this.ref);
@@ -22,6 +23,7 @@ class ChatContentsService {
   Future<List<Map<String, dynamic>>> getInitialChats(String roomId) async {
     // 1. 캐시 먼저
     final cached = await lcRepository.getInitialChats(roomId);
+    print('cached data is $cached');
     if (cached.isNotEmpty) return cached;
 
     // 2. 없으면 Firestore

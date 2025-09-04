@@ -13,7 +13,7 @@ import 'package:machat/features/chat/features/expand/enums/expand_state.dart';
 import 'package:machat/features/chat/features/expand/providers/expand_widget_state_provider.dart';
 import 'package:machat/features/chat/features/expand/view_models/chat_image_view_model.dart';
 import 'package:machat/features/chat/features/expand/widgets/chat_expand_brancher.dart';
-import 'package:machat/features/chat/interface/chat_view_model_interface.dart';
+import 'package:machat/features/chat/interfaces/chat_view_model_interface.dart';
 import 'package:machat/core/models/chat.dart';
 import 'package:machat/features/chat/models/chat_command.dart';
 import 'package:machat/features/chat/models/chat_contents.dart';

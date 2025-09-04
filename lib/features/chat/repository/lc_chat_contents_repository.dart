@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:machat/core/models/chat.dart';
 import 'package:machat/features/chat/interfaces/i_chat_contents_repository.dart';
 import 'package:machat/storage/services/chat_cache_service.dart';
 
@@ -98,5 +99,15 @@ class LcChatContentsRepository extends IChatContentsRepository {
     }).toList();
 
     await _cacheService.appendMessages(updated); // 저장
+  }
+
+  Future<void> saveChatData(List<Map<String, dynamic>> data) async {
+    try {
+      final List<Chat> chatList =
+          data.map((map) => ChatMapper.fromMap(map)).toList();
+      await _cacheService.appendMessages(chatList);
+    } catch (e) {
+      print('error Occured Saving Chat data : $e');
+    }
   }
 }
