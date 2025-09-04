@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:machat/features/chat/models/chat_contents.dart';
 import 'package:machat/features/chat/repository/chat_contents_repository.dart';
@@ -25,33 +24,36 @@ class ChatContentsViewModel extends _$ChatContentsViewModel {
   }
 
   Future<ChatContentsModel> fetchInitialChats(ChatRoomData roomData) async {
-    final repo = ref.read(chatContentsRepositoryProvider);
-    final initialMessages = await repo.getInitialChats(roomData.roomId);
+    try {
+      final repo = ref.read(chatContentsRepositoryProvider);
+      final initialMessages = await repo.getInitialChats(roomData.roomId);
 
-    final ChatContentsModel chatContentsModel = ChatContentsModel(
-      contents: initialMessages,
-      lastDoc: initialMessages.isNotEmpty
-          ? initialMessages.last['lastDoc'] as DocumentSnapshot
-          : null,
-      isLoading: false,
-      hasMore: initialMessages.length == 30,
-      roomData: roomData,
-      lastMessageTime: initialMessages.isNotEmpty
-          ? (initialMessages.first['createdAt'] as Timestamp)
-          : null,
-    );
+      final ChatContentsModel chatContentsModel = ChatContentsModel(
+        contents: initialMessages,
+        isLoading: false,
+        hasMore: initialMessages.length == 30,
+        roomData: roomData,
+        lastMessageTime: initialMessages.isNotEmpty
+            ? DateTime.parse(initialMessages.first['createdAt'] as String)
+            : null,
+      );
 
-    return chatContentsModel;
+      return chatContentsModel;
+    } catch (e) {
+      print('Error fetching initial chats: $e');
+      rethrow;
+    }
   }
 
   Future<void> fetchPreviousChats({
     required String roomId,
-    required DocumentSnapshot lastDoc,
+    required DateTime lastCreatedAt,
   }) async {
     final repo = ref.read(chatContentsRepositoryProvider);
-    final previousMessages = await repo.getPreviousChats(
+    final List<Map<String, dynamic>> previousMessages =
+        await repo.getPreviousChats(
       roomId: roomId,
-      lastDoc: lastDoc,
+      lastCreatedAt: lastCreatedAt,
     );
 
     update((state) {
@@ -63,12 +65,13 @@ class ChatContentsViewModel extends _$ChatContentsViewModel {
         ...previousMessages,
         ...state.contents,
       ];
-      final newLastDoc = previousMessages.last['lastDoc'] as DocumentSnapshot;
 
       return state = state.copyWith(
         contents: updatedContents,
-        lastDoc: newLastDoc,
         hasMore: previousMessages.length == 30,
+        lastMessageTime: previousMessages.isNotEmpty
+            ? DateTime.parse(previousMessages.first['createdAt'] as String)
+            : state.lastMessageTime,
       );
     });
   }

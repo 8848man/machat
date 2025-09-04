@@ -173,7 +173,7 @@ class _SlashCommandInputState extends ConsumerState<SlashCommandInput> {
     // _controller.dispose();
     // _focusNode.dispose();
     _removeOverlay();
-    sub.close();
+    // sub.close();
     super.dispose();
   }
 

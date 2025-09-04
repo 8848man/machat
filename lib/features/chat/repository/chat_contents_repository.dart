@@ -47,38 +47,47 @@ class ChatContentsRepository {
 
   Future<List<Map<String, dynamic>>> getPreviousChats({
     required String roomId,
-    required DocumentSnapshot lastDoc, // 또는 createdAt Timestamp
+    required DateTime lastCreatedAt, // DateTime 기준
     int limit = 30,
   }) async {
-    final snapshot = await firestore
-        .collection('chat_rooms')
-        .doc(roomId)
-        .collection('chat')
-        .orderBy('createdAt', descending: true)
-        .startAfterDocument(lastDoc) // ← 중복 없이 확실함
-        .limit(limit)
-        .get();
-    return snapshot.docs
-        .map((doc) {
-          final data = doc.data();
-          final timestamp = data['createdAt'] as Timestamp?;
-          return {
-            'id': data['id'] ?? '',
-            'createdBy': data['createdBy'] ?? '',
-            'createdAt':
-                timestamp?.toDate().toString() ?? DateTime.now().toString(),
-            'message': data['message'],
-            'isMine': data['createdBy'] == 'currentUserId',
-            'type': data['type'] ?? 'chat',
-            'imageUrl': data['imageUrl'] ?? '',
-            'deletedTo': data['deletedTo'],
-            'isDeletedForEveryone': data['isDeletedForEveryone'],
-            'lastDoc': snapshot.docs.isNotEmpty ? snapshot.docs.last : null,
-          };
-        })
-        .toList()
-        .reversed
-        .toList(); // 시간순 정렬
+    try {
+      final snapshot = await firestore
+          .collection('chat_rooms')
+          .doc(roomId)
+          .collection('chat')
+          .where(
+            'createdAt',
+            isLessThan:
+                Timestamp.fromDate(lastCreatedAt), // DateTime → Timestamp
+          )
+          .orderBy('createdAt', descending: true)
+          .limit(limit)
+          .get();
+
+      return snapshot.docs
+          .map((doc) {
+            final data = doc.data();
+            final timestamp = data['createdAt'] as Timestamp?;
+            return {
+              'id': data['id'] ?? '',
+              'createdBy': data['createdBy'] ?? '',
+              'createdAt':
+                  timestamp?.toDate().toString() ?? DateTime.now().toString(),
+              'message': data['message'] ?? '',
+              'isMine': data['createdBy'] == 'currentUserId',
+              'type': data['type'] ?? 'chat',
+              'imageUrl': data['imageUrl'] ?? '',
+              'deletedTo': data['deletedTo'] ?? [],
+              'isDeletedForEveryone': data['isDeletedForEveryone'] ?? false,
+            };
+          })
+          .toList()
+          .reversed
+          .toList(); // 시간순 정렬
+    } catch (e) {
+      print("Error fetching previous chats: $e");
+      return [];
+    }
   }
 
   List<Map<String, dynamic>> _mapChatDocs(QuerySnapshot snap) =>

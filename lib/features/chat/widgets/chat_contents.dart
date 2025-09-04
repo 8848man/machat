@@ -28,13 +28,14 @@ class _ChatContentsState extends ConsumerState<ChatContents>
             _scrollController.position.maxScrollExtent - 50 &&
         !_isFetching) {
       setFetching(true);
+      final ChatContentsModel state =
+          await ref.read(chatContentsViewModelProvider.future);
       final vm = ref.read(chatContentsViewModelProvider.notifier);
-      final state = await ref.read(chatContentsViewModelProvider.future);
 
-      if (state.hasMore && state.lastDoc != null) {
+      if (state.hasMore && state.lastMessageTime != null) {
         await vm.fetchPreviousChats(
           roomId: state.roomData.roomId,
-          lastDoc: state.lastDoc!,
+          lastCreatedAt: state.lastMessageTime!,
         );
       }
 
