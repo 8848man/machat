@@ -5,7 +5,7 @@ import 'package:machat/features/common/models/ai/ai_chat_request.dart';
 import 'package:machat/features/chat/enums/commands.dart';
 import 'package:machat/features/chat/features/expand/enums/expand_state.dart';
 import 'package:machat/features/chat/features/expand/providers/expand_widget_state_provider.dart';
-import 'package:machat/features/chat/interface/chat_view_model_interface.dart';
+import 'package:machat/features/chat/interfaces/chat_view_model_interface.dart';
 import 'package:machat/features/chat/models/chat_command.dart';
 import 'package:machat/features/chat/providers/chat_command_provider.dart';
 import 'package:machat/features/chat/providers/chat_focus_node_provider.dart';

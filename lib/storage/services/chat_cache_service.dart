@@ -2,8 +2,8 @@
 // ChatCacheService
 // ------------------------
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:machat/core/models/chat.dart';
 import 'package:machat/storage/interfaces/i_json_storage.dart';
-import 'package:machat/storage/models/storage_chat.dart';
 import 'package:machat/storage/providers/chat_storage_provider.dart';
 
 // ------------------------
@@ -19,10 +19,10 @@ class ChatCacheService {
   final Ref ref;
 
   // 메모리 캐시
-  final List<StorageChat> _messages = [];
+  final List<Chat> _messages = [];
 
   // 로컬 저장소
-  late final JsonStorageInterface<List<StorageChat>> _storage;
+  late final JsonStorageInterface<List<Chat>> _storage;
 
   ChatCacheService({required this.chatRoomId, required this.ref}) {
     _initStorage();
@@ -51,10 +51,11 @@ class ChatCacheService {
     }
   }
 
-  List<StorageChat> get messages => List.unmodifiable(_messages);
+  List<Chat> get messages => List.unmodifiable(_messages);
 
   // 새로운 메시지 추가
-  Future<void> appendMessages(List<StorageChat> newMessages) async {
+  Future<void> appendMessages(List<Chat> newMessages) async {
+    print('appendMessage $newMessages');
     final beforeLength = _messages.length;
 
     for (final msg in newMessages) {
@@ -77,9 +78,8 @@ class ChatCacheService {
   }
 
   // lazy loading: 마지막 메시지 기준 이전 데이터 가져오기
-  Future<List<StorageChat>> fetchPreviousMessages({
-    required Future<List<StorageChat>> Function(StorageChat lastMessage)
-        fetchFromServer,
+  Future<List<Chat>> fetchPreviousMessages({
+    required Future<List<Chat>> Function(Chat lastMessage) fetchFromServer,
     int limit = 30,
   }) async {
     if (_messages.isEmpty) {
@@ -103,7 +103,7 @@ class ChatCacheService {
   }
 
   // Stream 실시간 메시지 처리
-  Future<void> handleNewMessage(StorageChat newMessage) async {
+  Future<void> handleNewMessage(Chat newMessage) async {
     if (!_messages.any((e) => e.id == newMessage.id)) {
       _messages.add(newMessage);
       await _saveToStorage();

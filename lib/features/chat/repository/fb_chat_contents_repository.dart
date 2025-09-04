@@ -1,18 +1,21 @@
 import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:machat/features/chat/interfaces/i_chat_contents_repository.dart';
 import 'package:machat/networks/firestore_provider.dart';
 
-final chatContentsRepositoryProvider = Provider<ChatContentsRepository>((ref) {
+final fbChatContentsRepositoryProvider =
+    Provider<FBChatContentsRepository>((ref) {
   final firestore = ref.watch(firestoreProvider);
-  return ChatContentsRepository(firestore);
+  return FBChatContentsRepository(firestore);
 });
 
-class ChatContentsRepository {
+class FBChatContentsRepository extends IChatContentsRepository {
   final FirebaseFirestore firestore;
 
-  ChatContentsRepository(this.firestore);
+  FBChatContentsRepository(this.firestore);
 
+  @override
   Future<List<Map<String, dynamic>>> getInitialChats(String roomId) async {
     final snapshot = await firestore
         .collection('chat_rooms')
@@ -45,40 +48,90 @@ class ChatContentsRepository {
         .toList(); // 시간순 정렬
   }
 
+  @override
   Future<List<Map<String, dynamic>>> getPreviousChats({
     required String roomId,
-    required DocumentSnapshot lastDoc, // 또는 createdAt Timestamp
+    required DateTime lastCreatedAt, // DateTime 기준
     int limit = 30,
   }) async {
-    final snapshot = await firestore
-        .collection('chat_rooms')
-        .doc(roomId)
-        .collection('chat')
-        .orderBy('createdAt', descending: true)
-        .startAfterDocument(lastDoc) // ← 중복 없이 확실함
-        .limit(limit)
-        .get();
-    return snapshot.docs
-        .map((doc) {
-          final data = doc.data();
-          final timestamp = data['createdAt'] as Timestamp?;
-          return {
-            'id': data['id'] ?? '',
-            'createdBy': data['createdBy'] ?? '',
-            'createdAt':
-                timestamp?.toDate().toString() ?? DateTime.now().toString(),
-            'message': data['message'],
-            'isMine': data['createdBy'] == 'currentUserId',
-            'type': data['type'] ?? 'chat',
-            'imageUrl': data['imageUrl'] ?? '',
-            'deletedTo': data['deletedTo'],
-            'isDeletedForEveryone': data['isDeletedForEveryone'],
-            'lastDoc': snapshot.docs.isNotEmpty ? snapshot.docs.last : null,
-          };
-        })
-        .toList()
-        .reversed
-        .toList(); // 시간순 정렬
+    try {
+      final snapshot = await firestore
+          .collection('chat_rooms')
+          .doc(roomId)
+          .collection('chat')
+          .where(
+            'createdAt',
+            isLessThan:
+                Timestamp.fromDate(lastCreatedAt), // DateTime → Timestamp
+          )
+          .orderBy('createdAt', descending: true)
+          .limit(limit)
+          .get();
+
+      return snapshot.docs
+          .map((doc) {
+            final data = doc.data();
+            final timestamp = data['createdAt'] as Timestamp?;
+            return {
+              'id': data['id'] ?? '',
+              'createdBy': data['createdBy'] ?? '',
+              'createdAt':
+                  timestamp?.toDate().toString() ?? DateTime.now().toString(),
+              'message': data['message'] ?? '',
+              'isMine': data['createdBy'] == 'currentUserId',
+              'type': data['type'] ?? 'chat',
+              'imageUrl': data['imageUrl'] ?? '',
+              'deletedTo': data['deletedTo'] ?? [],
+              'isDeletedForEveryone': data['isDeletedForEveryone'] ?? false,
+            };
+          })
+          .toList()
+          .reversed
+          .toList(); // 시간순 정렬
+    } catch (e) {
+      print("Error fetching previous chats: $e");
+      return [];
+    }
+  }
+
+  @override
+  Future<void> deleteChatFromMyself({
+    required String roomId,
+    required String chatId,
+    required String userId,
+  }) async {
+    try {
+      final docRef = FirebaseFirestore.instance
+          .collection('chat_rooms')
+          .doc(roomId)
+          .collection('chat')
+          .doc(chatId);
+      await docRef.update({
+        'deletedTo': FieldValue.arrayUnion([userId]),
+      });
+    } catch (e) {
+      print('error occured when interecting servers!');
+    }
+  }
+
+  @override
+  Future<void> deleteChatFromAll({
+    required String roomId,
+    required String chatId,
+  }) async {
+    try {
+      final docRef = FirebaseFirestore.instance
+          .collection('chat_rooms')
+          .doc(roomId)
+          .collection('chat')
+          .doc(chatId);
+
+      await docRef.update({
+        'isDeletedForEveryone': true,
+      });
+    } catch (e) {
+      print('error occured when interecting servers!');
+    }
   }
 
   List<Map<String, dynamic>> _mapChatDocs(QuerySnapshot snap) =>
@@ -121,43 +174,5 @@ class ChatContentsRepository {
       // 여기서는 단순히 합쳐진 리스트를 반환
       return event;
     });
-  }
-
-  Future<void> deleteChatFromMyself({
-    required String roomId,
-    required String chatId,
-    required String userId,
-  }) async {
-    try {
-      final docRef = FirebaseFirestore.instance
-          .collection('chat_rooms')
-          .doc(roomId)
-          .collection('chat')
-          .doc(chatId);
-      await docRef.update({
-        'deletedTo': FieldValue.arrayUnion([userId]),
-      });
-    } catch (e) {
-      print('error occured when interecting servers!');
-    }
-  }
-
-  Future<void> deleteChatFromAll({
-    required String roomId,
-    required String chatId,
-  }) async {
-    try {
-      final docRef = FirebaseFirestore.instance
-          .collection('chat_rooms')
-          .doc(roomId)
-          .collection('chat')
-          .doc(chatId);
-
-      await docRef.update({
-        'isDeletedForEveryone': true,
-      });
-    } catch (e) {
-      print('error occured when interecting servers!');
-    }
   }
 }

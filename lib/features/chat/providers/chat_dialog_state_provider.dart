@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:machat/features/chat/models/chat.dart';
+import 'package:machat/core/models/chat.dart';
 import 'package:machat/features/chat/models/chat_dialog_state.dart';
 
 AutoDisposeStateProvider<ChatDialogState> chatDialogStateProvider =
