@@ -20,6 +20,7 @@ import 'package:machat/features/common/providers/chat_room_id.dart';
 import 'package:machat/features/profile/view_models/profile_view_model.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:machat/router/lib.dart';
+import 'package:machat_token_service/features/token/view_models/token_view_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'chat_view_model.g.dart';
@@ -97,7 +98,7 @@ class ChatViewModel extends _$ChatViewModel implements ChatViewModelInterface {
     messageController.text = '';
   }
 
-  void commandChatProcess() {
+  Future<void> commandChatProcess() async {
     final List<ChatCommand> chatCommands = ref.read(chatCommandsProvider);
 
     final message = messageController.text.trim();
@@ -136,10 +137,26 @@ class ChatViewModel extends _$ChatViewModel implements ChatViewModelInterface {
     // 2️⃣ /character: prefix 처리
     // -------------------
     if (matchedCommandText.startsWith('/character:')) {
-      runCharacterCommand(
-        characterCommandModel: matchedCommand,
-        sendingMessage: message,
-      );
+      try {
+        final tokenState = await ref.read(tokenViewModelProvider.future);
+        final tokenNotifier = ref.read(tokenViewModelProvider.notifier);
+        if (tokenState.userToken == null ||
+            tokenState.userToken!.currentTokens < 10) {
+          SnackBarCaller().callSnackBar(
+            ref,
+            'AI 캐릭터 채팅 기능을 사용하려면 10 토큰이 필요합니다.',
+          );
+          return;
+        }
+        runCharacterCommand(
+          characterCommandModel: matchedCommand,
+          sendingMessage: message,
+        );
+        await tokenNotifier.spendTokens(10, description: 'AI 캐릭터 채팅 기능 사용');
+      } catch (e) {
+        SnackBarCaller().callSnackBar(ref, '커맨드 실행중 오류가 발생했습니다.');
+      }
+
       return;
     }
 
@@ -163,23 +180,28 @@ class ChatViewModel extends _$ChatViewModel implements ChatViewModelInterface {
     required ChatCommand characterCommandModel,
     required String sendingMessage,
   }) async {
-    final String charPrompt = getCharacterPrompt(characterCommandModel);
-    final String charName = getCharacterName(characterCommandModel);
+    try {
+      final String charPrompt = getCharacterPrompt(characterCommandModel);
+      final String charName = getCharacterName(characterCommandModel);
 
-    final List<AiChatMessage> messages =
-        await buildChatMessages(sendingMessage, ref);
+      final List<AiChatMessage> messages =
+          await buildChatMessages(sendingMessage, ref);
 
-    final aiFacade = ref.read(aiFacadeProvider);
-    final AiChatResponseModel? response = await aiFacade.createChatResponse(
-      AiChatRequest(character_prompt: charPrompt, messages: messages),
-    );
+      final aiFacade = ref.read(aiFacadeProvider);
+      final AiChatResponseModel? response = await aiFacade.createChatResponse(
+        AiChatRequest(character_prompt: charPrompt, messages: messages),
+      );
 
-    if (response == null) {
-      SnackBarCaller().callSnackBar(ref, 'AI 응답이 없습니다.');
-      throw Exception('AI 응답이 없습니다.');
+      if (response == null) {
+        SnackBarCaller().callSnackBar(ref, 'AI 응답이 없습니다.');
+        throw Exception('AI 응답이 없습니다.');
+      }
+
+      await sendToServer(charName, response.message, ref);
+    } catch (e) {
+      SnackBarCaller().callSnackBar(ref, '커맨드 실행중 오류가 발생했습니다.');
+      throw Exception('커맨드 실행중 오류가 발생했습니다.');
     }
-
-    await sendToServer(charName, response.message, ref);
   }
 
   void closeExpand() {
