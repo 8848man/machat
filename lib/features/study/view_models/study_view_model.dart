@@ -24,12 +24,9 @@ class StudyViewModel extends _$StudyViewModel {
   }
 
   void setVocabListLength({required VocabularyModelList vocabList}) {
-    // subjectListLengthProvider가 초기화되지 않았을 경우 할당
-    if (ref.read(vocabularyListLengthProvider) == null) {
-      ref
-          .read(vocabularyListLengthProvider.notifier)
-          .update((state) => vocabList.vocabularyList.length);
-    }
+    ref
+        .read(vocabularyListLengthProvider.notifier)
+        .update((state) => vocabList.vocabularyList.length);
   }
 
   Future<VocabularyModelList> getDummyVocabularyList() async {
