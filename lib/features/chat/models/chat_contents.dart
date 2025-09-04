@@ -13,6 +13,7 @@ class ChatContentsModel with _$ChatContentsModel {
     required bool hasMore,
     required DocumentSnapshot? lastDoc,
     required ChatRoomData roomData,
+    Timestamp? lastMessageTime,
   }) = _ChatContentsModel;
 
   // factory ChatContentsModel.fromJson(Map<String, dynamic> json) =>

@@ -36,6 +36,9 @@ class ChatContentsViewModel extends _$ChatContentsViewModel {
       isLoading: false,
       hasMore: initialMessages.length == 30,
       roomData: roomData,
+      lastMessageTime: initialMessages.isNotEmpty
+          ? (initialMessages.first['createdAt'] as Timestamp)
+          : null,
     );
 
     return chatContentsModel;

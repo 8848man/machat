@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:machat/core/models/chat.dart';
 import 'package:machat/storage/interfaces/i_json_storage.dart';
-import 'package:machat/storage/models/storage_chat.dart';
 import 'package:machat/storage/providers/chat_storage_provider.dart';
 import 'package:machat/storage/services/chat_cache_service.dart';
 import 'package:mocktail/mocktail.dart';
@@ -9,44 +9,44 @@ import 'package:mocktail/mocktail.dart';
 class MockJsonStorage<T> extends Mock
     implements JsonStorageInterface<List<T>> {}
 
-class FakeStorageChat extends Fake implements StorageChat {}
+class FakeChat extends Fake implements Chat {}
 
 class MockRef extends Mock implements Ref {}
 
 void main() {
   setUpAll(() {
-    registerFallbackValue(FakeStorageChat());
+    registerFallbackValue(FakeChat());
   });
 
   group('ChatCacheService', () {
-    late MockJsonStorage<StorageChat> mockStorage;
+    late MockJsonStorage<Chat> mockStorage;
     late ProviderContainer container;
     late ChatCacheService service;
 
     const chatRoomId = 'room_123';
-    late StorageChat sampleMessage;
-    late StorageChat olderMessage;
-    late StorageChat newerMessage;
+    late Chat sampleMessage;
+    late Chat olderMessage;
+    late Chat newerMessage;
 
     setUp(() {
       // 테스트 데이터 설정 - 객체와 JSON 모두 준비
       final now = DateTime.now();
 
-      sampleMessage = StorageChat(
+      sampleMessage = Chat(
         id: '1',
         message: 'Hello',
         createdAt: now.toString(),
         createdBy: 'user1',
       );
 
-      olderMessage = StorageChat(
+      olderMessage = Chat(
         id: '0',
         message: 'Previous',
         createdAt: now.subtract(const Duration(days: 1)).toString(),
         createdBy: 'user2',
       );
 
-      newerMessage = StorageChat(
+      newerMessage = Chat(
         id: '2',
         message: 'Newer',
         createdAt: now.add(const Duration(minutes: 1)).toString(),
@@ -54,7 +54,7 @@ void main() {
       );
 
       // Mock Storage 설정
-      mockStorage = MockJsonStorage<StorageChat>();
+      mockStorage = MockJsonStorage<Chat>();
     });
 
     tearDown(() {
@@ -208,7 +208,7 @@ void main() {
             verify(() => mockStorage.save(chatRoomId, captureAny())).captured;
         final savedData = captured.last as List;
         expect(savedData, hasLength(2));
-        expect(savedData.first, isA<StorageChat>());
+        expect(savedData.first, isA<Chat>());
       });
 
       test('appendMessages는 중복 메시지를 무시한다', () async {
@@ -222,8 +222,7 @@ void main() {
         // Then - 메시지 수는 그대로, 저장도 호출되지 않음
         expect(service.messages, hasLength(1));
         // verifyNever(() => mockStorage.save(any(), any()));
-        verifyNever(
-            () => mockStorage.save(any<String>(), any<List<StorageChat>>()));
+        verifyNever(() => mockStorage.save(any<String>(), any<List<Chat>>()));
       });
 
       test('handleNewMessage는 새로운 메시지를 추가하고 저장한다', () async {
@@ -257,7 +256,7 @@ void main() {
 
       test('fetchPreviousMessages는 서버에서 데이터를 가져와 저장한다', () async {
         // Given
-        fetchFunction(StorageChat lastMessage) async => [olderMessage];
+        fetchFunction(Chat lastMessage) async => [olderMessage];
 
         // When
         final result = await service.fetchPreviousMessages(
@@ -278,7 +277,7 @@ void main() {
 
       test('fetchPreviousMessages는 빈 결과를 올바르게 처리한다', () async {
         // Given
-        fetchFunction(StorageChat lastMessage) async => <StorageChat>[];
+        fetchFunction(Chat lastMessage) async => <Chat>[];
 
         // When
         final result = await service.fetchPreviousMessages(
@@ -304,7 +303,7 @@ void main() {
         final emptyService = emptyContainer.read(chatCacheProvider(chatRoomId));
         await Future.delayed(const Duration(milliseconds: 200));
 
-        fetchFunction(StorageChat lastMessage) async => [olderMessage];
+        fetchFunction(Chat lastMessage) async => [olderMessage];
 
         // When
         final result = await emptyService.fetchPreviousMessages(
@@ -376,16 +375,16 @@ void main() {
 
 // 디버깅을 위한 헬퍼
 void debugStorageTypes() {
-  test('StorageChat 타입 확인', () {
-    const message = StorageChat(id: '1', message: 'test');
+  test('Chat 타입 확인', () {
+    const message = Chat(id: '1', message: 'test');
     final json = message.toJson();
 
-    print('StorageChat type: ${message.runtimeType}');
+    print('Chat type: ${message.runtimeType}');
     print('JSON type: ${json.runtimeType}');
     print('JSON content: $json');
 
     // JSON에서 다시 객체로 변환 테스트
-    final restored = StorageChat.fromJson(json);
+    final restored = Chat.fromJson(json);
     print('Restored type: ${restored.runtimeType}');
     print('Restored content: ${restored.toString()}');
   });
