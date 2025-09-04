@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:machat/config/firebase_config.dart';
 import 'package:machat/design_system/lib.dart';
 import 'package:machat/router/lib.dart';
@@ -41,6 +42,16 @@ Future<void> initFirebase() async {
   } catch (e, stack) {
     print("Firebase 초기화 실패: $e");
     print(stack);
+  }
+}
+
+Future<void> initLocalDB() async {
+  if (!kIsWeb) {
+    // 모바일/데스크톱에서만 Hive 초기화
+    await Hive.initFlutter();
+  } else {
+    // 웹은 IndexedDB를 쓰거나 따로 JsonStorageWeb 구현 사용
+    // Hive는 웹에서도 동작하지만 안정성은 idb 기반 구현이 더 낫습니다.
   }
 }
 
