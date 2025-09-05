@@ -35,33 +35,33 @@ graph TB
     FB_Auth[(Firebase Auth)]
     
     %% --- 실시간 채팅 ---
-    ChatUI --> FS_Stream[Firestore Stream]
-    ChatUI --> FS_DB
-    ChatUI --> IDB_Cache[IDB(WEB)]
-    ChatUI --> Hive_Cache[HIVE(MOBILE)]
-    VocabUI --> Gemini_Server[Gemini API Server]
-    Gemini_Server --> Gemini_API[Google Gemini API]
+    ChatUI --> FS_Stream[Firestore Stream];
+    ChatUI --> FS_DB;
+    ChatUI --> IDB_Cache[IDB(WEB)];
+    ChatUI --> Hive_Cache[HIVE(MOBILE)];
+    VocabUI --> Gemini_Server[Gemini API Server];
+    Gemini_Server --> Gemini_API[Google Gemini API];
     
     %% --- AI 캐릭터 보이스 ---
-    VoiceUI --> TTS_Service[TTS Service]
-    VoiceUI --> Provider_Cache[Provider]
-    TTS_Service --> TTS_Proxy[TTS Proxy Server]
-    TTS_Proxy --> Supertone[Supertone API]
+    VoiceUI --> TTS_Service[TTS Service];
+    VoiceUI --> Provider_Cache[Provider];
+    TTS_Service --> TTS_Proxy[TTS Proxy Server];
+    TTS_Proxy --> Supertone[Supertone API];
     
     %% --- 단어장 기능 ---
-    VocabUI --> Gemini_Server
-    VocabUI --> FS_DB
-    Gemini_Server --> FS_DB
+    VocabUI --> Gemini_Server;
+    VocabUI --> FS_DB;
+    Gemini_Server --> FS_DB;
     
     %% --- 친구 초대 ---
-    InviteUI --> FS_DB
+    InviteUI --> FS_DB;
     
     %% --- 채팅방 리스트 관리 ---
-    RoomListUI --> FS_DB
+    RoomListUI --> FS_DB;
     
     %% --- 로그인 기능 ---
-    LoginUI --> FB_Auth
-    LoginUI --> SecureStorage[Secure Storage]
+    LoginUI --> FB_Auth;
+    LoginUI --> SecureStorage[Secure Storage];
 ```
 
 
