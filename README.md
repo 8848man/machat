@@ -37,14 +37,13 @@ graph TB
     %% --- 실시간 채팅 ---
     ChatUI --> FS_Stream[Firestore Stream];
     ChatUI --> FS_DB;
-    ChatUI --> Web_Cache[IDB];
-    ChatUI --> Mobile_Cache[Hive];
-    VocabUI --> Gemini_Server[Gemini API Server];
+    ChatUI --> Web_Cache[IDB_Cache];
+    ChatUI --> Mobile_Cache[Hive_Cache];
     Gemini_Server --> Gemini_API[Google Gemini API];
     
     %% --- AI 캐릭터 보이스 ---
     VoiceUI --> TTS_Service[TTS Service];
-    VoiceUI --> Provider_Cache[Provider];
+    VoiceUI --> Provider_Cache[Provider_Cache];
     TTS_Service --> TTS_Proxy[TTS Proxy Server];
     TTS_Proxy --> Supertone[Supertone API];
     
