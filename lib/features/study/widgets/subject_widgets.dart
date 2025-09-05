@@ -4,6 +4,7 @@ import 'package:machat/design_system/lib.dart';
 import 'package:machat/extensions.dart';
 import 'package:machat/features/common/animated_widgets/hover_click_animation_box.dart';
 import 'package:machat/features/common/animated_widgets/mc_appear.dart';
+import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:machat/features/study/models/vocabulary_model.dart';
 import 'package:machat/features/study/providers/subject_list_length.dart';
 import 'package:machat/features/study/view_models/study_view_model.dart';
@@ -20,66 +21,61 @@ class SubjectBundle extends ConsumerWidget {
     ref.read(studyViewModelProvider);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
-      // child: SingleChildScrollView(
-      //   child: SizedBox(
-      //     width: double.infinity,
-      //     child: Column(
-      //       crossAxisAlignment: CrossAxisAlignment.center,
-      //       children: [
-      //         buildHeader(ref),
-      //         MCSpace().verticalSpace(),
-      //         // buildRecentStudy(),
-      //       ],
-      //     ),
-      //   ),
-      // ),
-      child: buildHeader(ref),
+      child: buildBundle(ref),
+    );
+  }
+
+  Widget buildBundle(WidgetRef ref) {
+    return Center(
+      child: Container(
+        constraints: BoxConstraints(maxWidth: 500),
+        child: Column(
+          children: [
+            buildHeader(ref),
+            buildBody().expand(),
+          ],
+        ),
+      ),
     );
   }
 
   Widget buildHeader(WidgetRef ref) {
+    // final notifier = ref.read(studyViewModelProvider.notifier);
+    return Row(
+      children: [
+        buildTitleText('영단어를 외워봐요'),
+        const Spacer(),
+        // buildTitleText('항목 관리', onTap: () => notifier.goSubjectManagePage()),
+      ],
+    );
+  }
+
+  Widget buildBody() {
     return Consumer(builder: (context, ref, child) {
       final int? vocabListLength = ref.watch(vocabularyListLengthProvider);
-      final StudyViewModel notifier = ref.read(studyViewModelProvider.notifier);
-      return Center(
-        child: Container(
-          constraints: BoxConstraints(maxWidth: 500),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  buildTitleText('영단어를 외워봐요'),
-                  const Spacer(),
-                  // buildTitleText('항목 관리',
-                  //     onTap: () => notifier.goSubjectManagePage()),
-                ],
-              ),
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    MCSpace().verticalHalfSpace(),
-                    // 수업 과목 리스트 생성
-                    ...subjectGenerator(vocabListLength),
-                    const SizedBox(height: 8), // 간격 조절
-                    McAppear(
-                      delayMs: 300,
-                      child: GestureDetector(
-                        onTap: () {
-                          final router = ref.read(goRouterProvider);
-                          router.pushNamed(RouterPath.addVocabulary.name);
-                        },
-                        child: buildFrameBox(
-                          child: const Center(
-                            child: Text("단어장 새로 등록하기!"),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+
+      return SingleChildScrollView(
+        child: Column(
+          children: [
+            MCSpace().verticalHalfSpace(),
+            // 수업 과목 리스트 생성
+            ...subjectGenerator(vocabListLength),
+            const SizedBox(height: 8), // 간격 조절
+            McAppear(
+              delayMs: 300,
+              child: GestureDetector(
+                onTap: () {
+                  final router = ref.read(goRouterProvider);
+                  router.pushNamed(RouterPath.addVocabulary.name);
+                },
+                child: buildFrameBox(
+                  child: const Center(
+                    child: Text("단어장 새로 등록하기!"),
+                  ),
                 ),
-              ).expand(),
-            ],
-          ),
+              ),
+            ),
+          ],
         ),
       );
     });
@@ -170,20 +166,22 @@ class SubjectBundle extends ConsumerWidget {
                 child: Row(
                   children: [
                     buildIcon(),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        buildTitle(vocabData.title),
-                        MCSpace().verticalHalfSpace(),
-                        buildProgressBar(
-                          vocabData.progressRate,
-                          vocabData.progressConfusedRate,
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
+                    SizedBox(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          buildTitle(vocabData, ref),
+                          MCSpace().verticalHalfSpace(),
+                          buildProgressBar(
+                            vocabData.progressRate,
+                            vocabData.progressConfusedRate,
+                          ),
+                        ],
+                      ),
+                    ).expand(),
                     // buildHover(),
+                    const SizedBox(width: 80),
                   ],
                 ),
               ),
@@ -209,51 +207,35 @@ Widget buildIcon() {
   );
 }
 
-Widget buildTitle(String? title) {
-  return Text(
-    title ?? '제목 없음!',
-    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+Widget buildTitle(VocabularyModel vocabData, WidgetRef ref) {
+  final notifier = ref.read(studyViewModelProvider.notifier);
+  return Row(
+    children: [
+      Text(
+        vocabData.title,
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      ),
+      const Spacer(),
+      GestureDetector(
+          onTap: () => SnackBarCaller().callSnackBar(ref, '오래 눌러서 삭제할 수 있어요!'),
+          onLongPress: () => notifier.deleteVocabulary(vocabData),
+          child: const Icon(Icons.close, size: 24)),
+      MCSpace().horizontalHalfSpace(),
+    ],
   );
 }
 
 Widget buildProgressBar(double knowRate, double confusedRate) {
-  // const double progress = 1; // 예시로 50% 진행된 상태
   return Row(
     children: [
-      // TweenAnimationBuilder<double>(
-      //   tween: Tween<double>(begin: 0.0, end: progress), // 목표 value까지
-      //   duration: const Duration(milliseconds: 600), // 애니메이션 지속 시간
-      //   builder: (context, value, child) {
-      //     return SizedBox(
-      //       width: 200,
-      //       height: 10,
-      //       child: LinearProgressIndicator(
-      //         value: value,
-      //         backgroundColor: Colors.grey[300],
-      //         color: Colors.blueAccent,
-      //       ),
-      //     );
-      //   },
-      // ),
       TweenAnimationBuilder<double>(
         tween: Tween<double>(begin: 0, end: knowRate),
-        duration: const Duration(milliseconds: 600),
+        duration: const Duration(milliseconds: 500),
         builder: (context, animatedKnow, _) {
           return TweenAnimationBuilder<double>(
             tween: Tween<double>(begin: 0, end: confusedRate),
-            duration: const Duration(milliseconds: 600),
+            duration: const Duration(milliseconds: 700),
             builder: (context, animatedConfused, _) {
-              // return TweenAnimationBuilder<double>(
-              //   tween: Tween<double>(begin: 0, end: masteredRate),
-              //   duration: const Duration(milliseconds: 600),
-              //   builder: (context, animatedMastered, _) {
-              //     return MasteryProgressBar(
-              //       knowRate: animatedKnow,
-              //       confusedRate: animatedConfused,
-              //       masteredRate: animatedMastered,
-              //     );
-              //   },
-              // );
               return MasteryProgressBar(
                 knowRate: animatedKnow,
                 confusedRate: animatedConfused,

@@ -23,7 +23,6 @@ class ChatContentsService {
   Future<List<Map<String, dynamic>>> getInitialChats(String roomId) async {
     // 1. 캐시 먼저
     final cached = await lcRepository.getInitialChats(roomId);
-    print('cached data is $cached');
     if (cached.isNotEmpty) return cached;
 
     // 2. 없으면 Firestore

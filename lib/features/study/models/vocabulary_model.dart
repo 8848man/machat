@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:machat/features/common/utils/timestamp_converter.dart';
 part 'vocabulary_model.freezed.dart';
 part 'vocabulary_model.g.dart';
 
@@ -25,10 +26,10 @@ class VocabularyModel with _$VocabularyModel {
     int? sortIndex,
     @Default('') String title,
     @Default('') String memo,
-    DateTime? createdDate,
-    DateTime? modifiedDate,
-    DateTime? deletedDate,
-    DateTime? lastVisit,
+    @TimestampConverter() DateTime? createdDate,
+    @TimestampConverter() DateTime? modifiedDate,
+    @TimestampConverter() DateTime? deletedDate,
+    @TimestampConverter() DateTime? lastVisit,
   }) = _VocabularyModel;
 
   factory VocabularyModel.fromJson(Map<String, dynamic> json) =>

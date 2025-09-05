@@ -16,12 +16,13 @@ class MasteryProgressBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final total = knowRate + confusedRate;
+    final mediaWidth = MediaQuery.of(context).size.width;
     // + masteredRate;
 
     return ClipRRect(
       borderRadius: const BorderRadius.all(Radius.circular(4)),
       child: SizedBox(
-        width: 200,
+        width: mediaWidth < 440 ? 100 : 200,
         height: 10,
         child: Row(
           children: [

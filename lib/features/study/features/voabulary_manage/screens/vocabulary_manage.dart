@@ -5,8 +5,8 @@ import 'package:machat/features/common/layouts/bundle_layout.dart';
 import 'package:machat/features/common/layouts/lib.dart';
 import 'package:machat/router/lib.dart';
 
-class SubjectManage extends ConsumerWidget {
-  const SubjectManage({super.key});
+class VocabularyManage extends ConsumerWidget {
+  const VocabularyManage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -15,7 +15,6 @@ part 'study_view_model.g.dart';
 class StudyViewModel extends _$StudyViewModel {
   @override
   Future<StudyModel> build() async {
-    // VocabularyModelList dummyVocabularyList = await getDummyVocabularyList();
     VocabularyModelList vocabList = await getVocabList();
 
     setVocabListLength(vocabList: vocabList);
@@ -29,24 +28,6 @@ class StudyViewModel extends _$StudyViewModel {
         .update((state) => vocabList.vocabularyList.length);
   }
 
-  Future<VocabularyModelList> getDummyVocabularyList() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    List<VocabularyModel> vocabList = [];
-
-    final eEnglishModel =
-        VocabularyModel(title: '초등 영어', lastVisit: DateTime.now());
-    final toeicEnglishModel = VocabularyModel(
-        title: '토익 영어',
-        lastVisit: DateTime.now(),
-        wordCount: 10,
-        memorizedWordCount: 5);
-
-    vocabList.add(eEnglishModel);
-    vocabList.add(toeicEnglishModel);
-
-    return VocabularyModelList(vocabularyList: vocabList);
-  }
-
   Future<VocabularyModelList> getVocabList() async {
     try {
       final currentUser = FirebaseAuth.instance.currentUser;
@@ -57,7 +38,16 @@ class StudyViewModel extends _$StudyViewModel {
           .read(vocabularyRepositoryProvider)
           .fetchUserVocabulariesOrderedByLastVisit(currentUser!.uid);
 
-      return VocabularyModelList(vocabularyList: vocabList);
+      final orderedVocabList = vocabList.toList()
+        ..sort((a, b) {
+          final aLastVisit =
+              a.lastVisit ?? DateTime.fromMillisecondsSinceEpoch(0);
+          final bLastVisit =
+              b.lastVisit ?? DateTime.fromMillisecondsSinceEpoch(0);
+          return bLastVisit.compareTo(aLastVisit);
+        });
+
+      return VocabularyModelList(vocabularyList: orderedVocabList);
     } catch (e) {
       SnackBarCaller().callSnackBar(ref, '데이터를 가져오는데 실패했습니다. $e');
       rethrow;
@@ -70,11 +60,19 @@ class StudyViewModel extends _$StudyViewModel {
     print('Navigating to detail page for subject: $subject');
   }
 
-  Future<void> goEnglishVocaPage(VocabularyModel vocaData) async {
+  Future<void> goEnglishVocaPage(VocabularyModel vocabData) async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) {
+      Exception('유저 정보가 없습니다!');
+    }
+    ref.read(vocabularyRepositoryProvider).setVocabularyLastVisit(
+        userId: currentUser!.uid,
+        vocabularyId: vocabData.id ?? '',
+        lastVisit: DateTime.now());
     // 애니메이션 딜레이
     Future.delayed(const Duration(milliseconds: 150), () async {
       // 현재 Voca 데이터 갱신
-      ref.read(nowVocaProvider.notifier).update((state) => vocaData);
+      ref.read(nowVocaProvider.notifier).update((state) => vocabData);
       // 라우팅
       final router = ref.read(goRouterProvider);
       router.goNamed(RouterPath.englishVoca.name);
@@ -84,5 +82,34 @@ class StudyViewModel extends _$StudyViewModel {
   void goSubjectManagePage() {
     final router = ref.read(goRouterProvider);
     router.goNamed(RouterPath.subjectManage.name);
+  }
+
+  void deleteVocabulary(VocabularyModel vocabData) {
+    try {
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser == null) {
+        Exception('유저 정보가 없습니다!');
+      }
+      ref
+          .read(vocabularyRepositoryProvider)
+          .deleteVocabulary(
+              userId: currentUser!.uid, vocabularyId: vocabData.id ?? '')
+          .then((_) {
+        // 삭제 성공 시, SnackBar 표시
+        SnackBarCaller().callSnackBar(ref, '단어장이 삭제되었습니다.');
+        // 단어장 리스트 갱신
+        update((state) async {
+          VocabularyModelList updatedVocabList = await getVocabList();
+          setVocabListLength(vocabList: updatedVocabList);
+          return state.copyWith(vocabularyModelList: updatedVocabList);
+        });
+      }).catchError((error) {
+        // 삭제 실패 시, SnackBar 표시
+        SnackBarCaller().callSnackBar(ref, '단어장 삭제에 실패했습니다. $error');
+      });
+    } catch (e) {
+      SnackBarCaller().callSnackBar(ref, '단어장 삭제에 실패했습니다. $e');
+      return;
+    }
   }
 }

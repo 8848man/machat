@@ -7,15 +7,15 @@ import 'package:machat/router/lib.dart';
 Widget loadingOvertime(WidgetRef ref) {
   final completer = ref.read(cancelCompleterProvider);
 
-  // Future.delayed(const Duration(seconds: 3), () {
-  //   if (!completer.isCompleted) {
-  //     completer.complete();
-  //     ref.read(goRouterProvider).goNamed(RouterPath.home.name);
-  //     Future.delayed(const Duration(seconds: 1), () {
-  //       showSnackBar(ref, '네트워크 연결이 불안정합니다. 다시 시도해주세요.');
-  //     });
-  //   }
-  // });
+  Future.delayed(const Duration(seconds: 3), () {
+    if (!completer.isCompleted) {
+      completer.complete();
+      ref.read(goRouterProvider).goNamed(RouterPath.home.name);
+      Future.delayed(const Duration(seconds: 1), () {
+        showSnackBar(ref, '네트워크 연결이 불안정합니다. 다시 시도해주세요.');
+      });
+    }
+  });
 
   return const Center(
     child: CircularProgressIndicator(),

@@ -55,7 +55,6 @@ class ChatCacheService {
 
   // 새로운 메시지 추가
   Future<void> appendMessages(List<Chat> newMessages) async {
-    print('appendMessage $newMessages');
     final beforeLength = _messages.length;
 
     for (final msg in newMessages) {
