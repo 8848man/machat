@@ -33,8 +33,8 @@ graph TB
     %% --- 실시간 채팅 ---
     ChatUI --> FS_Stream[Firestore Stream]
     ChatUI --> FS_DB[Firebase Firestore]
-    ChatUI --> MC_Cache[IDB(WEB)]
-    ChatUI --> MC_Cache[HIVE(MOBILE)]
+    ChatUI --> Web_Cache[IDB(WEB)]
+    ChatUI --> Mobile_Cache[HIVE(MOBILE)]
     VocabUI --> Gemini_Server[Gemini API Server]
     Gemini_Server --> Gemini_API[Google Gemini API]
 
