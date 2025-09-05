@@ -20,7 +20,6 @@ class VocabularyRepository {
     try {
       await _firestore.runTransaction((transaction) async {
         await _saveToUserVocabulary(transaction, userId, vocabulary);
-
       });
     } catch (e) {
       print('Error occurred during transaction: $e');
@@ -62,5 +61,37 @@ class VocabularyRepository {
     return snapshot.docs
         .map((doc) => VocabularyModel.fromJson(doc.data()..['id'] = doc.id))
         .toList();
+  }
+
+  Future<void> deleteVocabulary(
+      {required String userId, required String vocabularyId}) async {
+    try {
+      await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('user_vocabulary')
+          .doc(vocabularyId)
+          .delete();
+    } catch (e) {
+      print('Error deleting vocabulary: $e');
+    }
+  }
+
+  Future<void> setVocabularyLastVisit({
+    required String userId,
+    required String vocabularyId,
+    required DateTime lastVisit,
+  }) async {
+    try {
+      final vocabRef = _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('user_vocabulary')
+          .doc(vocabularyId);
+
+      await vocabRef.update({'lastVisit': lastVisit});
+    } catch (e) {
+      print('Error updating last visit: $e');
+    }
   }
 }

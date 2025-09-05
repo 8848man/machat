@@ -26,6 +26,7 @@ class VocaFlashCard extends ConsumerStatefulWidget {
 class _VocaFlashCardState extends ConsumerState<VocaFlashCard> {
   bool isTranslated = false;
   bool isDeleting = false;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -81,27 +82,63 @@ class _VocaFlashCardState extends ConsumerState<VocaFlashCard> {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    Text(
-                      getWord(isTranslated, widget.wordData),
-                      style: TextStyle(
-                          color: MCColors.$color_grey_100, fontSize: 24),
+                    Expanded(
+                      child: Text(
+                        getWord(isTranslated, widget.wordData),
+                        style: TextStyle(
+                          color: MCColors.$color_grey_100,
+                          fontSize: 16,
+                        ),
+                        overflow: TextOverflow.ellipsis, // 넘치면 ... 처리
+                        maxLines: 1, // 한 줄까지만 표시
+                        softWrap: false, // 줄바꿈 안 하고 잘림 처리
+                      ),
                     ),
                     const Spacer(),
-                    GestureDetector(
-                      onTap: () => ref
-                          .read(memoListViewModelProvider.notifier)
-                          .changeMastery(widget.wordData),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: getMasteryColor(widget.wordData.masteryLevel),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(4)),
+                    Stack(
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            try {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              await ref
+                                  .read(memoListViewModelProvider.notifier)
+                                  .changeMastery(widget.wordData);
+                            } catch (e) {
+                              // Handle error
+                            } finally {
+                              setState(() {
+                                isLoading = false;
+                              });
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color:
+                                  getMasteryColor(widget.wordData.masteryLevel),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(4)),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(2),
+                              child: buildMastery(widget.wordData.masteryLevel),
+                            ),
+                          ),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(2),
-                          child: buildMastery(widget.wordData.masteryLevel),
-                        ),
-                      ),
+                        if (isLoading)
+                          Positioned.fill(
+                            child: Container(
+                              width: 10,
+                              height: 10,
+                              color: Colors.black.withOpacity(0.3),
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
                   ],
                 ),
