@@ -29,32 +29,37 @@ graph TB
         RoomListUI[채팅방 리스트 UI]
         LoginUI[로그인 UI]
     end
-
+    
     %% --- 실시간 채팅 ---
     ChatUI --> FS_Stream[Firestore Stream]
     ChatUI --> FS_DB[Firebase Firestore]
-
-    %% --- AI 캐릭터 보이스 ---
-    VoiceUI --> TTS_Service[TTS Service]
-    TTS_Service --> TTS_Proxy[TTS Proxy Server]
-    TTS_Proxy --> Supertone[Supertone API]
-
-    %% --- 단어장 기능 ---
+    ChatUI --> IDB_Cache[IDB(WEB)]
+    ChatUI --> Hive_Cache[HIVE(MOBILE)]
     VocabUI --> Gemini_Server[Gemini API Server]
     Gemini_Server --> Gemini_API[Google Gemini API]
+    
+    %% --- AI 캐릭터 보이스 ---
+    VoiceUI --> TTS_Service[TTS Service]
+    VoiceUI --> Provider_Cache[Provider]
+    TTS_Service --> TTS_Proxy[TTS Proxy Server]
+    TTS_Proxy --> Supertone[Supertone API]
+    
+    %% --- 단어장 기능 ---
+    VocabUI --> Gemini_Server
+    Gemini_Server --> Gemini_API
     VocabUI --> FS_DB
     Gemini_Server --> FS_DB
-
+    
     %% --- 친구 초대 ---
     InviteUI --> FS_DB
-
+    
     %% --- 채팅방 리스트 관리 ---
     RoomListUI --> FS_DB
-
+    
     %% --- 로그인 기능 ---
     LoginUI --> FB_Auth[Firebase Auth]
     LoginUI --> SecureStorage[Secure Storage]
-
+    
     %% --- Firebase 공통 ---
     FS_DB[(Firebase Firestore)]
     FB_Auth[(Firebase Auth)]
