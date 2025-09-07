@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:machat/features/chat_create/consts/ids.dart';
 import 'package:machat/features/chat_create/models/chat_create_model.dart';
 import 'package:machat/features/common/providers/view_model_disposer.dart';
 import 'package:machat/features/common/view_models/chat_room_crud_view_model.dart';
@@ -30,7 +31,8 @@ class ChatCreateViewModel extends _$ChatCreateViewModel {
   Future<void> createChatRoomProcess() async {
     final router = ref.read(goRouterProvider);
     ChatRoomType type = ChatRoomType.group;
-    final bool isOpenChat = ref.read(checkboxStateProvider.notifier).state;
+    final bool isOpenChat =
+        ref.read(checkboxStateProvider(IS_CHAT_OPEN_ID).notifier).state;
     if (isOpenChat) {
       type = ChatRoomType.open;
     }

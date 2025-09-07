@@ -30,6 +30,7 @@ class VocabularyModel with _$VocabularyModel {
     @TimestampConverter() DateTime? modifiedDate,
     @TimestampConverter() DateTime? deletedDate,
     @TimestampConverter() DateTime? lastVisit,
+    @Default(false) bool hasEarnPoints,
   }) = _VocabularyModel;
 
   factory VocabularyModel.fromJson(Map<String, dynamic> json) =>

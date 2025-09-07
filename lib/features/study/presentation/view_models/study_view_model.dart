@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:machat/features/home/enums/subject_enum.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
-import 'package:machat/features/study/models/study.dart';
-import 'package:machat/features/study/models/vocabulary_model.dart';
-import 'package:machat/features/study/providers/subject_list_length.dart';
-import 'package:machat/features/study/providers/voca_info_provider.dart';
-import 'package:machat/features/study/repositories/vocabulary_repository.dart';
+import 'package:machat/features/study/data/models/study.dart';
+import 'package:machat/features/study/data/models/vocabulary_model.dart';
+import 'package:machat/features/study/presentation/providers/subject_list_length.dart';
+import 'package:machat/features/study/presentation/providers/voca_info_provider.dart';
+import 'package:machat/features/study/data/repositories/vocabulary_repository.dart';
 import 'package:machat/router/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -109,6 +109,43 @@ class StudyViewModel extends _$StudyViewModel {
       });
     } catch (e) {
       SnackBarCaller().callSnackBar(ref, '단어장 삭제에 실패했습니다. $e');
+      return;
+    }
+  }
+
+  Future<void> earnPoints(VocabularyModel vocabData) async {
+    try {
+      if (vocabData.hasEarnPoints) {
+        SnackBarCaller().callSnackBar(ref, '이미 포인트를 얻었어요!');
+        return;
+      }
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser == null) {
+        Exception('유저 정보가 없습니다!');
+      }
+      if (vocabData.hasEarnPoints) {
+        SnackBarCaller().callSnackBar(ref, '이미 포인트를 얻었어요!');
+        return;
+      }
+      await ref
+          .read(vocabularyRepositoryProvider)
+          .earnPoints(
+              userId: currentUser!.uid, vocabularyId: vocabData.id ?? '')
+          .then((_) {
+        // 성공 시, SnackBar 표시
+        SnackBarCaller().callSnackBar(ref, '포인트를 얻었어요!');
+        // 단어장 리스트 갱신
+        update((state) async {
+          VocabularyModelList updatedVocabList = await getVocabList();
+          setVocabListLength(vocabList: updatedVocabList);
+          return state.copyWith(vocabularyModelList: updatedVocabList);
+        });
+      }).catchError((error) {
+        // 실패 시, SnackBar 표시
+        SnackBarCaller().callSnackBar(ref, '포인트 획득에 실패했습니다. $error');
+      });
+    } catch (e) {
+      SnackBarCaller().callSnackBar(ref, '포인트 획득에 실패했습니다. $e');
       return;
     }
   }

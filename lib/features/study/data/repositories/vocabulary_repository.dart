@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:machat/features/study/models/vocabulary_model.dart';
+import 'package:machat/features/study/data/models/vocabulary_model.dart';
 import 'package:machat/networks/firestore_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -92,6 +92,20 @@ class VocabularyRepository {
       await vocabRef.update({'lastVisit': lastVisit});
     } catch (e) {
       print('Error updating last visit: $e');
+    }
+  }
+
+  Future<void> earnPoints(
+      {required String userId, required String vocabularyId}) async {
+    try {
+      await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('user_vocabulary')
+          .doc(vocabularyId)
+          .update({'hasEarnPoints': true});
+    } catch (e) {
+      print('Error earning points: $e');
     }
   }
 }

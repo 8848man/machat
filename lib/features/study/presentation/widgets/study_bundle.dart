@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:machat/features/study/widgets/subject_widgets.dart';
+import 'package:machat/features/study/presentation/widgets/subject_widgets.dart';
 
 class StudyBundle extends StatelessWidget {
   const StudyBundle({super.key});

@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:machat/features/study/features/add_vocabulary/models/add_vocabulary_model.dart';
-import 'package:machat/features/study/models/vocabulary_model.dart';
-import 'package:machat/features/study/repositories/vocabulary_repository.dart';
-import 'package:machat/features/study/view_models/study_view_model.dart';
+import 'package:machat/features/study/data/models/vocabulary_model.dart';
+import 'package:machat/features/study/data/repositories/vocabulary_repository.dart';
+import 'package:machat/features/study/presentation/view_models/study_view_model.dart';
 import 'package:machat/router/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
