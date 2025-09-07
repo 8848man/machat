@@ -25,6 +25,8 @@ class AddVocabularyViewModel extends _$AddVocabularyViewModel {
   }) async {
     final repository = ref.read(vocabularyRepositoryProvider);
     try {
+      // loading 상태일 경우 그냥 리턴
+      if (state.isLoading) return;
       setLoading(true);
       final User? currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser == null) {
