@@ -92,6 +92,7 @@ dependencies:
   idb_shim: ^2.6.1+7
   hive_flutter: ^1.1.0
   mocktail: ^1.0.4
+  flutter_image_compress: ^2.4.0
 
 dev_dependencies:
   flutter_test:

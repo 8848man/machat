@@ -30,16 +30,12 @@ class HomeChatList extends ConsumerWidget {
       BuildContext context, ChatListModel data, ChatListViewModel notifier) {
     // 채팅방이 없을 경우 인디케이터 생성
     if (data.roomList.isEmpty) return const EmptyChatRoomIndicator();
-
-    return Column(
-      children: [
-        ...List<Widget>.generate(data.roomList.length, (i) {
-          return McAppear(
-            delayMs: i * 150,
-            child: buildChatRoomListTile(context, data.roomList[i], notifier),
-          );
-        }),
-      ],
+    return ListView.builder(
+      itemCount: data.roomList.length,
+      itemBuilder: (context, index) => McAppear(
+        delayMs: index * 150,
+        child: buildChatRoomListTile(context, data.roomList[index], notifier),
+      ),
     );
   }
 

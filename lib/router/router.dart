@@ -218,7 +218,7 @@ final goRouterProvider = Provider<GoRouter>(
           name: RouterPath.subjectManage.name,
           pageBuilder: (context, state) => CustomTransitionPage<void>(
             key: state.pageKey,
-            child: const SubjectManage(),
+            child: const VocabularyManage(),
             transitionsBuilder: slideTransition,
           ),
         ),

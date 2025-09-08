@@ -28,13 +28,14 @@ class _ChatContentsState extends ConsumerState<ChatContents>
             _scrollController.position.maxScrollExtent - 50 &&
         !_isFetching) {
       setFetching(true);
+      final ChatContentsModel state =
+          await ref.read(chatContentsViewModelProvider.future);
       final vm = ref.read(chatContentsViewModelProvider.notifier);
-      final state = await ref.read(chatContentsViewModelProvider.future);
 
-      if (state.hasMore && state.lastDoc != null) {
+      if (state.hasMore && state.lastMessageTime != null) {
         await vm.fetchPreviousChats(
           roomId: state.roomData.roomId,
-          lastDoc: state.lastDoc!,
+          lastCreatedAt: state.lastMessageTime!,
         );
       }
 
@@ -384,7 +385,7 @@ class _ChatContentsState extends ConsumerState<ChatContents>
     User? user,
   }) {
     const ChatContentsType type = ChatContentsType.image;
-    final String url = chat.message;
+    final String url = chat.imageUrl;
 
     // 로그인되어있지 않을 경우
     // 모든 메세지를 상대방 메세지로

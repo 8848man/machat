@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:machat/features/common/providers/loading_state_provider.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
@@ -7,8 +6,8 @@ import 'package:machat/features/study/features/voca/repositories/voca_repository
 import 'package:machat/features/study/features/voca/services/voca_service.dart';
 import 'package:machat/features/study/features/voca/utils/get_pure_english.dart';
 import 'package:machat/features/study/features/voca/view_models/memo_list_view_model.dart';
-import 'package:machat/features/study/models/vocabulary_model.dart';
-import 'package:machat/features/study/providers/voca_info_provider.dart';
+import 'package:machat/features/study/data/models/vocabulary_model.dart';
+import 'package:machat/features/study/presentation/providers/voca_info_provider.dart';
 import 'package:machat/router/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

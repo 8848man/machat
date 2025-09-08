@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:machat/features/chat/models/chat.dart';
+import 'package:machat/core/models/chat.dart';
 
 void main() {
   group('Chat Model Tests', () {

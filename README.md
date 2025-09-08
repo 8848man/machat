@@ -1,6 +1,7 @@
 # machat
 
-실시간 채팅 앱 마챗입니다.
+실시간 채팅 앱 마챗입니다.  
+웹앱 링크 : https://machat-f1450.web.app/
 
 ## 목차
 1. 프로젝트 목적
@@ -22,47 +23,51 @@ graph TB
 
     %% --- 클라이언트 ---
     subgraph Client[Flutter Client]
-        ChatUI[실시간 채팅 UI]
         VoiceUI[AI 캐릭터 보이스 UI]
+        ChatUI[실시간 채팅 UI]
         VocabUI[영단어 단어장 UI]
         InviteUI[친구 초대 UI]
         RoomListUI[채팅방 리스트 UI]
         LoginUI[로그인 UI]
     end
     
-    %% --- 실시간 채팅 ---
-    ChatUI --> FS_Stream[Firestore Stream]
-    ChatUI --> FS_DB[Firebase Firestore]
-    ChatUI --> IDB_Cache[IDB(WEB)]
-    ChatUI --> Hive_Cache[HIVE(MOBILE)]
-    VocabUI --> Gemini_Server[Gemini API Server]
-    Gemini_Server --> Gemini_API[Google Gemini API]
+    %% --- 로컬 캐쉬 ---
+    Web_Cache[(IDB_Web_Cache)]
+    Mobile_Cache[(Hive_Mobile_Cache)]
+    Memory_Cache[(Provider_Cache)]
     
-    %% --- AI 캐릭터 보이스 ---
-    VoiceUI --> TTS_Service[TTS Service]
-    VoiceUI --> Provider_Cache[Provider]
-    TTS_Service --> TTS_Proxy[TTS Proxy Server]
-    TTS_Proxy --> Supertone[Supertone API]
-    
-    %% --- 단어장 기능 ---
-    VocabUI --> Gemini_Server
-    Gemini_Server --> Gemini_API
-    VocabUI --> FS_DB
-    Gemini_Server --> FS_DB
-    
-    %% --- 친구 초대 ---
-    InviteUI --> FS_DB
-    
-    %% --- 채팅방 리스트 관리 ---
-    RoomListUI --> FS_DB
-    
-    %% --- 로그인 기능 ---
-    LoginUI --> FB_Auth[Firebase Auth]
-    LoginUI --> SecureStorage[Secure Storage]
-    
-    %% --- Firebase 공통 ---
+    %% --- Firebase 공통 (먼저 정의) ---
     FS_DB[(Firebase Firestore)]
     FB_Auth[(Firebase Auth)]
+    
+    %% --- AI 캐릭터 보이스 ---
+    VoiceUI --> TTS_Service[TTS Service];
+    VoiceUI --> Memory_Cache;
+    TTS_Service --> TTS_Proxy[TTS Proxy Server];
+    TTS_Proxy --> Supertone[Supertone API];
+    
+    %% --- 실시간 채팅 ---
+    ChatUI --> FS_Stream[Firestore Stream];
+    ChatUI --> Web_Cache;
+    ChatUI --> Mobile_Cache;
+    ChatUI --> FS_DB;
+    Gemini_Server --> Gemini_API[Google Gemini API];
+    
+    %% --- 단어장 기능 ---
+    VocabUI --> Gemini_Server;
+    VocabUI --> FS_DB;
+    Gemini_Server --> FS_DB;
+    
+    %% --- 친구 초대 ---
+    InviteUI --> FS_DB;
+    
+    %% --- 채팅방 리스트 관리 ---
+    RoomListUI --> FS_DB;
+    
+    %% --- 로그인 기능 ---
+    LoginUI --> FS_DB;
+    LoginUI --> FB_Auth;
+    LoginUI --> SecureStorage[Secure Storage];
 ```
 
 
@@ -109,16 +114,134 @@ graph TB
    - Lazy loading / Pagination 적용
    - 불필요한 rebuild 최소화
 
-## lib 폴더별 설명  
-animated_widget : 위젯에 overwrap 하여 사용하는 애니메이션 위젯  
-assets : 이미지나 아이콘과 같은 에셋 모음  
-config : 앱 설정 파일  
-design_system : 버튼, 박스, 색깔 등 프로젝트 내에서 공통으로 사용하는 디자인 요소  
-features : 각 기능별 폴더 모음  
-features/models : 기능 내에서 사용하는 모델 모음  
-features/screen : 라우터를 통해 직접적으로 진입하는 화면 프레임  
-features/widgets : 해당 기능 스크린 명세에 의해 배치되는 위젯들  
-features/repositories : 서버와 직접 통신하는 레포지토리  
-features/providers : 상태 관리를 위한 riverpod provider 모음  
-features/view_models : 화면 제어 및 서버 호출 등의 비지니스 로직을 담당하는 뷰모델 모음  
-features/utils : 기능별 유틸리티 모음  
+## 패키지 구조 예시(공통)
+```
+/lib/ : flutter 소스 파일(이후 생략)
+/animated_widget/ : 위젯 애니메이션 래퍼
+/assets/ : flutter 에셋 모음
+/config/ : 설정 파일
+/core/ : 공통 파일
+/design_system/ : 위젯, Color 등 스타일 정의
+/networks/ : 통신
+/router/ : 라우터
+/storage/ : 내부 저장소(캐시)
+/features/ : 기능 폴더
+```
+
+## 패키지 구조 예시(기능)
+```
+/features/ : Machat 기능 폴더(이후 생략)
+/data/ : 데이터 레이어
+/data/models/ : 데이터 계층 모델
+/data/repositories/ : 단일 모델을 관여하는 서버 통신 모듈
+/data/servicese/ : 여러 모델에 관여하는 서버 통신 모듈
+/data/usecases/ : 유스케이스
+/domain/ : 도메인 레이어
+/domain/entities/ : 도메인 엔터티 정의
+/domain/repositories/ : 도메인 레포지토리 정의
+/domain/services/ : 도메인 서비스 정의
+/domain/usecases/ : 도메인 유스케이스 정의
+/presentation/ : 표현 레이어
+/presentation/consts(enums ...etc)/ : 표현 레이어에서 사용하는 상수나 enum을 정의
+/presentation/layouts/ : 현재 기능 내에서 사용하는 공통 레이아웃 정의
+/presentations/providers/ : 상태 저장 프로바이더
+/presentations/screens/ : 라우터 진입 스크린
+/presentations/view_models/ : 뷰모델
+/presentations/widgets/ : 기능내에서 사용하는 위젯 정의
+```
+
+## 환경설정
+```
+Flutter version : 3.24.5
+Java version : 17
+environment:
+  sdk: ^3.4.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  - machat_token_service:
+  machat_token_service:
+    git:
+      url: https://github.com/8848man/machat_token_service.git
+      ref: version/1.0.0
+
+  - tts package
+  rwkim_tts:
+    git:
+      url: https://github.com/8848man/rwkim_tts
+      ref: version/1.0.1
+    
+  - 상태관리
+  flutter_riverpod: ^2.4.9
+  riverpod_annotation: ^2.6.1
+  riverpod_generator: ^2.6.3
+    
+  - utils
+  go_router: ^14.6.1
+  build_runner: ^2.4.13
+  json_annotation: ^4.8.1
+  json_serializable: ^6.9.0
+  freezed: ^2.5.7
+  freezed_annotation: ^2.4.4
+  logger: ^2.0.2+1
+  shared_preferences: 2.3.3
+  flutter_svg: ^2.0.9
+  image_picker: ^0.8.7
+  audioplayers: ^6.4.0
+  path_provider: ^2.1.5
+  cupertino_icons: ^1.0.8
+  
+  - 음성 관련
+  speech_to_text: ^6.6.0
+  flutter_tts: ^3.8.5
+  
+  - UI
+  flutter_screenutil: ^5.9.0
+
+  - 패키지 이름 변경
+  change_app_package_name: ^1.1.0
+
+  - network - firebase
+  firebase_core: ^3.8.0
+  cloud_firestore: ^5.5.0
+  firebase_auth: ^5.3.3
+  toastification: ^2.3.0
+  firebase_storage: ^12.4.4
+  async: ^2.11.0
+
+  http: ^0.13.6
+
+  - 로컬 캐싱
+  idb_shim: ^2.6.1+7
+  hive_flutter: ^1.1.0
+  mocktail: ^1.0.4
+  flutter_image_compress: ^2.4.0
+```
+## 라우팅 구조
+```
+  splash('/', '/'),
+  login('/login', 'login'),
+  search('/search', 'search'),
+  register('/register', 'register'),
+  home('/home', 'home'),
+  chat('/chat', 'chat'),
+  chatProfile('/chat_profile', 'chat_profile'),
+  chatCreate('/chat_create', 'chat_create'),
+  chatList('/chat_list', 'chat_list'),
+  chatImage('/chat_image', 'chat_image'),
+  profile('/profile', 'profile'),
+  addFriend('/add_friend', 'add_friend'),
+  token('/token', 'token'),
+  study('/study', 'study'),
+  earnPoint('/earn_point', 'earn_point'),
+  englishVoca('/study/english_voca', 'english_voca'),
+  englishAddVoca('/study/english_voca/add_voca', 'add_voca'),
+  subjectManage('/study/subject_manage', 'subject_manage'),
+  addVocabulary('/study/add_vocabulary', 'add_vocabulary'),
+  aiAdd('/ai_home/ai_add', 'ai_add'),
+  aiHome('/ai_home', 'ai_home'),
+```

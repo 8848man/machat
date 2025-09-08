@@ -33,7 +33,7 @@ class ChatCreateBody extends ConsumerWidget {
     return GestureDetector(
       child: const Row(
         children: [
-          MCCheckBoxView(),
+          MCCheckBoxView(id: IS_CHAT_OPEN_ID),
           Text(
             '채팅방을 공개합니다',
             style: TextStyle(
@@ -44,8 +44,8 @@ class ChatCreateBody extends ConsumerWidget {
         ],
       ),
       onTap: () {
-        ref.read(checkboxStateProvider.notifier).state =
-            !ref.read(checkboxStateProvider.notifier).state;
+        ref.read(checkboxStateProvider(IS_CHAT_OPEN_ID).notifier).state =
+            !ref.read(checkboxStateProvider(IS_CHAT_OPEN_ID).notifier).state;
       },
     );
   }
