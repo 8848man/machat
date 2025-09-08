@@ -3,9 +3,11 @@ import 'package:machat/features/home/enums/subject_enum.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:machat/features/study/data/models/study.dart';
 import 'package:machat/features/study/data/models/vocabulary_model.dart';
+import 'package:machat/features/study/data/servicese/vocabulary_service_impl.dart';
+import 'package:machat/features/study/data/usecases/earn_point_use_case_impl.dart';
 import 'package:machat/features/study/presentation/providers/subject_list_length.dart';
 import 'package:machat/features/study/presentation/providers/voca_info_provider.dart';
-import 'package:machat/features/study/data/repositories/vocabulary_repository.dart';
+import 'package:machat/features/study/data/repositories/vocabulary_repository_impl.dart';
 import 'package:machat/router/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -123,14 +125,12 @@ class StudyViewModel extends _$StudyViewModel {
       if (currentUser == null) {
         Exception('유저 정보가 없습니다!');
       }
-      if (vocabData.hasEarnPoints) {
-        SnackBarCaller().callSnackBar(ref, '이미 포인트를 얻었어요!');
-        return;
-      }
       await ref
-          .read(vocabularyRepositoryProvider)
-          .earnPoints(
-              userId: currentUser!.uid, vocabularyId: vocabData.id ?? '')
+          .read(earnPointsUseCaseProvider)
+          .call(
+              userId: currentUser!.uid,
+              vocabularyId: vocabData.id ?? '',
+              score: vocabData.wordCount)
           .then((_) {
         // 성공 시, SnackBar 표시
         SnackBarCaller().callSnackBar(ref, '포인트를 얻었어요!');
