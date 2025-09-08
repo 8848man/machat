@@ -34,18 +34,18 @@ graph TB
     FS_DB[(Firebase Firestore)]
     FB_Auth[(Firebase Auth)]
     
-    %% --- 실시간 채팅 ---
-    ChatUI --> FS_Stream[Firestore Stream];
-    ChatUI --> FS_DB;
-    ChatUI --> Web_Cache[IDB_Cache];
-    ChatUI --> Mobile_Cache[Hive_Cache];
-    Gemini_Server --> Gemini_API[Google Gemini API];
-    
     %% --- AI 캐릭터 보이스 ---
     VoiceUI --> TTS_Service[TTS Service];
     VoiceUI --> Provider_Cache[Provider_Cache];
     TTS_Service --> TTS_Proxy[TTS Proxy Server];
     TTS_Proxy --> Supertone[Supertone API];
+    
+    %% --- 실시간 채팅 ---
+    ChatUI --> FS_Stream[Firestore Stream];
+    ChatUI --> Web_Cache[IDB_Cache];
+    ChatUI --> Mobile_Cache[Hive_Cache];
+    ChatUI --> FS_DB;
+    Gemini_Server --> Gemini_API[Google Gemini API];
     
     %% --- 단어장 기능 ---
     VocabUI --> Gemini_Server;
