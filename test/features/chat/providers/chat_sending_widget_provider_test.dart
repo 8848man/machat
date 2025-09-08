@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:machat/features/chat/providers/chat_sending_widget_proivder.dart';
+import 'package:machat/features/chat/presentation/providers/chat_sending_widget_proivder.dart';
 
 void main() {
   group('Chat Sending Widget Provider Tests', () {
@@ -20,7 +20,8 @@ void main() {
       expect(widget, isA<Container>());
     });
 
-    test('chatSendingWidgetProvider should provide the same widget instance', () {
+    test('chatSendingWidgetProvider should provide the same widget instance',
+        () {
       final widget1 = container.read(chatSendingWidgetProvider);
       final widget2 = container.read(chatSendingWidgetProvider);
       expect(widget1, equals(widget2));
@@ -35,4 +36,4 @@ void main() {
       expect(widget.margin, isNull);
     });
   });
-} 
+}

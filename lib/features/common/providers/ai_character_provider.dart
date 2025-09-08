@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/features/common/models/ai/ai_model.dart';
-import 'package:machat/features/ai/view_models/ai_character_list_view_model.dart';
+import 'package:machat/features/ai/presentation/view_models/ai_character_list_view_model.dart';
 
 // final aiCharactersProvider = Provider<AiCharacterFacade>((ref) {
 //   // final aiCharacterListViewModel = ref.watch(aiCharacterListViewModelProvider);

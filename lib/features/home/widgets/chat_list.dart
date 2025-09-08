@@ -5,8 +5,8 @@ class HomeChatList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ChatListViewModel notifier =
-        ref.read(chatListViewModelProvider.notifier);
+    final HomeChatListViewModel notifier =
+        ref.read(homeChatListViewModelProvider.notifier);
     final AsyncValue<ChatListModel> state =
         ref.watch(chatListViewModelProvider);
 
@@ -26,22 +26,26 @@ class HomeChatList extends ConsumerWidget {
   }
 
   // 데이터 갯수만큼 채팅방 리스트타일 생성
-  Widget buildChatRoom(
-      BuildContext context, ChatListModel data, ChatListViewModel notifier) {
+  Widget buildChatRoom(BuildContext context, ChatListModel data,
+      HomeChatListViewModel notifier) {
     // 채팅방이 없을 경우 인디케이터 생성
     if (data.roomList.isEmpty) return const EmptyChatRoomIndicator();
-    return ListView.builder(
-      itemCount: data.roomList.length,
-      itemBuilder: (context, index) => McAppear(
-        delayMs: index * 150,
-        child: buildChatRoomListTile(context, data.roomList[index], notifier),
-      ),
+
+    return Column(
+      children: [
+        ...List<Widget>.generate(data.roomList.length, (i) {
+          return McAppear(
+            delayMs: i * 150,
+            child: buildChatRoomListTile(context, data.roomList[i], notifier),
+          );
+        }),
+      ],
     );
   }
 
   // 채팅방 리스트타일 위젯
   Widget buildChatRoomListTile(
-      BuildContext context, ChatRoomData data, ChatListViewModel notifier) {
+      BuildContext context, ChatRoomData data, HomeChatListViewModel notifier) {
     return ListTile(
       title: Row(
         children: [
@@ -75,7 +79,7 @@ class HomeChatList extends ConsumerWidget {
     );
   }
 
-  Widget buildNeedLogin(ChatListViewModel notifier) {
+  Widget buildNeedLogin(HomeChatListViewModel notifier) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

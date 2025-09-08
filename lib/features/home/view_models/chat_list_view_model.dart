@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:machat/features/chat/providers/chat_room_name_provider.dart';
+import 'package:machat/features/chat/presentation/providers/chat_room_name_provider.dart';
 import 'package:machat/features/common/models/chat/chat_list_model.dart';
 import 'package:machat/features/common/models/chat/chat_room_data.dart';
 import 'package:machat/features/common/providers/chat_room_id.dart';
@@ -13,7 +13,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'chat_list_view_model.g.dart';
 
 @riverpod
-class ChatListViewModel extends _$ChatListViewModel {
+class HomeChatListViewModel extends _$HomeChatListViewModel {
   @override
   Future<ChatListModel> build() async {
     // 외부의 ViewModelDisposerProvider를 사용하여 초기화

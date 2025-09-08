@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/design_system/lib.dart';
-import 'package:machat/features/chat_list/view_models/chat_list_view_model.dart';
+import 'package:machat/features/open_chat_list/view_models/chat_list_view_model.dart';
 
 class EmptyChatRoomIndicator extends ConsumerWidget {
   const EmptyChatRoomIndicator({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notifier = ref.read(chatListViewModelProvider.notifier);
+    final ChatListViewModel notifier =
+        ref.read(chatListViewModelProvider.notifier);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

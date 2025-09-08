@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:machat/features/chat/providers/chat_room_name_provider.dart';
+import 'package:machat/features/chat/presentation/providers/chat_room_name_provider.dart';
 
 void main() {
   group('Chat Room Name Provider Tests', () {
@@ -22,7 +22,7 @@ void main() {
     test('chatRoomNameProvider should update value correctly', () {
       const newName = 'New Chat Room';
       container.read(chatRoomNameProvider.notifier).state = newName;
-      
+
       final updatedName = container.read(chatRoomNameProvider);
       expect(updatedName, newName);
     });
@@ -30,12 +30,12 @@ void main() {
     test('chatRoomNameProvider should maintain state between reads', () {
       const newName = 'Test Room';
       container.read(chatRoomNameProvider.notifier).state = newName;
-      
+
       final firstRead = container.read(chatRoomNameProvider);
       final secondRead = container.read(chatRoomNameProvider);
-      
+
       expect(firstRead, secondRead);
       expect(firstRead, newName);
     });
   });
-} 
+}
