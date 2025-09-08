@@ -22,8 +22,8 @@ graph TB
 
     %% --- 클라이언트 ---
     subgraph Client[Flutter Client]
-        ChatUI[실시간 채팅 UI]
         VoiceUI[AI 캐릭터 보이스 UI]
+        ChatUI[실시간 채팅 UI]
         VocabUI[영단어 단어장 UI]
         InviteUI[친구 초대 UI]
         RoomListUI[채팅방 리스트 UI]
