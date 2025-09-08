@@ -29,6 +29,10 @@ graph TB
         RoomListUI[채팅방 리스트 UI]
         LoginUI[로그인 UI]
     end
+
+    %% --- 로컬 캐쉬 ---
+    Web_Cache[(IDB_Web_Cache)]
+    Mobile_Cache[(Hive_Mobile_Cache)]
     
     %% --- Firebase 공통 (먼저 정의) ---
     FS_DB[(Firebase Firestore)]
@@ -42,8 +46,8 @@ graph TB
     
     %% --- 실시간 채팅 ---
     ChatUI --> FS_Stream[Firestore Stream];
-    ChatUI --> Web_Cache[IDB_Cache];
-    ChatUI --> Mobile_Cache[Hive_Cache];
+    ChatUI --> Web_Cache;
+    ChatUI --> Mobile_Cache;
     ChatUI --> FS_DB;
     Gemini_Server --> Gemini_API[Google Gemini API];
     
