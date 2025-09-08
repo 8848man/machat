@@ -34,6 +34,7 @@ graph TB
     %% --- 로컬 캐쉬 ---
     Web_Cache[(IDB_Web_Cache)]
     Mobile_Cache[(Hive_Mobile_Cache)]
+    Memory_Cache[(Provider_Cache)]
     
     %% --- Firebase 공통 (먼저 정의) ---
     FS_DB[(Firebase Firestore)]
@@ -41,7 +42,7 @@ graph TB
     
     %% --- AI 캐릭터 보이스 ---
     VoiceUI --> TTS_Service[TTS Service];
-    VoiceUI --> Provider_Cache[Provider_Cache];
+    VoiceUI --> Memory_Cache;
     TTS_Service --> TTS_Proxy[TTS Proxy Server];
     TTS_Proxy --> Supertone[Supertone API];
     
