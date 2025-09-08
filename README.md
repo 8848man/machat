@@ -30,7 +30,7 @@ graph TB
         RoomListUI[채팅방 리스트 UI]
         LoginUI[로그인 UI]
     end
-
+    
     %% --- 로컬 캐쉬 ---
     Web_Cache[(IDB_Web_Cache)]
     Mobile_Cache[(Hive_Mobile_Cache)]
