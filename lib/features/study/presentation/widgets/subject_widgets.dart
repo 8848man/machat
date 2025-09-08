@@ -7,6 +7,7 @@ import 'package:machat/features/common/animated_widgets/mc_appear.dart';
 import 'package:machat/features/common/widgets/mc_check_box_binding_view.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
 import 'package:machat/features/study/data/models/vocabulary_model.dart';
+import 'package:machat/features/study/presentation/consts/least_word_count.dart';
 import 'package:machat/features/study/presentation/providers/subject_list_length.dart';
 import 'package:machat/features/study/presentation/view_models/study_view_model.dart';
 import 'package:machat/features/study/presentation/widgets/mastery_progress_bar.dart';
@@ -210,10 +211,9 @@ Widget buildIcon() {
 
 Widget buildTitle(VocabularyModel vocabData, WidgetRef ref) {
   final StudyViewModel notifier = ref.read(studyViewModelProvider.notifier);
-  const int leastWordCount = 5;
 
   return SingleChildScrollView(
-    scrollDirection: Axis.vertical,
+    scrollDirection: Axis.horizontal,
     child: Row(
       children: [
         Text(
@@ -225,23 +225,8 @@ Widget buildTitle(VocabularyModel vocabData, WidgetRef ref) {
           '(${vocabData.memorizedWordCount} / ${vocabData.wordCount})',
           style: const TextStyle(fontSize: 12, color: Colors.grey),
         ),
-        if (vocabData.wordCount < leastWordCount) ...[
-          MCSpace().horizontalHalfSpace(),
-          const Icon(Icons.warning_amber_rounded,
-              color: Colors.orange, size: 16),
-          Text(
-            '${leastWordCount - vocabData.wordCount} 개만 더 등록해요!',
-            style: const TextStyle(fontSize: 12, color: Colors.orange),
-          ),
-        ] else ...[
-          MCSpace().horizontalHalfSpace(),
-          getPointButton(
-            vocabData: vocabData,
-            notifier: notifier,
-            ref: ref,
-          ),
-        ],
-        const Spacer(),
+        getPointRow(notifier: notifier, vocabData: vocabData, ref: ref),
+        MCSpace().horizontalHalfSpace(),
         GestureDetector(
             onTap: () =>
                 SnackBarCaller().callSnackBar(ref, '오래 눌러서 삭제할 수 있어요!'),
@@ -321,42 +306,71 @@ Widget buildTitleText(String text, {VoidCallback? onTap}) {
   );
 }
 
-Widget getPointButton({
+Widget getPointRow({
   required VocabularyModel vocabData,
   required StudyViewModel notifier,
   required WidgetRef ref,
 }) {
   const double boxScale = 0.7;
-  if (vocabData.wordCount != vocabData.memorizedWordCount) {
-    return Row(
-      children: [
-        MCSpace().horizontalHalfSpace(),
-        // 로직 없는 체크박스
-        MCCheckbox(
-          scale: boxScale,
-          isChecked: false,
-          onChanged: (bool? value) {},
-        ),
-        Text(
-          '${vocabData.wordCount - vocabData.memorizedWordCount} 개만 더 외워봐요!',
-          style: TextStyle(fontSize: 12, color: MCColors.$color_blue_10),
-        ),
-      ],
+
+  // ✅ 1. 이미 포인트 획득했을 경우
+  if (vocabData.hasEarnPoints) {
+    return buildRow(
+      MCCheckBoxBindigView(
+        scale: boxScale,
+        value: true,
+        onTap: () => notifier.earnPoints(vocabData),
+      ),
+      'already got point',
+      MCColors.$color_blue_30,
     );
   }
+
+  // ✅ 2. 단어 수 부족할 경우
+  if (vocabData.wordCount < leastWordCount) {
+    final remaining = leastWordCount - vocabData.wordCount;
+    return buildRow(
+      const Icon(Icons.warning_amber_rounded, color: Colors.orange, size: 16),
+      '$remaining 개만 더 등록해요!',
+      Colors.orange,
+    );
+  }
+
+  // ✅ 3. 아직 외운 단어가 부족할 경우
+  if (vocabData.wordCount != vocabData.memorizedWordCount) {
+    final remaining = vocabData.wordCount - vocabData.memorizedWordCount;
+    return buildRow(
+      MCCheckbox(
+        scale: boxScale,
+        isChecked: false,
+        onChanged: (_) {}, // 로직 없는 체크박스
+      ),
+      '$remaining 개만 더 외워봐요!',
+      MCColors.$color_blue_10,
+    );
+  }
+
+  // ✅ 4. 외운 단어를 다 채운 경우 → 포인트 획득 가능
+  return buildRow(
+    MCCheckBoxBindigView(
+      scale: boxScale,
+      value: vocabData.hasEarnPoints,
+      onTap: () => notifier.earnPoints(vocabData),
+    ),
+    'get point',
+    MCColors.$color_blue_30,
+  );
+}
+
+// 공통적으로 Row를 만들어주는 헬퍼
+Widget buildRow(Widget icon, String text, Color color) {
   return Row(
     children: [
       MCSpace().horizontalHalfSpace(),
-      MCCheckBoxBindigView(
-        scale: boxScale,
-        value: vocabData.hasEarnPoints, // 서버 데이터 바인딩
-        onTap: () {
-          notifier.earnPoints(vocabData);
-        },
-      ),
+      icon,
       Text(
-        vocabData.hasEarnPoints ? 'already got point' : 'get point',
-        style: TextStyle(fontSize: 12, color: MCColors.$color_blue_30),
+        text,
+        style: TextStyle(fontSize: 12, color: color),
       ),
     ],
   );
