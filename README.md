@@ -108,6 +108,7 @@ graph TB
    - 불필요한 rebuild 최소화
 
 ## 패키지 구조 예시(공통)
+```
 /lib/ : flutter 소스 파일(이후 생략)
 /animated_widget/ : 위젯 애니메이션 래퍼
 /assets/ : flutter 에셋 모음
@@ -118,8 +119,10 @@ graph TB
 /router/ : 라우터
 /storage/ : 내부 저장소(캐시)
 /features/ : 기능 폴더
+```
 
 ## 패키지 구조 예시(기능)
+```
 /features/ : Machat 기능 폴더(이후 생략)
 /data/ : 데이터 레이어
 /data/models/ : 데이터 계층 모델
@@ -138,8 +141,10 @@ graph TB
 /presentations/screens/ : 라우터 진입 스크린
 /presentations/view_models/ : 뷰모델
 /presentations/widgets/ : 기능내에서 사용하는 위젯 정의
+```
 
 ## 환경설정
+```
 Flutter version : 3.24.5
 Java version : 17
 environment:
@@ -208,8 +213,9 @@ dependencies:
   hive_flutter: ^1.1.0
   mocktail: ^1.0.4
   flutter_image_compress: ^2.4.0
-
+```
 ## 라우팅 구조
+```
   splash('/', '/'),
   login('/login', 'login'),
   search('/search', 'search'),
@@ -231,3 +237,4 @@ dependencies:
   addVocabulary('/study/add_vocabulary', 'add_vocabulary'),
   aiAdd('/ai_home/ai_add', 'ai_add'),
   aiHome('/ai_home', 'ai_home'),
+```
