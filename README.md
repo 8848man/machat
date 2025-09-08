@@ -1,6 +1,7 @@
 # machat
 
 실시간 채팅 앱 마챗입니다.
+웹앱 링크 : https://machat-f1450.web.app/
 
 ## 목차
 1. 프로젝트 목적
