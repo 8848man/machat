@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:machat/features/study/models/vocabulary_model.dart';
+import 'package:machat/features/study/data/models/vocabulary_model.dart';
 
 part 'study.freezed.dart';
 

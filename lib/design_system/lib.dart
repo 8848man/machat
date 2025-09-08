@@ -1,6 +1,7 @@
 library mc_design_system;
 
 import 'package:flutter/material.dart';
+import 'package:machat/extensions.dart';
 
 part './colors/color.dart';
 part './sized_boxes.dart/padding.dart';

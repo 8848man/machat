@@ -4,11 +4,12 @@ import 'package:machat/design_system/lib.dart';
 import 'package:machat/extensions.dart';
 import 'package:machat/features/common/animated_widgets/hover_click_animation_box.dart';
 import 'package:machat/features/common/animated_widgets/mc_appear.dart';
+import 'package:machat/features/common/widgets/mc_check_box_binding_view.dart';
 import 'package:machat/features/snack_bar_manager/lib.dart';
-import 'package:machat/features/study/models/vocabulary_model.dart';
-import 'package:machat/features/study/providers/subject_list_length.dart';
-import 'package:machat/features/study/view_models/study_view_model.dart';
-import 'package:machat/features/study/widgets/mastery_progress_bar.dart';
+import 'package:machat/features/study/data/models/vocabulary_model.dart';
+import 'package:machat/features/study/presentation/providers/subject_list_length.dart';
+import 'package:machat/features/study/presentation/view_models/study_view_model.dart';
+import 'package:machat/features/study/presentation/widgets/mastery_progress_bar.dart';
 import 'package:machat/router/lib.dart';
 
 class SubjectBundle extends ConsumerWidget {
@@ -28,7 +29,7 @@ class SubjectBundle extends ConsumerWidget {
   Widget buildBundle(WidgetRef ref) {
     return Center(
       child: Container(
-        constraints: BoxConstraints(maxWidth: 500),
+        constraints: const BoxConstraints(maxWidth: 500),
         child: Column(
           children: [
             buildHeader(ref),
@@ -115,7 +116,7 @@ class SubjectBundle extends ConsumerWidget {
           return McAppear(
             delayMs: index * 100,
             child: buildFrameBox(
-              child: buildSubject(realIndex),
+              child: buildVocabBox(realIndex),
             ),
           );
         }
@@ -146,7 +147,7 @@ class SubjectBundle extends ConsumerWidget {
     );
   }
 
-  Widget buildSubject(int index) {
+  Widget buildVocabBox(int index) {
     return Consumer(builder: (context, ref, child) {
       final state = ref.watch(studyViewModelProvider);
       final notifier = ref.read(studyViewModelProvider.notifier);
@@ -208,20 +209,47 @@ Widget buildIcon() {
 }
 
 Widget buildTitle(VocabularyModel vocabData, WidgetRef ref) {
-  final notifier = ref.read(studyViewModelProvider.notifier);
-  return Row(
-    children: [
-      Text(
-        vocabData.title,
-        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      ),
-      const Spacer(),
-      GestureDetector(
-          onTap: () => SnackBarCaller().callSnackBar(ref, '오래 눌러서 삭제할 수 있어요!'),
-          onLongPress: () => notifier.deleteVocabulary(vocabData),
-          child: const Icon(Icons.close, size: 24)),
-      MCSpace().horizontalHalfSpace(),
-    ],
+  final StudyViewModel notifier = ref.read(studyViewModelProvider.notifier);
+  const int leastWordCount = 5;
+
+  return SingleChildScrollView(
+    scrollDirection: Axis.vertical,
+    child: Row(
+      children: [
+        Text(
+          vocabData.title,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        MCSpace().horizontalHalfSpace(),
+        Text(
+          '(${vocabData.memorizedWordCount} / ${vocabData.wordCount})',
+          style: const TextStyle(fontSize: 12, color: Colors.grey),
+        ),
+        if (vocabData.wordCount < leastWordCount) ...[
+          MCSpace().horizontalHalfSpace(),
+          const Icon(Icons.warning_amber_rounded,
+              color: Colors.orange, size: 16),
+          Text(
+            '${leastWordCount - vocabData.wordCount} 개만 더 등록해요!',
+            style: const TextStyle(fontSize: 12, color: Colors.orange),
+          ),
+        ] else ...[
+          MCSpace().horizontalHalfSpace(),
+          getPointButton(
+            vocabData: vocabData,
+            notifier: notifier,
+            ref: ref,
+          ),
+        ],
+        const Spacer(),
+        GestureDetector(
+            onTap: () =>
+                SnackBarCaller().callSnackBar(ref, '오래 눌러서 삭제할 수 있어요!'),
+            onLongPress: () => notifier.deleteVocabulary(vocabData),
+            child: const Icon(Icons.close, size: 24)),
+        MCSpace().horizontalHalfSpace(),
+      ],
+    ),
   );
 }
 
@@ -246,7 +274,7 @@ Widget buildProgressBar(double knowRate, double confusedRate) {
       ),
       MCSpace().horizontalHalfSpace(),
       if (knowRate < 1.0)
-        Text('${(knowRate * 100).toStringAsFixed(0)}% 만큼 했어요'),
+        Text('${(knowRate * 100).toStringAsFixed(0)}% 만큼 외웠어요!'),
       if (knowRate >= 1.0) const Text('모두 완료!'),
     ],
   );
@@ -269,6 +297,12 @@ Widget buildProgressBar(double knowRate, double confusedRate) {
 //     ],
 //   );
 // }
+Widget buildHover() {
+  return HoverClickAnimatedBox(
+    boxHeight: 80,
+    onTap: () {},
+  );
+}
 
 Widget buildTitleText(String text, {VoidCallback? onTap}) {
   return GestureDetector(
@@ -284,5 +318,46 @@ Widget buildTitleText(String text, {VoidCallback? onTap}) {
             fontWeight: FontWeight.bold),
       ),
     ),
+  );
+}
+
+Widget getPointButton({
+  required VocabularyModel vocabData,
+  required StudyViewModel notifier,
+  required WidgetRef ref,
+}) {
+  const double boxScale = 0.7;
+  if (vocabData.wordCount != vocabData.memorizedWordCount) {
+    return Row(
+      children: [
+        MCSpace().horizontalHalfSpace(),
+        // 로직 없는 체크박스
+        MCCheckbox(
+          scale: boxScale,
+          isChecked: false,
+          onChanged: (bool? value) {},
+        ),
+        Text(
+          '${vocabData.wordCount - vocabData.memorizedWordCount} 개만 더 외워봐요!',
+          style: TextStyle(fontSize: 12, color: MCColors.$color_blue_10),
+        ),
+      ],
+    );
+  }
+  return Row(
+    children: [
+      MCSpace().horizontalHalfSpace(),
+      MCCheckBoxBindigView(
+        scale: boxScale,
+        value: vocabData.hasEarnPoints, // 서버 데이터 바인딩
+        onTap: () {
+          notifier.earnPoints(vocabData);
+        },
+      ),
+      Text(
+        vocabData.hasEarnPoints ? 'already got point' : 'get point',
+        style: TextStyle(fontSize: 12, color: MCColors.$color_blue_30),
+      ),
+    ],
   );
 }

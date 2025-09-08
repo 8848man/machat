@@ -81,8 +81,8 @@ class AddVocabulary extends ConsumerWidget {
       TextEditingController titleEditor, TextEditingController memoEditor) {
     return Consumer(builder: (context, ref, child) {
       final notifier = ref.read(addVocabularyViewModelProvider.notifier);
-
-      return Row(
+      final state = ref.watch(addVocabularyViewModelProvider);
+      return Stack(
         children: [
           MCButtons()
               .getPositiveButton(
@@ -93,6 +93,13 @@ class AddVocabulary extends ConsumerWidget {
                 title: '만들기',
               )
               .expand(),
+          if (state.isLoading) ...[
+            const SizedBox(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ).expand(),
+          ],
         ],
       );
     });

@@ -22,7 +22,7 @@ import 'package:machat/features/study/features/voca/screens/english_voca.dart';
 import 'package:machat/features/study/features/add_vocabulary/screens/add_vocabulary.dart';
 import 'package:machat/features/study/features/voabulary_manage/screens/vocabulary_manage.dart';
 import 'package:machat/features/study/features/voca/screens/add_voca.dart';
-import 'package:machat/features/study/screens/study_subject_screen.dart';
+import 'package:machat/features/study/presentation/screens/study_subject_screen.dart';
 
 part './router.dart';
 part './router_path.dart';

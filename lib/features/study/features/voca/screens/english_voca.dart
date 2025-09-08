@@ -3,12 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:machat/extensions.dart';
 import 'package:machat/features/common/layouts/lib.dart';
-import 'package:machat/features/study/common/layouts/draggable_fab_layout.dart';
+import 'package:machat/features/study/presentation/layouts/draggable_fab_layout.dart';
 import 'package:machat/features/study/features/voca/animated_widgets/voca_create_button.dart';
 import 'package:machat/features/study/features/voca/providers/voca_tab_provider.dart';
 import 'package:machat/features/study/features/voca/widgets/card.dart';
 import 'package:machat/features/study/features/voca/widgets/voca_flash_card_list.dart';
-import 'package:machat/features/study/providers/voca_info_provider.dart';
+import 'package:machat/features/study/presentation/providers/voca_info_provider.dart';
 import 'package:machat/router/lib.dart';
 
 class EnglishVoca extends ConsumerStatefulWidget {
@@ -87,6 +87,7 @@ class _EnglishVocaState extends ConsumerState<EnglishVoca>
       ),
     );
   }
+
   Widget buildVocaActionButton() {
     return const Row(
       children: [
