@@ -59,6 +59,7 @@ graph TB
     RoomListUI --> FS_DB;
     
     %% --- 로그인 기능 ---
+    LoginUI --> FS_DB;
     LoginUI --> FB_Auth;
     LoginUI --> SecureStorage[Secure Storage];
 ```
