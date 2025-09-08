@@ -151,24 +151,24 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  # machat_token_service:
+  - machat_token_service:
   machat_token_service:
     git:
       url: https://github.com/8848man/machat_token_service.git
       ref: version/1.0.0
 
-  # tts package
+  - tts package
   rwkim_tts:
     git:
       url: https://github.com/8848man/rwkim_tts
       ref: version/1.0.1
     
-  # 상태관리
+  - 상태관리
   flutter_riverpod: ^2.4.9
   riverpod_annotation: ^2.6.1
   riverpod_generator: ^2.6.3
     
-  # utils
+  - utils
   go_router: ^14.6.1
   build_runner: ^2.4.13
   json_annotation: ^4.8.1
@@ -183,17 +183,17 @@ dependencies:
   path_provider: ^2.1.5
   cupertino_icons: ^1.0.8
   
-  # 음성 관련
+  - 음성 관련
   speech_to_text: ^6.6.0
   flutter_tts: ^3.8.5
   
-  # UI
+  - UI
   flutter_screenutil: ^5.9.0
 
-  # 패키지 이름 변경
+  - 패키지 이름 변경
   change_app_package_name: ^1.1.0
 
-  # network - firebase
+  - network - firebase
   firebase_core: ^3.8.0
   cloud_firestore: ^5.5.0
   firebase_auth: ^5.3.3
@@ -203,7 +203,7 @@ dependencies:
 
   http: ^0.13.6
 
-  # 로컬 캐싱
+  - 로컬 캐싱
   idb_shim: ^2.6.1+7
   hive_flutter: ^1.1.0
   mocktail: ^1.0.4
