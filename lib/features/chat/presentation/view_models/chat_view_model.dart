@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:machat/core/models/chat.dart';
 import 'package:machat/features/chat/data/models/chat_command.dart';
 import 'package:machat/features/chat/presentation/enums/commands.dart';
 import 'package:machat/features/chat/presentation/interfaces/i_chat_view_model.dart';
@@ -20,6 +22,7 @@ import 'package:machat/features/common/providers/chat_room_id.dart';
 import 'package:machat/features/profile/presentation/view_models/profile_view_model.dart';
 import 'package:machat/core/snack_bar_manager/lib.dart';
 import 'package:machat/router/lib.dart';
+import 'package:machat/storage/wrapper/chat_service_wrapper.dart';
 import 'package:machat_token_service/features/token/view_models/token_view_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -70,7 +73,7 @@ class ChatViewModel extends _$ChatViewModel implements ChatViewModelInterface {
 
   // 채팅방 id, 현재 유저 id, viewModel messageController.text
   // 를 기준으로 해당 채팅방에 메세지를 기록하는 코드
-  void sendMessageProcess() {
+  Future<void> sendMessageProcess() async {
     if (messageController.text.isEmpty) {
       return;
     }
@@ -92,10 +95,32 @@ class ChatViewModel extends _$ChatViewModel implements ChatViewModelInterface {
     };
 
     // 서버에 데이터 전송
-    repository.create(data);
+    final Map<String, dynamic> chatMap = await repository.create(data);
+
+    final Chat thisChat = Chat(
+      id: chatMap['id'],
+      type: chatMap['type'],
+      message: chatMap['message'],
+      createdBy: chatMap['createdBy'],
+      createdAt: DateTime.now().toString(),
+    );
+
+    ref.read(chatServiceWrapperProvider(roomId)).safeAppendMessages([thisChat]);
 
     // 텍스트 초기화
     messageController.text = '';
+  }
+
+  void setCache(Ref ref, Map<String, dynamic> chatMap, String roomId) {
+    final Chat thisChat = Chat(
+      id: chatMap['id'],
+      type: chatMap['type'],
+      message: chatMap['message'],
+      createdBy: chatMap['createdBy'],
+      createdAt: DateTime.now().toString(),
+    );
+
+    ref.read(chatServiceWrapperProvider(roomId)).safeAppendMessages([thisChat]);
   }
 
   Future<void> commandChatProcess() async {

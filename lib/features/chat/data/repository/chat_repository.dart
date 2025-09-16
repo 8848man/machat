@@ -13,20 +13,26 @@ class ChatRepository implements RepositoryService {
   ChatRepository(this.ref);
   @override
   Future<Map<String, dynamic>> create(Map<String, dynamic> data) async {
-    final chatRef = _firestore
-        .collection('chat_rooms')
-        .doc(data['roomId'])
-        .collection('chat')
-        .doc();
+    try {
+      final chatRef = _firestore
+          .collection('chat_rooms')
+          .doc(data['roomId'])
+          .collection('chat')
+          .doc();
 
-    await chatRef.set({
-      'id': chatRef.id,
-      'type': 'chat',
-      'message': data['message'],
-      'createdBy': data['userId'],
-      'createdAt': FieldValue.serverTimestamp(),
-    });
-    return {};
+      final Map<String, dynamic> chatMap = {
+        'id': chatRef.id,
+        'type': 'chat',
+        'message': data['message'],
+        'createdBy': data['userId'],
+        'createdAt': FieldValue.serverTimestamp(),
+      };
+
+      await chatRef.set(chatMap);
+      return chatMap;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
