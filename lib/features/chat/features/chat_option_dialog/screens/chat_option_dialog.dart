@@ -8,7 +8,7 @@ import 'package:machat/features/chat/features/chat_option_dialog/features/rwkim_
 import 'package:machat/features/chat/presentation/providers/chat_dialog_state_provider.dart';
 import 'package:machat/features/chat/presentation/view_models/chat_contents_view_model.dart';
 import 'package:machat/features/common/providers/chat_room_id.dart';
-import 'package:machat/features/snack_bar_manager/lib.dart';
+import 'package:machat/core/snack_bar_manager/lib.dart';
 
 class ChatOptionDialog extends ConsumerWidget {
   const ChatOptionDialog({super.key});

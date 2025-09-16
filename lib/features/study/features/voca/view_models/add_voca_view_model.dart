@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:machat/features/common/providers/loading_state_provider.dart';
-import 'package:machat/features/snack_bar_manager/lib.dart';
+import 'package:machat/core/snack_bar_manager/lib.dart';
 import 'package:machat/features/study/features/voca/models/word_model.dart';
 import 'package:machat/features/study/features/voca/repositories/voca_repository.dart';
 import 'package:machat/features/study/features/voca/services/voca_service.dart';

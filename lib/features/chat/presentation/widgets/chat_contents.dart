@@ -270,6 +270,7 @@ class _ChatContentsState extends ConsumerState<ChatContents>
     return Column(
       children: [
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Spacer(),
             buildChatInfo(true, createdAt, isContinue),

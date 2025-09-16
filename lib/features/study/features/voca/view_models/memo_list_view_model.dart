@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:machat/features/snack_bar_manager/lib.dart';
+import 'package:machat/core/snack_bar_manager/lib.dart';
 import 'package:machat/features/study/features/voca/enums/voca_sorted_by.dart';
 import 'package:machat/features/study/features/voca/models/memo_list_model.dart';
 import 'package:machat/features/study/features/voca/models/word_model.dart';
