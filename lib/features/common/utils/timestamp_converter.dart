@@ -40,3 +40,15 @@ class TimestampConverter implements JsonConverter<DateTime?, Object?> {
     // return object.toIso8601String();
   }
 }
+
+String parseCreatedAt(dynamic raw) {
+  if (raw == null) return '';
+  if (raw is String) return raw;
+  if (raw is DateTime) return raw.toIso8601String();
+  if (raw is Timestamp) return raw.toDate().toIso8601String();
+  if (raw is int) {
+    return DateTime.fromMillisecondsSinceEpoch(raw).toIso8601String();
+  }
+  if (raw is FieldValue) return ''; // 아직 서버에서 채워지지 않은 상태
+  return '';
+}
