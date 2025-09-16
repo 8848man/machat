@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:machat/features/chat/lib.dart';
-import 'package:machat/features/chat/providers/chat_focus_node_provider.dart';
-import 'package:machat/features/chat/providers/chat_room_name_provider.dart';
+import 'package:machat/features/chat/presentation/providers/chat_focus_node_provider.dart';
+import 'package:machat/features/chat/presentation/providers/chat_room_name_provider.dart';
 import 'package:machat/features/common/layouts/lib.dart';
 
 void main() {

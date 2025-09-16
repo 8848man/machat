@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:machat/features/chat/models/image.dart';
+import 'package:machat/features/chat/data/models/image.dart';
 
 void main() {
   group('McImage Model Tests', () {

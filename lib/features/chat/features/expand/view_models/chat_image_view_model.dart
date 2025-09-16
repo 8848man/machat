@@ -6,7 +6,8 @@ import 'package:machat/features/chat/features/expand/models/chat_image_list.dart
 import 'package:machat/features/chat/features/expand/providers/expand_image_state_provider.dart';
 import 'package:machat/features/chat/features/expand/providers/expand_widget_state_provider.dart';
 import 'package:machat/features/chat/features/expand/repositories/chat_image_repository.dart';
-import 'package:machat/features/chat/interface/chat_view_model_interface.dart';
+import 'package:machat/features/chat/features/expand/utils/chat_expand_utils.dart';
+import 'package:machat/features/chat/presentation/interfaces/i_chat_view_model.dart';
 import 'package:machat/features/common/providers/chat_room_id.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -39,32 +40,66 @@ class ChatImageViewModel extends _$ChatImageViewModel
 
   // ----------------Images ------------------
   // 카메라로 가져오기
+  // Future<void> getFromCamera() async {
+  //   XFile? image = await picker.pickImage(source: ImageSource.camera);
+  //   //카메라로 촬영하지 않고 뒤로가기 버튼을 누를 경우, null값이 저장되므로 if문을 통해 null이 아닐 경우에만 images변수로 저장하도록 합니다
+  //   if (image != null) {
+  //     final currentImages = ref.read(expandImageStateProvider).images;
+  //     // 새로운 리스트 생성 (불변성 유지)
+  //     final updatedImages = List<XFile?>.from(currentImages)..add(image);
+
+  //     // 상태 업데이트
+  //     ref.read(expandImageStateProvider.notifier).state =
+  //         XFileList(images: updatedImages);
+  //   }
+  // }
+
+  // // 갤러리에서 여러 사진 가져오기
+  // Future<void> getFromGallary() async {
+  //   List<XFile?> multiImage = await picker.pickMultiImage();
+  //   if (multiImage.isNotEmpty) {
+  //     final currentImages = ref.read(expandImageStateProvider).images;
+  //     // 새로운 리스트 생성 (불변성 유지)
+  //     final updatedImages = List<XFile?>.from(currentImages)
+  //       ..addAll(multiImage);
+
+  //     // 상태 업데이트
+  //     ref.read(expandImageStateProvider.notifier).state =
+  //         XFileList(images: updatedImages);
+  //     goToPictureState();
+  //   }
+  // }
   Future<void> getFromCamera() async {
     XFile? image = await picker.pickImage(source: ImageSource.camera);
-    //카메라로 촬영하지 않고 뒤로가기 버튼을 누를 경우, null값이 저장되므로 if문을 통해 null이 아닐 경우에만 images변수로 저장하도록 합니다
-    if (image != null) {
+    print('image is $image');
+    if (image != null && isValidImageExtension(image.name)) {
+      final resized = await resizeIfNeeded(image);
       final currentImages = ref.read(expandImageStateProvider).images;
-      // 새로운 리스트 생성 (불변성 유지)
-      final updatedImages = List<XFile?>.from(currentImages)..add(image);
+      final updatedImages = List<XFile?>.from(currentImages)..add(resized);
 
-      // 상태 업데이트
       ref.read(expandImageStateProvider.notifier).state =
           XFileList(images: updatedImages);
     }
   }
 
-  // 갤러리에서 여러 사진 가져오기
   Future<void> getFromGallary() async {
     List<XFile?> multiImage = await picker.pickMultiImage();
+    print('multiImage is $multiImage');
     if (multiImage.isNotEmpty) {
       final currentImages = ref.read(expandImageStateProvider).images;
-      // 새로운 리스트 생성 (불변성 유지)
-      final updatedImages = List<XFile?>.from(currentImages)
-        ..addAll(multiImage);
+      // 확장자 검사 + 리사이징 순차 적용
+      final List<XFile?> processed = [];
+      for (final file in multiImage) {
+        if (file != null && isValidImageExtension(file.name)) {
+          processed.add(await resizeIfNeeded(file));
+        }
+      }
 
-      // 상태 업데이트
+      final updatedImages = List<XFile?>.from(currentImages)..addAll(processed);
+
       ref.read(expandImageStateProvider.notifier).state =
           XFileList(images: updatedImages);
+
       goToPictureState();
     }
   }

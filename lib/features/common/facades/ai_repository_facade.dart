@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/features/common/models/ai/ai_chat_request.dart';
 import 'package:machat/features/common/models/ai/ai_chat_response.dart';
-import 'package:machat/features/ai/repositories/ai_repository.dart';
+import 'package:machat/features/ai/data/repositories/ai_repository.dart';
 
 final aiFacadeProvider = Provider<AiFacade>((ref) {
   final repository = ref.read(aiRepositoryProvider);

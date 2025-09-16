@@ -2,7 +2,6 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/extensions.dart';
-import 'package:machat/features/chat/features/chat_option_dialog/features/rwkim_tts/view_models/rwkim_tts_view_model.dart';
 import 'package:machat/features/chat/features/chat_option_dialog/features/rwkim_tts/view_models/tts_player.dart';
 
 class AudioController extends ConsumerWidget {

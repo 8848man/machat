@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/features/chat/features/chat_option_dialog/screens/chat_option_dialog.dart';
-import 'package:machat/features/chat/providers/chat_dialog_state_provider.dart';
+import 'package:machat/features/chat/presentation/providers/chat_dialog_state_provider.dart';
 
 class ChatOptionGestureDetector extends ConsumerWidget {
   final dynamic chatValue;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/features/common/utils/completer.dart';
-import 'package:machat/features/snack_bar_manager/lib.dart';
+import 'package:machat/core/snack_bar_manager/lib.dart';
 import 'package:machat/router/lib.dart';
 
 Widget loadingOvertime(WidgetRef ref) {

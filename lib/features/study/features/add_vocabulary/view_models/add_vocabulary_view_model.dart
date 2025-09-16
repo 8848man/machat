@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:machat/features/snack_bar_manager/lib.dart';
-import 'package:machat/features/study/models/vocabulary_model.dart';
-import 'package:machat/features/study/repositories/vocabulary_repository.dart';
-import 'package:machat/features/study/view_models/study_view_model.dart';
+import 'package:machat/core/snack_bar_manager/lib.dart';
+import 'package:machat/features/study/features/add_vocabulary/models/add_vocabulary_model.dart';
+import 'package:machat/features/study/data/models/vocabulary_model.dart';
+import 'package:machat/features/study/data/repositories/vocabulary_repository_impl.dart';
+import 'package:machat/features/study/presentation/view_models/study_view_model.dart';
 import 'package:machat/router/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -11,7 +12,12 @@ part 'add_vocabulary_view_model.g.dart';
 @riverpod
 class AddVocabularyViewModel extends _$AddVocabularyViewModel {
   @override
-  void build() async {}
+  AddVocabularyModel build() {
+    return initialState;
+  }
+
+  AddVocabularyModel get initialState =>
+      const AddVocabularyModel(isLoading: false);
 
   Future<void> saveVocabulary({
     required String title,
@@ -19,6 +25,9 @@ class AddVocabularyViewModel extends _$AddVocabularyViewModel {
   }) async {
     final repository = ref.read(vocabularyRepositoryProvider);
     try {
+      // loading 상태일 경우 그냥 리턴
+      if (state.isLoading) return;
+      setLoading(true);
       final User? currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser == null) {
         throw Exception('유저 정보가 없습니다.');
@@ -42,6 +51,12 @@ class AddVocabularyViewModel extends _$AddVocabularyViewModel {
     } catch (e) {
       print('$e');
       SnackBarCaller().callSnackBar(ref, '단어장을 저장하는데 실패했습니다! 에러 코드 : $e');
+    } finally {
+      setLoading(false);
     }
+  }
+
+  Future<void> setLoading(bool isLoading) async {
+    state = state.copyWith(isLoading: isLoading);
   }
 }

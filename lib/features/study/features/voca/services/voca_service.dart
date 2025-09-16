@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/features/study/features/voca/models/word_model.dart';
-import 'package:machat/features/study/models/vocabulary_model.dart';
+import 'package:machat/features/study/data/models/vocabulary_model.dart';
 import 'package:machat/networks/firestore_provider.dart';
 
 final vocaServiceProvider = Provider<VocaService>((ref) {

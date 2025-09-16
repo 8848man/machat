@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:machat/features/ai/utils/ai_controller_manager.dart';
+import 'package:machat/features/ai/features/ai_create/utils/ai_controller_manager.dart';
 
 class AiBody extends ConsumerWidget {
   final AiModelControllerManager aiModelManager;
