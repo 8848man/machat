@@ -68,7 +68,7 @@ Future<XFile> resizeImageWeb(XFile xfile,
   // Canvas → Blob → Uint8List
   final blob = await canvas.toBlob('image/jpeg', quality / 100);
   final reader2 = html.FileReader();
-  reader2.readAsArrayBuffer(blob!);
+  reader2.readAsArrayBuffer(blob);
   await reader2.onLoad.first;
   final result = reader2.result;
   late Uint8List resizedBytes;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:machat/features/chat/providers/chat_focus_node_provider.dart';
+import 'package:machat/features/chat/presentation/providers/chat_focus_node_provider.dart';
 
 void main() {
   group('Chat Focus Node Provider Tests', () {
@@ -26,10 +26,12 @@ void main() {
       expect(focusNode1, equals(focusNode2));
     });
 
-    test('chatFocusNodeProvider should dispose FocusNode when container is disposed', () {
+    test(
+        'chatFocusNodeProvider should dispose FocusNode when container is disposed',
+        () {
       final focusNode = container.read(chatFocusNodeProvider);
       expect(focusNode.hasFocus, isFalse);
-      
+
       container.dispose();
       expect(focusNode.hasFocus, isFalse);
     });
@@ -37,12 +39,12 @@ void main() {
     test('chatFocusNodeProvider should maintain focus state', () {
       final focusNode = container.read(chatFocusNodeProvider);
       expect(focusNode.hasFocus, isFalse);
-      
+
       focusNode.requestFocus();
       expect(focusNode.hasFocus, isTrue);
-      
+
       focusNode.unfocus();
       expect(focusNode.hasFocus, isFalse);
     });
   });
-} 
+}

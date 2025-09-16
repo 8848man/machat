@@ -8,11 +8,11 @@ import 'package:machat/features/common/layouts/bundle_layout.dart';
 import 'package:machat/features/common/layouts/lib.dart';
 import 'package:machat/features/common/providers/loading_state_provider.dart';
 import 'package:machat/features/register/models/register_model.dart';
-import 'package:machat/features/register/view_models/register_view_model.dart';
+import 'package:machat/features/register/presentation/view_models/register_view_model.dart';
 
-part './screens/register_page.dart';
-part './widgets/register_bundle.dart';
-part './widgets/bundle_header.dart';
-part './widgets/bundle_body.dart';
-part './widgets/bundle_footer.dart';
-part './utils/validation.dart';
+part 'presentation/screens/register_page.dart';
+part 'presentation/widgets/register_bundle.dart';
+part 'presentation/widgets/bundle_header.dart';
+part 'presentation/widgets/bundle_body.dart';
+part 'presentation/widgets/bundle_footer.dart';
+part 'presentation/utils/validation.dart';

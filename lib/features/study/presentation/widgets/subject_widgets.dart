@@ -5,7 +5,7 @@ import 'package:machat/extensions.dart';
 import 'package:machat/features/common/animated_widgets/hover_click_animation_box.dart';
 import 'package:machat/features/common/animated_widgets/mc_appear.dart';
 import 'package:machat/features/common/widgets/mc_check_box_binding_view.dart';
-import 'package:machat/features/snack_bar_manager/lib.dart';
+import 'package:machat/core/snack_bar_manager/lib.dart';
 import 'package:machat/features/study/data/models/vocabulary_model.dart';
 import 'package:machat/features/study/presentation/consts/least_word_count.dart';
 import 'package:machat/features/study/presentation/providers/subject_list_length.dart';

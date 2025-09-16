@@ -1,9 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:machat/features/home/enums/subject_enum.dart';
-import 'package:machat/features/snack_bar_manager/lib.dart';
+import 'package:machat/core/enums/subject_enum.dart';
+import 'package:machat/core/snack_bar_manager/lib.dart';
 import 'package:machat/features/study/data/models/study.dart';
 import 'package:machat/features/study/data/models/vocabulary_model.dart';
-import 'package:machat/features/study/data/servicese/vocabulary_service_impl.dart';
 import 'package:machat/features/study/data/usecases/earn_point_use_case_impl.dart';
 import 'package:machat/features/study/presentation/providers/subject_list_length.dart';
 import 'package:machat/features/study/presentation/providers/voca_info_provider.dart';

@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/config/url_config.dart';
 import 'package:machat/features/common/providers/loading_state_provider.dart';
-import 'package:machat/features/snack_bar_manager/lib.dart';
+import 'package:machat/core/snack_bar_manager/lib.dart';
 import 'package:machat/features/study/features/voca/models/memo_list_model.dart';
 import 'package:machat/features/study/features/voca/models/word_model.dart';
 import 'package:machat/networks/firestore_provider.dart';

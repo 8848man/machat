@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:machat/features/snack_bar_manager/lib.dart';
+import 'package:machat/core/snack_bar_manager/lib.dart';
 import 'package:machat/features/study/features/add_vocabulary/models/add_vocabulary_model.dart';
 import 'package:machat/features/study/data/models/vocabulary_model.dart';
 import 'package:machat/features/study/data/repositories/vocabulary_repository_impl.dart';

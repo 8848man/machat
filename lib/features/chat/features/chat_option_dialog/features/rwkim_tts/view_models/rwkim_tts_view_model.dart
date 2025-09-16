@@ -5,8 +5,8 @@ import 'package:machat/features/chat/features/chat_option_dialog/features/rwkim_
 import 'package:machat/features/chat/features/chat_option_dialog/features/rwkim_tts/providers/tts_cache_provider.dart';
 import 'package:machat/features/chat/features/chat_option_dialog/features/rwkim_tts/repository/tts_repository.dart';
 import 'package:machat/features/chat/features/chat_option_dialog/features/rwkim_tts/view_models/tts_player.dart';
-import 'package:machat/features/chat/providers/chat_dialog_state_provider.dart';
-import 'package:machat/features/snack_bar_manager/lib.dart';
+import 'package:machat/features/chat/presentation/providers/chat_dialog_state_provider.dart';
+import 'package:machat/core/snack_bar_manager/lib.dart';
 import 'package:machat_token_service/features/token/lib.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rwkim_tts/features/tts_service/enums/lib.dart';

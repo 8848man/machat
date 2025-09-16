@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:machat/features/common/features/token/widgets/mc_token_widget.dart';
 import 'package:machat/features/common/utils/user_checker.dart';
 import 'package:machat/features/common/view_models/user_view_model.dart';
-import 'package:machat/features/snack_bar_manager/lib.dart';
+import 'package:machat/core/snack_bar_manager/lib.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/router/lib.dart';
 
