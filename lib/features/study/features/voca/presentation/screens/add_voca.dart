@@ -7,7 +7,7 @@ import 'package:machat/features/common/layouts/lib.dart';
 import 'package:machat/features/common/providers/loading_state_provider.dart';
 import 'package:machat/features/common/utils/comma_seperator.dart';
 import 'package:machat/features/study/features/voca/models/word_model.dart';
-import 'package:machat/features/study/features/voca/view_models/add_voca_view_model.dart';
+import 'package:machat/features/study/features/voca/presentation/view_models/add_voca_view_model.dart';
 
 class AddVoca extends ConsumerWidget {
   const AddVoca({super.key});

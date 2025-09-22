@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:machat/features/study/features/voca/models/word_model.dart';
-import 'package:machat/features/study/features/voca/utils/get_by_mastery.dart';
-import 'package:machat/features/study/features/voca/utils/get_string.dart';
-import 'package:machat/features/study/features/voca/view_models/memo_list_view_model.dart';
+import 'package:machat/features/study/features/voca/presentation/utils/get_by_mastery.dart';
+import 'package:machat/features/study/features/voca/presentation/utils/get_string.dart';
+import 'package:machat/features/study/features/voca/presentation/view_models/memo_list_view_model.dart';
 import 'package:machat_token_service/design_system/lib.dart';
 import 'package:machat_token_service/features/commons/providers/loading_state_provider.dart';
 
