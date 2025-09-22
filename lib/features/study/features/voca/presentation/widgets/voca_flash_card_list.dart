@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:machat/features/study/features/voca/animated_widgets/animated_wheel_card.dart';
+import 'package:machat/features/study/features/voca/presentation/animated_widgets/animated_wheel_card.dart';
 import 'package:machat/features/study/features/voca/models/memo_list_model.dart';
-import 'package:machat/features/study/features/voca/view_models/memo_list_view_model.dart';
-import 'package:machat/features/study/features/voca/widgets/voca_flash_card.dart';
+import 'package:machat/features/study/features/voca/presentation/view_models/memo_list_view_model.dart';
+import 'package:machat/features/study/features/voca/presentation/widgets/voca_flash_card.dart';
 
 class VocaFlashCardList extends ConsumerWidget {
   const VocaFlashCardList({super.key});
