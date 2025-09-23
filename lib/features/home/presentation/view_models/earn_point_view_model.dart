@@ -10,11 +10,11 @@ class EarnPointViewModel extends _$EarnPointViewModel {
 
   void goStudyEnglish() {
     final router = ref.read(goRouterProvider);
-    router.pushNamed(RouterPath.study.name);
+    router.goNamed(RouterPath.study.name);
   }
 
   void goAiHome() {
     final router = ref.read(goRouterProvider);
-    router.pushNamed(RouterPath.aiHome.name);
+    router.goNamed(RouterPath.aiHome.name);
   }
 }

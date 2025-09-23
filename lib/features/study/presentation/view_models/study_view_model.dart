@@ -82,7 +82,7 @@ class StudyViewModel extends _$StudyViewModel {
 
   void goSubjectManagePage() {
     final router = ref.read(goRouterProvider);
-    router.goNamed(RouterPath.subjectManage.name);
+    router.goNamed(RouterPath.vocabularyManage.name);
   }
 
   void deleteVocabulary(VocabularyModel vocabData) {

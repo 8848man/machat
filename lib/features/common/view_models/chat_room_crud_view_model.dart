@@ -88,6 +88,8 @@ class ChatRoomCrudViewModel extends _$ChatRoomCrudViewModel {
 
   // 해당 채팅방으로 이동
   void goToChatRoom(String chatRoomId, String roomName) {
+    print(
+        'print001, goToChatRoom called with id: $chatRoomId, name: $roomName');
     final router = ref.read(goRouterProvider);
     ref.read(chatRoomIdProvider.notifier).state = chatRoomId;
     ref.read(chatRoomNameProvider.notifier).state = roomName;

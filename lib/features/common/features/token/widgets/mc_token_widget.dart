@@ -41,7 +41,7 @@ class MCToken extends ConsumerWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: GestureDetector(
-          onTap: () => router.goNamed(RouterPath.token.name),
+          onTap: () => router.pushNamed(RouterPath.token.name),
           child: Container(
             constraints: const BoxConstraints(maxWidth: 60, maxHeight: 20),
             decoration: BoxDecoration(

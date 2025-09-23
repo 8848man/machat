@@ -19,7 +19,7 @@ enum RouterPath {
   earnPoint('/earn_point', 'earn_point'),
   englishVoca('/study/english_voca', 'english_voca'),
   englishAddVoca('/study/english_voca/add_voca', 'add_voca'),
-  subjectManage('/study/subject_manage', 'subject_manage'),
+  vocabularyManage('/study/subject_manage', 'subject_manage'),
   addVocabulary('/study/add_vocabulary', 'add_vocabulary'),
   aiAdd('/ai_home/ai_add', 'ai_add'),
   aiHome('/ai_home', 'ai_home'),

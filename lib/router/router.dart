@@ -101,38 +101,55 @@ final goRouterProvider = Provider<GoRouter>(
                 transitionsBuilder: fadeTransition,
               ),
             ),
-          ],
-        ),
 
-        /// chat
-        GoRoute(
-          path: RouterPath.chat.path,
-          name: RouterPath.chat.name,
-          pageBuilder: (context, state) => CustomTransitionPage<void>(
-            key: state.pageKey,
-            child: const ChatScreen(),
-            transitionsBuilder: fadeTransition,
-          ),
-          routes: [
+            /// study
             GoRoute(
-              path: RouterPath.chatImage.path,
-              name: RouterPath.chatImage.name,
+              path: RouterPath.study.path,
+              name: RouterPath.study.name,
               pageBuilder: (context, state) => CustomTransitionPage<void>(
-                transitionDuration: const Duration(milliseconds: 500),
                 key: state.pageKey,
-                child: const ExpandImage(),
+                child: const StudySubjectScreen(),
                 transitionsBuilder: slideTransition,
               ),
-            ),
-            GoRoute(
-              path: RouterPath.chatProfile.path,
-              name: RouterPath.chatProfile.name,
-              pageBuilder: (context, state) => CustomTransitionPage<void>(
-                transitionDuration: const Duration(milliseconds: 500),
-                key: state.pageKey,
-                child: const OtherProfile(),
-                transitionsBuilder: slideTransition,
-              ),
+              routes: [
+                GoRoute(
+                  path: RouterPath.englishVoca.path,
+                  name: RouterPath.englishVoca.name,
+                  pageBuilder: (context, state) => CustomTransitionPage<void>(
+                    key: state.pageKey,
+                    child: const EnglishVoca(),
+                    transitionsBuilder: slideTransition,
+                  ),
+                ),
+                GoRoute(
+                  path: RouterPath.englishAddVoca.path,
+                  name: RouterPath.englishAddVoca.name,
+                  pageBuilder: (context, state) => CustomTransitionPage<void>(
+                    transitionDuration: const Duration(milliseconds: 500),
+                    key: state.pageKey,
+                    child: const AddVoca(),
+                    transitionsBuilder: slideTransition,
+                  ),
+                ),
+                GoRoute(
+                  path: RouterPath.vocabularyManage.path,
+                  name: RouterPath.vocabularyManage.name,
+                  pageBuilder: (context, state) => CustomTransitionPage<void>(
+                    key: state.pageKey,
+                    child: const VocabularyManage(),
+                    transitionsBuilder: slideTransition,
+                  ),
+                ),
+                GoRoute(
+                  path: RouterPath.addVocabulary.path,
+                  name: RouterPath.addVocabulary.name,
+                  pageBuilder: (context, state) => CustomTransitionPage<void>(
+                    key: state.pageKey,
+                    child: const AddVocabulary(),
+                    transitionsBuilder: slideTransition,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -181,56 +198,37 @@ final goRouterProvider = Provider<GoRouter>(
           ),
         ),
 
-        /// profile
+        /// chat
         GoRoute(
-          path: RouterPath.study.path,
-          name: RouterPath.study.name,
+          path: RouterPath.chat.path,
+          name: RouterPath.chat.name,
           pageBuilder: (context, state) => CustomTransitionPage<void>(
             key: state.pageKey,
-            child: const StudySubjectScreen(),
-            transitionsBuilder: slideTransition,
+            child: const ChatScreen(),
+            transitionsBuilder: fadeTransition,
           ),
-        ),
-
-        GoRoute(
-          path: RouterPath.englishVoca.path,
-          name: RouterPath.englishVoca.name,
-          pageBuilder: (context, state) => CustomTransitionPage<void>(
-            key: state.pageKey,
-            child: const EnglishVoca(),
-            transitionsBuilder: slideTransition,
-          ),
-        ),
-
-        GoRoute(
-          path: RouterPath.englishAddVoca.path,
-          name: RouterPath.englishAddVoca.name,
-          pageBuilder: (context, state) => CustomTransitionPage<void>(
-            transitionDuration: const Duration(milliseconds: 500),
-            key: state.pageKey,
-            child: const AddVoca(),
-            transitionsBuilder: slideTransition,
-          ),
-        ),
-
-        GoRoute(
-          path: RouterPath.subjectManage.path,
-          name: RouterPath.subjectManage.name,
-          pageBuilder: (context, state) => CustomTransitionPage<void>(
-            key: state.pageKey,
-            child: const VocabularyManage(),
-            transitionsBuilder: slideTransition,
-          ),
-        ),
-
-        GoRoute(
-          path: RouterPath.addVocabulary.path,
-          name: RouterPath.addVocabulary.name,
-          pageBuilder: (context, state) => CustomTransitionPage<void>(
-            key: state.pageKey,
-            child: const AddVocabulary(),
-            transitionsBuilder: slideTransition,
-          ),
+          routes: [
+            GoRoute(
+              path: RouterPath.chatImage.path,
+              name: RouterPath.chatImage.name,
+              pageBuilder: (context, state) => CustomTransitionPage<void>(
+                transitionDuration: const Duration(milliseconds: 500),
+                key: state.pageKey,
+                child: const ExpandImage(),
+                transitionsBuilder: slideTransition,
+              ),
+            ),
+            GoRoute(
+              path: RouterPath.chatProfile.path,
+              name: RouterPath.chatProfile.name,
+              pageBuilder: (context, state) => CustomTransitionPage<void>(
+                transitionDuration: const Duration(milliseconds: 500),
+                key: state.pageKey,
+                child: const OtherProfile(),
+                transitionsBuilder: slideTransition,
+              ),
+            ),
+          ],
         ),
 
         GoRoute(
