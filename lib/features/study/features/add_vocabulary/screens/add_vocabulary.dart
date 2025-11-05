@@ -82,25 +82,14 @@ class AddVocabulary extends ConsumerWidget {
     return Consumer(builder: (context, ref, child) {
       final notifier = ref.read(addVocabularyViewModelProvider.notifier);
       final state = ref.watch(addVocabularyViewModelProvider);
-      return Stack(
-        children: [
-          MCButtons()
-              .getPositiveButton(
-                onTap: () => notifier.saveVocabulary(
-                  title: titleEditor.text,
-                  memo: memoEditor.text,
-                ),
-                title: '만들기',
-              )
-              .expand(),
-          if (state.isLoading) ...[
-            const SizedBox(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            ).expand(),
-          ],
-        ],
+      return MCButtons().getPositiveButton(
+        title: '만들기',
+        onTap: () => notifier.saveVocabulary(
+          title: titleEditor.text,
+          memo: memoEditor.text,
+        ),
+        isLoading: state.isLoading,
+        width: double.infinity,
       );
     });
   }
